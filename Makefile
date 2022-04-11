@@ -164,10 +164,10 @@ $(ROMFS):
 	@cp -ruf $(CURDIR)/$(ROMFS)/i18n/zh-CN/. $(CURDIR)/$(ROMFS)/i18n/zh-Hans/
 	@cp -ruf $(CURDIR)/$(ROMFS)/i18n/zh-TW/. $(CURDIR)/$(ROMFS)/i18n/zh-Hant/
 	@rm -rf $(CURDIR)/$(ROMFS)/i18n/*/installer.json $(CURDIR)/$(ROMFS)/i18n/*/main.json $(CURDIR)/$(ROMFS)/i18n/*/popup.json $(CURDIR)/$(ROMFS)/i18n/*/custom_layout.json
-	@$(MAKE) -C $(CURDIR)/aiosu-rcm -f $(CURDIR)/aiosu-rcm/Makefile
-	@cp $(CURDIR)/aiosu-rcm/output/aio_rcm.bin $(CURDIR)/$(ROMFS)/aio_rcm.bin
-# @$(MAKE) -C $(CURDIR)/aiosu-forwarder -f $(CURDIR)/aiosu-forwarder/Makefile
-	@cp $(CURDIR)/aiosu-forwarder/aiosu-forwarder.nro $(CURDIR)/$(ROMFS)/aiosu-forwarder.nro
+	@$(MAKE) -C $(CURDIR)/gmpack-rcm -f $(CURDIR)/gmpack-rcm/Makefile
+	@cp $(CURDIR)/gmpack-rcm/output/gmpack_rcm.bin $(CURDIR)/$(ROMFS)/gmpack_rcm.bin
+# @$(MAKE) -C $(CURDIR)/gmpack-forwarder -f $(CURDIR)/gmpack-forwarder/Makefile
+	@cp $(CURDIR)/gmpack-forwarder/gmpack-forwarder.nro $(CURDIR)/$(ROMFS)/gmpack-forwarder.nro
 
 $(BUILD): $(ROMFS)
 	@[ -d $@ ] || mkdir -p $@
@@ -178,7 +178,7 @@ clean:
 	@echo clean ...
 ifeq ($(strip $(APP_JSON)),)
 	@rm -fr $(BUILD) $(notdir $(CURDIR))*.nro $(notdir $(CURDIR))*.nacp $(notdir $(CURDIR))*.elf
-# @rm -fr $(CURDIR)/aiosu-forwarder/build $(CURDIR)/aiosu-forwarder/*.nro $(CURDIR)/aiosu-forwarder/*.nacp $(CURDIR)/aiosu-forwarder/*.elf
+# @rm -fr $(CURDIR)/gmpack-forwarder/build $(CURDIR)/gmpack-forwarder/*.nro $(CURDIR)/gmpack-forwarder/*.nacp $(CURDIR)/gmpack-forwarder/*.elf
 else
 	@rm -fr $(BUILD) $(TARGET).nsp $(TARGET).nso $(TARGET).npdm $(TARGET).elf
 endif

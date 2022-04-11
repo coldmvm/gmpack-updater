@@ -8,7 +8,7 @@
   "cheats": {
     "installed": "Trapaças instaladas",
     "label": "Os títulos a seguir receberam atualizações de trapaça desde a última vez que você usou o aplicativo. Observe que, embora você tenha baixado cheats para um jogo, eles podem não funcionar na versão atual.",
-    "downloading": "Baixando:\nÚltimas trapaças\n\nDe:\n",
+    "downloading": "Baixar:\nÚltimas trapaças",
     "dl_latest": "Baixar últimas trapaças",
     "getting_cheats": "Obtendo trapaças",
     "menu": "Menu de trapaças",
@@ -151,7 +151,7 @@
     "inject_payloads": "Injetar payload",
     "getting_payload": "Getting payload",
     "update_app": "Atualizar o aplicativo (v{})",
-    "dl_app": "Baixando:\nAtualizador Pacote GameMod\n\nDe:\n",
+    "dl_app": "Baixar:\nAtualizador Pacote GameMod",
     "changelog": "Alterações",
     "clean_up": "Limpar arquivos baixados",
     "hide_tabs": "Hide tabs",

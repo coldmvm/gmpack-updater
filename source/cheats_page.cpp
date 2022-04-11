@@ -58,7 +58,8 @@ CheatsPage::CheatsPage() : AppletFrame(true, true)
         item = new brls::ListItem("menus/cheats/dl_all"_i18n);
         item->getClickEvent()->subscribe([cheatsVer](brls::View* view) {
             std::string url = CurrentCfw::running_cfw == CFW::sxos ? CHEATS_URL_TITLES : CHEATS_URL_CONTENTS;
-            std::string text(fmt::format("menus/main/get_cheats"_i18n, cheatsVer) + "menus/common/from"_i18n + url);
+            //std::string text(fmt::format("menus/main/get_cheats"_i18n, cheatsVer) + "menus/common/from"_i18n + url);
+            std::string text(fmt::format("menus/main/get_cheats"_i18n, cheatsVer));
             brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
             stagedFrame->setTitle("menus/cheats/dl_all"_i18n);
             stagedFrame->addStage(
