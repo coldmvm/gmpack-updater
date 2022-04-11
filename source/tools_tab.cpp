@@ -3,16 +3,11 @@
 #include <filesystem>
 #include <fstream>
 
-//#include "JC_page.hpp"
-//#include "PC_page.hpp"
 #include "changelog_page.hpp"
-//#include "cheats_page.hpp"
 #include "confirm_page.hpp"
 #include "extract.hpp"
 #include "fs.hpp"
-#include "hide_tabs_page.hpp"
 #include "net_page.hpp"
-//#include "payload_page.hpp"
 #include "utils.hpp"
 #include "worker_page.hpp"
 
@@ -46,30 +41,6 @@ ToolsTab::ToolsTab(const std::string& tag, const nlohmann::ordered_json& payload
         updateApp->setHeight(LISTITEM_HEIGHT);
         this->addView(updateApp);
     }
-
-/*    cheats = new brls::ListItem("menus/tools/cheats"_i18n);
-    cheats->getClickEvent()->subscribe([](brls::View* view) {
-        brls::PopupFrame::open("menus/cheats/menu"_i18n, new CheatsPage(), "", "");
-    });
-    cheats->setHeight(LISTITEM_HEIGHT);
-
-    JCcolor = new brls::ListItem("menus/tools/joy_cons"_i18n);
-    JCcolor->getClickEvent()->subscribe([](brls::View* view) {
-        brls::Application::pushView(new JCPage());
-    });
-    JCcolor->setHeight(LISTITEM_HEIGHT);
-
-    PCcolor = new brls::ListItem("menus/tools/pro_cons"_i18n);
-    PCcolor->getClickEvent()->subscribe([](brls::View* view) {
-        brls::Application::pushView(new PCPage());
-    });
-    PCcolor->setHeight(LISTITEM_HEIGHT);
-
-    rebootPayload = new brls::ListItem("menus/tools/inject_payloads"_i18n);
-    rebootPayload->getClickEvent()->subscribe([](brls::View* view) {
-        brls::PopupFrame::open("menus/tools/inject_payloads"_i18n, new PayloadPage(), "", "");
-    });
-    rebootPayload->setHeight(LISTITEM_HEIGHT);*/
 
     netSettings = new brls::ListItem("menus/tools/internet_settings"_i18n);
     netSettings->getClickEvent()->subscribe([](brls::View* view) {
@@ -107,20 +78,6 @@ ToolsTab::ToolsTab(const std::string& tag, const nlohmann::ordered_json& payload
     });
     browser->setHeight(LISTITEM_HEIGHT);
 
-/*    move = new brls::ListItem("menus/tools/batch_copy"_i18n);
-    move->getClickEvent()->subscribe([](brls::View* view) {
-        chdir("/");
-        std::string error = "";
-        if (std::filesystem::exists(COPY_FILES_TXT)) {
-            error = fs::copyFiles(COPY_FILES_TXT);
-        }
-        else {
-            error = "menus/tools/batch_copy_config_not_found"_i18n;
-        }
-        util::showDialogBoxInfo(error);
-    });
-    move->setHeight(LISTITEM_HEIGHT);*/
-
     cleanUp = new brls::ListItem("menus/tools/clean_up"_i18n);
     cleanUp->getClickEvent()->subscribe([](brls::View* view) {
         std::filesystem::remove(AMS_ZIP_PATH);
@@ -137,69 +94,14 @@ ToolsTab::ToolsTab(const std::string& tag, const nlohmann::ordered_json& payload
     });
     cleanUp->setHeight(LISTITEM_HEIGHT);
 
-/*    language = new brls::ListItem("menus/tools/language"_i18n);
-    language->getClickEvent()->subscribe([](brls::View* view) {
-        std::vector<std::pair<std::string, std::string>> languages{
-            std::make_pair("menus/language/en-US"_i18n, "en-US"),
-            std::make_pair("menus/language/ja"_i18n, "ja"),
-            std::make_pair("menus/language/fr"_i18n, "fr"),
-            std::make_pair("menus/language/de"_i18n, "de"),
-            std::make_pair("menus/language/it"_i18n, "it"),
-            std::make_pair("menus/language/es"_i18n, "es"),
-            std::make_pair("menus/language/pl"_i18n, "pl"),
-            std::make_pair("menus/language/zh-CN"_i18n, "zh-CN"),
-            std::make_pair("menus/language/zh-TW"_i18n, "zh-TW"),
-            std::make_pair("menus/language/es-419"_i18n, "es-419"),
-            std::make_pair("menus/language/zh-Hant"_i18n, "zh-Hant"),
-            std::make_pair("menus/language/zh-Hans"_i18n, "zh-Hans")};
-        brls::AppletFrame* appView = new brls::AppletFrame(true, true);
-        brls::List* list = new brls::List();
-        brls::ListItem* listItem;
-        listItem = new brls::ListItem(fmt::format("{} ({})", "menus/language/system_default"_i18n, i18n::getCurrentLocale()));
-        listItem->registerAction("menus/tools/language"_i18n, brls::Key::A, [] {
-            std::filesystem::remove(LANGUAGE_JSON);
-            brls::Application::quit();
-            return true;
-        });
-        list->addView(listItem);
-        for (auto& language : languages) {
-            listItem = new brls::ListItem(language.first);
-            listItem->registerAction("menus/tools/language"_i18n, brls::Key::A, [language] {
-                json updatedLanguage = json::object();
-                updatedLanguage["language"] = language.second;
-                std::ofstream out(LANGUAGE_JSON);
-                out << updatedLanguage.dump();
-                brls::Application::quit();
-                return true;
-            });
-            list->addView(listItem);
-        }
-        appView->setContentView(list);
-        brls::PopupFrame::open("menus/tools/language"_i18n, appView, "", "");
-    });
-    language->setHeight(LISTITEM_HEIGHT);
-
-    hideTabs = new brls::ListItem("menus/tools/hide_tabs"_i18n);
-    hideTabs->getClickEvent()->subscribe([](brls::View* view) {
-        brls::PopupFrame::open("menus/tools/hide_tabs"_i18n, new HideTabsPage(), "", "");
-    });
-    hideTabs->setHeight(LISTITEM_HEIGHT);*/
-
     changelog = new brls::ListItem("menus/tools/changelog"_i18n);
     changelog->getClickEvent()->subscribe([](brls::View* view) {
         brls::PopupFrame::open("menus/tools/changelog"_i18n, new ChangelogPage(), "", "");
     });
     changelog->setHeight(LISTITEM_HEIGHT);
 
-    //if (!util::getBoolValue(hideStatus, "cheats")) this->addView(cheats);
-    //if (!util::getBoolValue(hideStatus, "jccolor")) this->addView(JCcolor);
-    //if (!util::getBoolValue(hideStatus, "pccolor")) this->addView(PCcolor);
-    //if (erista && !util::getBoolValue(hideStatus, "rebootpayload")) this->addView(rebootPayload);
     if (!util::getBoolValue(hideStatus, "netsettings")) this->addView(netSettings);
     if (!util::getBoolValue(hideStatus, "browser")) this->addView(browser);
-    //if (!util::getBoolValue(hideStatus, "move")) this->addView(move);
     if (!util::getBoolValue(hideStatus, "cleanup")) this->addView(cleanUp);
-    //if (!util::getBoolValue(hideStatus, "language")) this->addView(language);
-    //this->addView(hideTabs);
     this->addView(changelog);
 }
