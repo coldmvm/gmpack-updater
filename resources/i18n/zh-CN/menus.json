@@ -123,7 +123,7 @@
     "bootloaders_text": "\u25c6 Download and update bootloaders.",
     "cheats": "trapaças",
     "links_not_found": "Não foi possível encontrar um link de download, certifique-se de que seu Switch tenha acesso à Internet.\nSe o problema persistir, abra um 'issue' no GitHub.",
-    "new_update": " - Nova atualização disponível",
+    "new_update": " (Nova atualização disponível)",
     "about": "Informações",
 	"update_ams": "Baixar GMPACK",
     "update_cfw": "Atualizar CFW",
