@@ -4,10 +4,10 @@
 <img src="./Images/bootlogo.png" alight-itens="center">
 </div>
 
-[![GitHub contributors](https://img.shields.io/github/contributors/vncsmnl/GNX)](https://github.com/vncsmnl/GNX/graphs/contributors)
-[![GitHub All Releases](https://img.shields.io/github/downloads/vncsmnl/GNX/total)](https://github.com/vncsmnl/GNX/releases)
-[![Latest release](https://img.shields.io/github/v/release/vncsmnl/GNX)](https://github.com/vncsmnl/GNX/releases)
-[![GitHub issues](https://img.shields.io/github/issues/vncsmnl/GNX)](https://github.com/vncsmnl/GNX/issues)
+[![GitHub contributors](https://img.shields.io/github/contributors/coldmvm/gmpack-updater)](https://github.com/coldmvm/gmpack-updater/graphs/contributors)
+[![GitHub All Releases](https://img.shields.io/github/downloads/coldmvm/gmpack-updater/total)](https://github.com/coldmvm/gmpack-updater/releases)
+[![Latest release](https://img.shields.io/github/v/release/coldmvm/gmpack-updater)](https://github.com/coldmvm/gmpack-updater/releases)
+[![GitHub issues](https://img.shields.io/github/issues/coldmvm/gmpack-updater)](https://github.com/coldmvm/gmpack-updater/issues)
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 Um homebrew de Nintendo Switch, baseado no [AIO-Switch-Updater] (https://github.com/HamletDuFromage/aio-switch-updater/), para fazer o download e atualizar firmwares e o custom firmware GMPACK.
