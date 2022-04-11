@@ -184,6 +184,7 @@ namespace util {
                 break;
             }
             case contentType::ams_cfw: {
+				int freshInstall = showDialogBoxBlocking("menus/utils/fresh_install"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
                 //int overwriteInis = showDialogBoxBlocking("menus/utils/overwrite_inis"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
 				int overwriteInis = 1;
                 usleep(800000);
@@ -191,6 +192,9 @@ namespace util {
 				int deleteContents = 1;
                 if (deleteContents == 1)
                     removeSysmodulesFlags(AMS_CONTENTS);
+				//if (freshInstall == 1)
+                //    deleteEverythingButeMMCNintendo(ROOT_PATH);
+
                 extract::extract(AMS_FILENAME, ROOT_PATH, overwriteInis);
                 break;
             }
@@ -307,6 +311,18 @@ namespace util {
         for (const auto& e : std::filesystem::recursive_directory_iterator(directory)) {
             if (e.path().string().find("boot2.flag") != std::string::npos) {
                 std::filesystem::remove(e.path());
+            }
+        }
+    }
+	
+	void deleteEverythingButeMMCNintendo(const std::string& directory)
+    {
+        for (const auto& e : std::filesystem::directory_iterator(directory)) {
+            if ((e.path().string().find("emuMMC") == std::string::npos) ||
+               (e.path().string().find("Nintendo") == std::string::npos))
+            {
+                //std::filesystem::remove_all(ROOT_PATH + e.path().string());
+			    showDialogBoxBlocking(ROOT_PATH + e.path().string(), "menus/common/no"_i18n, "menus/common/yes"_i18n);
             }
         }
     }

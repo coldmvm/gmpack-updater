@@ -167,7 +167,8 @@
     "overwrite": " Você quer sobrescrever o arquivo existente? ",
     "not_an_archive": "The downloaded file is not a zip archive. This is most likely due to a broken link. If the problem persists after more than 30 minutes, please open an issue on Github.",
     "overwrite_inis": "Você deseja sobrescrever os arquivos de configuração .ini existentes?",
-    "set_hekate_reboot_payload": "Você gostaria de copiar o payload Hekate '{}' para '{}'?"
+    "set_hekate_reboot_payload": "Você gostaria de copiar o payload Hekate '{}' para '{}'?",
+	"fresh_install": "Você deseja realizar uma instalação limpa?\n\nUma instalação limpa removerá todo o conteúdo do microSD menos as pastas 'emuMMC' e 'Nintendo'."
   },
   "ams_update": {
     "reboot_rcm": "O Switch agora irá reiniciar em um payload especial para concluir a instalação.",
