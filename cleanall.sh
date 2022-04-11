@@ -21,6 +21,8 @@ cd gmpack-rcm
 rm -rf build
 rm -rf output
 
+echo "finishing..."
+rm gmpack-updater.zip
 
 echo ""
 echo "****************************************************************"
