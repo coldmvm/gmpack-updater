@@ -4,6 +4,7 @@
 #include <json.hpp>
 
 #include "about_tab.hpp"
+#include "ams_tab.hpp"
 #include "download.hpp"
 #include "fs.hpp"
 #include "list_download_tab.hpp"
@@ -38,6 +39,9 @@ MainFrame::MainFrame() : TabFrame()
 
     if (!util::getBoolValue(hideStatus, "about"))
         this->addTab("menus/main/about"_i18n, new AboutTab());
+
+    if (!util::getBoolValue(hideStatus, "atmosphere"))
+        this->addTab("menus/main/update_ams"_i18n, new AmsTab(nxlinks, erista, util::getBoolValue(hideStatus, "atmosphereentries")));
 
     if (!util::getBoolValue(hideStatus, "firmwares"))
         this->addTab("menus/main/download_firmware"_i18n, new ListDownloadTab(contentType::fw, nxlinks));
