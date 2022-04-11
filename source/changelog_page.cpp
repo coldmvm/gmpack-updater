@@ -16,7 +16,7 @@ ChangelogPage::ChangelogPage() : AppletFrame(true, true)
     changes.push_back("\uE016 Versão inicial.");
 
     verTitles.push_back("v1.0.2");
-    changes.push_back("\uE016 Página 'Ferramentas' incluída.\n\uE016 Várias opções adicionadas na página 'Ferramentas.'");
+    changes.push_back("\uE016 Página 'Ferramentas' incluída.\n\uE016 Várias opções incluídas na página 'Ferramentas'.\n\uE016 Opção de atualizador online o homebrew incluída.\n\uE016 Código limpo.");
 
     for (int i = verTitles.size() - 1; i >= 0; i--) {
         listItem = new brls::ListItem(verTitles[i]);
