@@ -4,7 +4,7 @@ git pull origin main
 cd gmpack-forwarder
 make
 cd ..
-cd cd gmpack-rcm
+cd gmpack-rcm
 make
 cd ..
 make
