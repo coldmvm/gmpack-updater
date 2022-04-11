@@ -7,7 +7,7 @@
 #define FULL_PATH   "/switch/gmpack-updater/gmpack-updater.nro"
 #define CONFIG_PATH "/config/gmpack-updater/switch/gmpack-updater/gmpack-updater.nro"
 #define PREFIX      "/switch/gmpack-updater/gmpack-updater-v"
-#define FORWARDER_PATH      "/config/gmpack-updater/aiosu-forwarder.nro"
+#define FORWARDER_PATH      "/config/gmpack-updater/gmpack-forwarder.nro"
 #define CONFIG_SWITCH       "/config/gmpack-updater/switch/"
 #define HIDDEN_FILE "/config/gmpack-updater/.gmpack-updater"
 

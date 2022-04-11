@@ -32,7 +32,7 @@
     "kb_error": "If they keyboard did not show up, try running the app with full RAM access (title redirection)",
     "cheatslips_see_more": "See more",
     "cheatslips_dl_cheats": "Download cheats and go back",
-    "bid_not_found": "Couldn't obtain build ID. Try launching AIO-Switch-Updater in applet mode while the game is running.",
+    "bid_not_found": "Couldn't obtain build ID. Try launching Atualizador Pacote GameMod in applet mode while the game is running.",
     "exclude_titles": "Excluir títulos",
     "exclude_titles_desc": "Você pode desativar as atualizações de trapaças neste menu.",
     "exclude_titles_save": "Salvar escolha e retornar.",
@@ -40,7 +40,7 @@
     "gbatemp_dl": "Download cheat codes curated from GBAtemp.net. Those cheats will be added to the end of your existing cheat file.\n\u25c6 Build ID: {}",
     "gbatemp_dl_cheatcode": "Download cheat code",
     "gbatemp_dl_successful_dl": "Successfully downloaded the following cheat code:\n{}",
-    "applet_mode_not_supported": "Due to memory constraints, in applet mode you may only fetch cheat codes for the game you're currently playing. Please launch AIO-Switch-Updater through title redirection to download cheat codes for any game you own.",
+    "applet_mode_not_supported": "Due to memory constraints, in applet mode you may only fetch cheat codes for the game you're currently playing. Please launch Atualizador Pacote GameMod through title redirection to download cheat codes for any game you own.",
     "cheatfile_label": "Here are the cheat codes listed in file {}",
     "not_found": "No proper cheat codes could be found for this game",
     "show_existing": "Show existing",
@@ -70,7 +70,7 @@
     "cancel": "Cancelar",
     "off": "Off",
     "selected": "Selected",
-    "applet_mode_not_supported": "This feature isn't available in applet mode. Please launch AIO-Switch-Updater through title redirection to access it."
+    "applet_mode_not_supported": "This feature isn't available in applet mode. Please launch Atualizador Pacote GameMod through title redirection to access it."
   },
   "changelog": {
     "changelog": "Alterações"
@@ -98,7 +98,7 @@
   "pro_con": {
     "title": "Pro controller color swapper",
     "desc": "You can change the internal color of your Pro controller. Make sure it's set to player 1.",
-    "warning": "AIO-Switch-Updater does not currently support changing Pro controller grip color. Use Joy-Con Toolkit on PC instead.",
+    "warning": "Atualizador Pacote GameMod does not currently support changing Pro controller grip color. Use Joy-Con Toolkit on PC instead.",
     "label": "Pro controller color swapper",
     "backing_up": "Backing up the color profile.",
     "all_done": "All done! You may need to turn your controller on and off for the change to take effect.",
@@ -151,7 +151,7 @@
     "inject_payloads": "Injetar payload",
     "getting_payload": "Getting payload",
     "update_app": "Atualizar o aplicativo (v{})",
-    "dl_app": "Baixar:\nAtualizador Pacote GameMod",
+    "dl_app": "Baixar:\nAtualizador Pacote GameMod (v{})",
     "changelog": "Alterações",
     "clean_up": "Limpar arquivos baixados",
     "hide_tabs": "Hide tabs",
@@ -188,7 +188,7 @@
     "cant_fetch_deepsea": "Couldn't fetch packages. Open a Github issue if this persists.",
     "build_your_deepsea": "Build your own custom DeepSea package by selecting packages",
     "getting_ams": "Baixando GMPACK",
-    "custom_packs_label": "\u25c6 Here are packs listed in the {} file. Be aware that those are not endorsed by AIO-Switch-Updater so make sure you trust their source."
+    "custom_packs_label": "\u25c6 Here are packs listed in the {} file. Be aware that those are not endorsed by Atualizador Pacote GameMod so make sure you trust their source."
   },
   "firmware": {
     "launch_daybreak": "Do you want to launch Daybreak to install the downloaded sysupdate?"

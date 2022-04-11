@@ -97,8 +97,8 @@ constexpr const char LANGUAGE_JSON[] = "/config/gmpack-updater/language.json";
 constexpr const char HOMEBREW[] = "/config/gmpack-updater/language.json";
 
 constexpr const char ROMFS_PATH[] = "romfs:/";
-constexpr const char ROMFS_FORWARDER[] = "romfs:/aiosu-forwarder.nro";
-constexpr const char FORWARDER_PATH[] = "/config/gmpack-updater/aiosu-forwarder.nro";
+constexpr const char ROMFS_FORWARDER[] = "romfs:/gmpack-forwarder.nro";
+constexpr const char FORWARDER_PATH[] = "/config/gmpack-updater/gmpack-forwarder.nro";
 
 constexpr const char DAYBREAK_PATH[] = "/switch/daybreak.nro";
 
