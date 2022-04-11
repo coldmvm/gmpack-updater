@@ -16,7 +16,9 @@ GMPACK é um pacote de custom firmware que inclui o Atmosphère, sigpatches, hek
 
 Este homebrew suporta Atmosphère, ReiNX e SXOS, e funciona em consoles não corrigidos (`Erista`) and corrigidos (`V2/Mariko`).
 
+<div align="center">
 ## **[FAÇA O DOWNLOAD POR AQUI!](https://github.com/coldmvm/gmpack-updater/releases)**
+</div>
 
 ## Como instalar
 Copie o diretório `gmpack-updater/` para a pasta `/switch/` no seu microSD.
