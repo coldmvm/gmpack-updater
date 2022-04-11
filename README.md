@@ -10,7 +10,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/coldmvm/gmpack-updater)](https://github.com/coldmvm/gmpack-updater/issues)
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
-Um homebrew de Nintendo Switch, baseado no [AIO-Switch-Updater](https://github.com/HamletDuFromage/aio-switch-updater/), para fazer o download e atualizar firmwares e o custom firmware [GMPACK](https://github.com/coldmvm/gmpack/releases).
+Um homebrew de Nintendo Switch, baseado no homebrew [AIO-Switch-Updater](https://github.com/HamletDuFromage/aio-switch-updater/), para fazer o download e atualizar firmwares e o custom firmware [GMPACK](https://github.com/coldmvm/gmpack/releases).
 
 GMPACK é um pacote de custom firmware que inclui o Atmosphère, sigpatches, hekate, nyx e vários outros homebrews.
 
