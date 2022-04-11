@@ -83,7 +83,7 @@ ToolsTab::ToolsTab(const std::string& tag, const nlohmann::ordered_json& payload
         if (brls::Swkbd::openForText([&url](std::string text) { url = text; }, "cheatslips.com e-mail", "", 64, "https://duckduckgo.com", 0, "Submit", "https://website.tld")) {
             std::string error = "";
             int at = appletGetAppletType();
-            if (at == AppletType_Application) {// Running as a title
+            if (at == AppletType_Application) {  // Running as a title
                 WebCommonConfig conf;
                 WebCommonReply out;
                 Result rc = webPageCreate(&conf, url.c_str());
