@@ -22,12 +22,12 @@
     "continue": "Continuar",
     "no": "Não",
     "yes": "Sim",
-    "go_back": "Go back",
+    "go_back": "Voltar",
     "confirm": "Confirm",
     "cancel": "Cancelar",
     "updating": "Atualizando app",
     "ok": "Aceitar",
-    "applet_mode_not_supported": "This feature isn't available in applet mode. Please launch Atualizador Pacote GameMod through title redirection to access it."
+    "applet_mode_not_supported": "Esta função não está disponível no modo applet. Por favor, inicia o Atualizador Pacote GameMod através do redirecionados de títulos para acessa-la."
   },
   "changelog": {
     "changelog": "Alterações"
@@ -46,10 +46,10 @@
     "tools": "Ferramentas",
     "launch_warning": "Por favor, preste atenção aos seguintes pontos antes de usar este homebrew:\n\n\u25c6 Leia e entenda sobre como manualmente atualizar seu Switch antes. Isto lhe ajudará a entender melhor este homebrew e você saberá o que fazer caso algo saia errado.\n\u25c6 Para evitar o risco de corrompimento de dados, o uso deste homebrew em um microSD formatado em exFAT é FORTEMENTE desaconselhado.\n\n\u25c6 As últimas informações sobre novas funções inseridas e/ou modificadas está disponível no menu Ferramentas->Changelog.\n\nEsta tela não aparecerá novamente.",
 	"footer_text" : "GameMod design - v{} - {}Gb disponíveis",
-    "theme_warning": "It seems like you have a custom theme installed, this may cause your system to fail to boot after upgrading your firmware.\nPlease consider deleting it before upgrading."
+    "theme_warning": "Parace que você tem um tema customizado instalado e isto pode fazer com que seu sistema falhe ao iniciar após a atualização.\nPor favor, considete deletar o tema antes de atualizar."
   },
   "tools": {
-    "batch_copy_not_found": "The following files were not found and couldn't be copied:\n",
+    "batch_copy_not_found": "Os segintes arquivos não foram encontrados e não puderam ser copiados:\n",
     "update_app": "Atualizar o aplicativo (v{})",
     "dl_app": "Baixar:\nAtualizador Pacote GameMod (v{})",
     "internet_settings": "Editar configurações de internet",
@@ -59,7 +59,7 @@
   },
   "utils": {
     "set_hekate_reboot_payload": "Você gostaria de copiar o payload Hekate '{}' para '{}'?",
-    "not_an_archive": "The downloaded file is not a zip archive. This is most likely due to a broken link. If the problem persists after more than 30 minutes, please open an issue on Github.",
+    "not_an_archive": "O arquivo baixado não é um arquivo zip. Isto provavelmente aconteceu devido a um link quebrado. Se o problema persistir depois de 30 minutos, por favor, abra um 'issue' no Github.",
     "overwrite_inis": "Você deseja sobrescrever os arquivos de configuração .ini existentes?",
 	"fresh_install": "Você deseja realizar uma instalação limpa?\n\nUma instalação limpa removerá todo o conteúdo do microSD menos as pastas 'emuMMC' e 'Nintendo'."
   },
@@ -81,14 +81,14 @@
     "install_hekate": "Do you want to also download hekate?\nIf not, the Switch will now reboot to a special payload in order to finalise the install."
   },
   "firmware": {
-    "launch_daybreak": "Do you want to launch Daybreak to install the downloaded sysupdate?"
+    "launch_daybreak": "Você gostaria de iniciar o Daybreak para instalar o firmware baixado?"
   },
   "net": {
-    "title": "Internet settings"
+    "title": "Configurações da internet"
   },
   "errors": {
-    "insufficient_storage": "There isn't enough space available on your SD card to perform this operation.",
-    "error_message": "{}\nPlease try again in a little while. If the problem persists, open an issue on GitHub.",
-    "mariko_payload_missing": "In order to update Atmosphère on patched Switches, your payload needs to be named \"payload.bin\" and should be at the root of your SD card."
+    "insufficient_storage": "Não há espaço suficiente no seu microSD para executar esta operação.",
+    "error_message": "{}\nPor favor, tente novamente em alguns minutos. Se o problema persistir, por favor, abra um 'issue' no Github.",
+    "mariko_payload_missing": "Para atualizar o Atmosphère em Switches corrigidos o payload precisa ter o nome de \"payload.bin\" e deve estar na raiz do seu microSD."
   }
 }
