@@ -43,20 +43,11 @@ namespace util {
     {
         fs::createTree(DOWNLOAD_PATH);
         switch (type) {
-            case contentType::sigpatches:
-                status_code = download::downloadFile(url, SIGPATCHES_FILENAME, OFF);
-                break;
-            case contentType::cheats:
-                status_code = download::downloadFile(url, CHEATS_FILENAME, OFF);
-                break;
             case contentType::fw:
                 status_code = download::downloadFile(url, FIRMWARE_FILENAME, OFF);
                 break;
             case contentType::app:
                 status_code = download::downloadFile(url, APP_FILENAME, OFF);
-                break;
-            case contentType::bootloaders:
-                status_code = download::downloadFile(url, CFW_FILENAME, OFF);
                 break;
             case contentType::ams_cfw:
                 status_code = download::downloadFile(url, AMS_FILENAME, OFF);
@@ -126,20 +117,11 @@ namespace util {
     {
         std::string filename;
         switch (type) {
-            case contentType::sigpatches:
-                filename = SIGPATCHES_FILENAME;
-                break;
-            case contentType::cheats:
-                filename = CHEATS_FILENAME;
-                break;
             case contentType::fw:
                 filename = FIRMWARE_FILENAME;
                 break;
             case contentType::app:
                 filename = APP_FILENAME;
-                break;
-            case contentType::bootloaders:
-                filename = CFW_FILENAME;
                 break;
             case contentType::ams_cfw:
                 filename = AMS_FILENAME;
@@ -157,15 +139,6 @@ namespace util {
         chdir(ROOT_PATH);
         crashIfNotArchive(type);
         switch (type) {
-            case contentType::sigpatches:
-                extract::extract(SIGPATCHES_FILENAME);
-                break;
-            case contentType::cheats: {
-                std::vector<std::string> titles = extract::getInstalledTitlesNs();
-                titles = extract::excludeTitles(CHEATS_EXCLUDE, titles);
-                extract::extractCheats(CHEATS_FILENAME, titles, CurrentCfw::running_cfw, version);
-                break;
-            }
             case contentType::fw:
                 if (std::filesystem::exists(FIRMWARE_PATH)) std::filesystem::remove_all(FIRMWARE_PATH);
                 fs::createTree(FIRMWARE_PATH);
@@ -178,13 +151,8 @@ namespace util {
                 romfsExit();
                 brls::Application::quit();
                 break;
-            case contentType::bootloaders: {
-                int overwriteInis = showDialogBoxBlocking("menus/utils/overwrite_inis"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
-                extract::extract(CFW_FILENAME, ROOT_PATH, overwriteInis);
-                break;
-            }
             case contentType::ams_cfw: {
-				int freshInstall = showDialogBoxBlocking("menus/utils/fresh_install"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
+				//int freshInstall = showDialogBoxBlocking("menus/utils/fresh_install"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
                 //int overwriteInis = showDialogBoxBlocking("menus/utils/overwrite_inis"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
 				int overwriteInis = 1;
                 usleep(800000);
@@ -201,8 +169,6 @@ namespace util {
             default:
                 break;
         }
-        if (type == contentType::ams_cfw || type == contentType::bootloaders)
-            fs::copyFiles(COPY_FILES_TXT);
     }
 
     std::string formatListItemTitle(const std::string& str, size_t maxScore)
