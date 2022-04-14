@@ -188,7 +188,7 @@ namespace util {
                 //int overwriteInis = showDialogBoxBlocking("menus/utils/overwrite_inis"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
 				//int deleteContents = showDialogBoxBlocking("menus/ams_update/delete_sysmodules_flags"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
 				
-				freshInstall = 0;
+				int freshInstall = 0;
 				int overwriteInis = 1;
 				int deleteContents = 1;
 
