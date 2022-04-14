@@ -184,4 +184,3 @@ void AppPage_Exclude::PopulatePage()
 
     this->setContentView(list);
 }
-
