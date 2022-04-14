@@ -24,7 +24,7 @@ AmsTab::AmsTab(const nlohmann::json& nxlinks, const bool erista, const bool hide
     if (!hideStandardEntries) {
         this->description = new brls::Label(brls::LabelStyle::DESCRIPTION, "menus/main/ams_text"_i18n + (CurrentCfw::running_cfw == CFW::ams ? "\n" + "menus/ams_update/current_ams"_i18n + CurrentCfw::getAmsInfo() : "") + (erista ? "\n" + "menus/ams_update/erista_rev"_i18n : "\n" + "menus/ams_update/mariko_rev"_i18n), true);
         this->addView(description);
-        /*CreateDownloadItems(util::getValueFromKey(cfws, "Atmosphere"));*/
+        /*CreateDownloadItems(util::getValueFromKey(cfws, "Atmosphere"));  */
 
         description = new brls::Label(brls::LabelStyle::DESCRIPTION, "menus/ams_update/deepsea_label"_i18n, true);
         this->addView(description);
@@ -103,10 +103,6 @@ void AmsTab::CreateStagedFrames(const std::string& text, const std::string& url,
     if (hekate) {
         stagedFrame->addStage(
             new DialoguePage_ams(stagedFrame, text_hekate, erista));
-        stagedFrame->addStage(
-            new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [hekate_url]() { util::downloadArchive(hekate_url, contentType::bootloaders); }));
-        stagedFrame->addStage(
-            new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, []() { util::extractArchive(contentType::bootloaders); }));
     }
     stagedFrame->addStage(
         new ConfirmPage(stagedFrame, "menus/ams_update/reboot_rcm"_i18n, false, true, erista));
