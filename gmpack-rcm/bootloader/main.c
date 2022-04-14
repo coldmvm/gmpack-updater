@@ -444,14 +444,14 @@ void ipl_main()
 	WPRINTF("Running gmpack-updater rcm payload...\n");
 
 	if (sd_mount()) {
-		easy_rename("atmosphere/fusee-secondary.bin.agp", "atmosphere/fusee-secondary.bin");
-		easy_rename("sept/payload.bin.agp", "sept/payload.bin");
-		easy_rename("atmosphere/stratosphere.romfs.agp", "atmosphere/stratosphere.romfs");
-		easy_rename("atmosphere/package3.agp", "atmosphere/package3");
+		easy_rename("atmosphere/fusee-secondary.bin.apg", "atmosphere/fusee-secondary.bin");
+		easy_rename("sept/payload.bin.apg", "sept/payload.bin");
+		easy_rename("atmosphere/stratosphere.romfs.apg", "atmosphere/stratosphere.romfs");
+		easy_rename("atmosphere/package3.apg", "atmosphere/package3");
 
 		// If the console is a patched or Mariko unit
 		if (h_cfg.t210b01 || h_cfg.rcm_patched) {
-			easy_rename("payload.bin.agp", "payload.bin");
+			easy_rename("payload.bin.apg", "payload.bin");
 			power_set_state(POWER_OFF_REBOOT);
 		}
 

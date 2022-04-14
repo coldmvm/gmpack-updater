@@ -102,7 +102,7 @@ constexpr const char FORWARDER_PATH[] = "/config/gmpack-updater/gmpack-forwarder
 
 constexpr const char DAYBREAK_PATH[] = "/switch/daybreak.nro";
 
-constexpr const char HIDDEN_AGP_FILE[] = "/config/gmpack-updater/.gmpack-updater";
+constexpr const char HIDDEN_APG_FILE[] = "/config/gmpack-updater/.gmpack-updater";
 
 constexpr const int LISTITEM_HEIGHT = 50;
 
