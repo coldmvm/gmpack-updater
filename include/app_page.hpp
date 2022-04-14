@@ -48,3 +48,35 @@ private:
 public:
     AppPage_Exclude();
 };
+
+class AppPage_CheatSlips : public AppPage
+{
+private:
+    void CreateLabel() override;
+    void DeclareGameListItem(const std::string& name, uint64_t tid, NsApplicationControlData** controlData) override;
+
+public:
+    AppPage_CheatSlips();
+};
+
+class AppPage_Gbatemp : public AppPage
+{
+private:
+    void CreateLabel() override;
+    void DeclareGameListItem(const std::string& name, uint64_t tid, NsApplicationControlData** controlData) override;
+
+public:
+    AppPage_Gbatemp();
+};
+
+class AppPage_DownloadedCheats : public AppPage
+{
+private:
+    std::set<std::string> titles;
+    void CreateLabel() override;
+    void DeclareGameListItem(const std::string& name, uint64_t tid, NsApplicationControlData** controlData) override;
+    void GetExistingCheatsTids();
+
+public:
+    AppPage_DownloadedCheats();
+};
