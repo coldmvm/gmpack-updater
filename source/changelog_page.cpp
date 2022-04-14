@@ -17,6 +17,9 @@ ChangelogPage::ChangelogPage() : AppletFrame(true, true)
 
     verTitles.push_back("v1.0.2");
     changes.push_back("\uE016 Página 'Ferramentas' incluída.\n\uE016 Várias opções incluídas na página 'Ferramentas'.\n\uE016 Opção de atualizar o homebrew online incluída.\n\uE016 Código limpo.");
+	
+	verTitles.push_back("v1.0.3");
+	changes.push_back("\uE016 Funções legadas do AIO que não serão usados pelo APG foram removidas.\n\uE016 Mais limpeza no código doi feita.\n\n\uE016 Erros de tradução foram corrigidos.");
 
     for (int i = verTitles.size() - 1; i >= 0; i--) {
         listItem = new brls::ListItem(verTitles[i]);

@@ -22,7 +22,7 @@ DATA		:=	data
 INCLUDES	:=	include lib/zipper/include /lib/borealis/library/include/borealis/extern/nlohmann
 APP_TITLE	:=	Atualizador Pacote GameMod
 APP_AUTHOR	:=	GameMod design
-APP_VERSION :=  1.0.2
+APP_VERSION :=  1.0.3
 TARGET		:=	$(notdir $(CURDIR))
 
 ROMFS				:=	resources
