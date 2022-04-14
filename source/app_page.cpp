@@ -64,6 +64,39 @@ void AppPage::PopulatePage()
     this->setContentView(list);
 }
 
+void AppPage::CreateDownloadAllButton()
+{
+    std::string text("menus/cheats/downloading"_i18n);
+    std::string url = "";
+    switch (CurrentCfw::running_cfw) {
+        case CFW::ams:
+            url += CHEATS_URL_CONTENTS;
+            break;
+        case CFW::rnx:
+            url += CHEATS_URL_CONTENTS;
+            break;
+        case CFW::sxos:
+            url += CHEATS_URL_CONTENTS;
+            break;
+    }
+    text += url;
+    download = new brls::ListItem("menus/cheats/dl_latest"_i18n);
+    download->getClickEvent()->subscribe([url, text](brls::View* view) {
+        brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
+        stagedFrame->setTitle("menus/cheats/getting_cheats"_i18n);
+        stagedFrame->addStage(
+            new ConfirmPage(stagedFrame, text));
+        stagedFrame->addStage(
+            new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [url]() { util::downloadArchive(url, contentType::cheats); }));
+        stagedFrame->addStage(
+            new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, []() { util::extractArchive(contentType::cheats); }));
+        stagedFrame->addStage(
+            new ConfirmPage(stagedFrame, "menus/common/all_done"_i18n, true));
+        brls::Application::pushView(stagedFrame);
+    });
+    list->addView(download);
+}
+
 u32 AppPage::InitControlData(NsApplicationControlData** controlData)
 {
     free(*controlData);
