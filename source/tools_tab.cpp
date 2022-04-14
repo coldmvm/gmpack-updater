@@ -26,7 +26,23 @@ namespace {
 
 ToolsTab::ToolsTab(const std::string& tag, const nlohmann::ordered_json& payloads, bool erista, const nlohmann::json& hideStatus) : brls::List()
 {
-    if (!tag.empty() && tag != AppVersion) {
+    //fetching the version as a number
+	std::string temp = "";
+	int iTag = 0;
+	int iAppVersion = 0;
+
+    temp.reserve(tag.size()); // optional, avoids buffer reallocations in the loop
+    for(size_t i = 0; i < tag.size(); ++i)
+        if(tag[i] != '.') temp += tag[i]; // removing the . from the version
+    iTag = std::stoi(temp); // casting from string to integer
+
+    temp.reserve(strlen(AppVersion)); // optional, avoids buffer reallocations in the loop
+    for(size_t i = 0; i < strlen(AppVersion); ++i)
+        if(AppVersion[i] != '.') temp += AppVersion[i]; // removing the . from the version
+    iAppVersion = std::stoi(temp); // casting from string to integer
+
+    if (!tag.empty() && itag > iAppVersion) {
+    //if (!tag.empty() && tag != AppVersion) {
         updateApp = new brls::ListItem(fmt::format("menus/tools/update_app"_i18n, tag));
         //std::string text("menus/tools/dl_app"_i18n + std::string(APP_URL));
 		std::string text(fmt::format("menus/tools/dl_app"_i18n, tag));
