@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
     brls::Logger::setLogLevel(brls::LogLevel::DEBUG);
     brls::Logger::debug("Start");
 
-    if (std::filesystem::exists(HIDDEN_AGP_FILE)) {
+    if (std::filesystem::exists(HIDDEN_APG_FILE)) {
         brls::Application::pushView(new MainFrame());
     }
     else {
