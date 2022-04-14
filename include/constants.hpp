@@ -7,7 +7,7 @@ constexpr const char DOWNLOAD_PATH[] = "/config/gmpack-updater/";
 constexpr const char CONFIG_PATH[] = "/config/gmpack-updater/";
 constexpr const char CONFIG_PATH_UNZIP[] = "config\\gmpack-updater";
 
-constexpr const char RCM_PAYLOAD_PATH[] = "romfs:/aio_rcm.bin";
+constexpr const char RCM_PAYLOAD_PATH[] = "romfs:/gmpack_rcm.bin";
 constexpr const char MARIKO_PAYLOAD_PATH[] = "/payload.bin";
 constexpr const char MARIKO_PAYLOAD_PATH_TEMP[] = "/payload.bin.aio";
 
