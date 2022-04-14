@@ -26,7 +26,6 @@ protected:
     brls::List* list;
     brls::Label* label;
     brls::ListItem* listItem;
-    void CreateDownloadAllButton();
     uint64_t GetCurrentApplicationId();
     u32 InitControlData(NsApplicationControlData** controlData);
     uint32_t GetControlData(u64 tid, NsApplicationControlData* controlData, u64& controlSize, std::string& name);
