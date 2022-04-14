@@ -41,7 +41,7 @@ ToolsTab::ToolsTab(const std::string& tag, const nlohmann::ordered_json& payload
         if(AppVersion[i] != '.') temp += AppVersion[i]; // removing the . from the version
     iAppVersion = std::stoi(temp); // casting from string to integer
 
-    if (!tag.empty() && itag > iAppVersion) {
+    if (!tag.empty() && iTag > iAppVersion) {
     //if (!tag.empty() && tag != AppVersion) {
         updateApp = new brls::ListItem(fmt::format("menus/tools/update_app"_i18n, tag));
         //std::string text("menus/tools/dl_app"_i18n + std::string(APP_URL));
