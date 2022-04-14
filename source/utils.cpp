@@ -184,16 +184,19 @@ namespace util {
                 break;
             }
             case contentType::ams_cfw: {
-				int freshInstall = showDialogBoxBlocking("menus/utils/fresh_install"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
+				//int freshInstall = showDialogBoxBlocking("menus/utils/fresh_install"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
                 //int overwriteInis = showDialogBoxBlocking("menus/utils/overwrite_inis"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
+				//int deleteContents = showDialogBoxBlocking("menus/ams_update/delete_sysmodules_flags"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
+				
+				freshInstall = 0;
 				int overwriteInis = 1;
-                usleep(800000);
-                //int deleteContents = showDialogBoxBlocking("menus/ams_update/delete_sysmodules_flags"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
 				int deleteContents = 1;
+
+                usleep(800000);
                 if (deleteContents == 1)
                     removeSysmodulesFlags(AMS_CONTENTS);
-				//if (freshInstall == 1)
-                //    deleteEverythingButeMMCNintendo(ROOT_PATH);
+				if (freshInstall == 1)
+                    deleteEverythingButeMMCNintendo(ROOT_PATH);
 
                 extract::extract(AMS_FILENAME, ROOT_PATH, overwriteInis);
                 break;
