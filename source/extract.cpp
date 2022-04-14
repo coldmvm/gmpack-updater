@@ -73,7 +73,7 @@ namespace extract {
                 }
             }
             else if (entry.name == "atmosphere/stratosphere.romfs" || entry.name == "atmosphere/package3") {
-                std::ofstream readonlyFile(entry.name + ".aio");
+                std::ofstream readonlyFile(entry.name + ".apg");
                 unzipper.extractEntryToStream(entry.name, readonlyFile);
             }
             else {
