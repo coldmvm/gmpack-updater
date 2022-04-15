@@ -22,13 +22,21 @@ AmsTab::AmsTab(const nlohmann::json& nxlinks, const bool erista, const bool hide
     auto cfws = util::getValueFromKey(nxlinks, "cfws");
 
     if (!hideStandardEntries) {
-        this->description = new brls::Label(brls::LabelStyle::DESCRIPTION, "menus/main/ams_text"_i18n + (CurrentCfw::running_cfw == CFW::ams ? "\n" + "menus/ams_update/current_ams"_i18n + CurrentCfw::getAmsInfo() : "") + (erista ? "\n" + "menus/ams_update/erista_rev"_i18n : "\n" + "menus/ams_update/mariko_rev"_i18n), true);
-        this->addView(description);
+        std::string packVersion = util::getGMPackVersion();
 
-        description = new brls::Label(brls::LabelStyle::DESCRIPTION, "menus/ams_update/pack_label"_i18n, true);
+        this->description = new brls::Label(brls::LabelStyle::DESCRIPTION,
+            "menus/ams_update/pack_label"_i18n + "\n" +
+            (CurrentCfw::running_cfw == CFW::ams ? "menus/ams_update/current_ams"_i18n + CurrentCfw::getAmsInfo() : "") +
+			(util::getGMPackVersion()) +
+			(erista ? "\n" + "menus/ams_update/erista_rev"_i18n : "\n" + "menus/ams_update/mariko_rev"_i18n), true);
         this->addView(description);
 
         CreateDownloadItems(util::getValueFromKey(cfws, "GMPack"), false);
+
+        description = new brls::Label(brls::LabelStyle::DESCRIPTION, "menus/ams_update/goma_label"_i18n, true);
+        this->addView(description);
+
+		CreateDownloadItems(util::getValueFromKey(cfws, "GNX"), false);
     }
 }
 

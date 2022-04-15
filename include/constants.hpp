@@ -56,6 +56,8 @@ constexpr const char HIDDEN_APG_FILE[] = "/config/gmpack-updater/.gmpack-updater
 
 constexpr const char LOG_FILE[] = "/config/gmpack-updater/log.txt";
 
+constexpr const char PACK_FILE[] = "/bootloader/hekate_ipl.ini";
+
 constexpr const int LISTITEM_HEIGHT = 50;
 
 enum class contentType

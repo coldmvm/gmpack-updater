@@ -282,7 +282,26 @@ namespace util {
         logFile.close();
     }
 
+    std::string getGMPackVersion()
+    {
+        std::ifstream file(PACK_FILE);
+        std::string line;
 
+        if (file.is_open())
+        {
+            while (std::getline(file, line)) {
+                if(line.find("{GMPACK", 0) != std::string::npos)
+                {
+					line = " - " + line.substr(1, line.size() - 2);
+					break;
+                }
+                else
+                    line = "";
+            }
+            file.close();
+        }
+        return line;
+    }
 
     std::string lowerCase(const std::string& str)
     {

@@ -1,6 +1,7 @@
 {
+	
   "about": {
-    "title": "Atualizador Pacote GameMod (APG)",
+	"title": "Atualizador Pacote GameMod (APG)",
     "copyright": "O Atualizador Pacote GameMod usa a licença GPL-3.0",
     "disclaimers": "\u25c6 A GameMod design não detém nenhum direito de cópia sobre nenhum arquivo baixado por este homebrew e todo o crédito pertence aos seus respectivos proprietários.\n\u25c6 Os links serão atualizados sempre que um novo pacote estiver disponível ou for necessário. Se um link estiver quebrado, informe no grupo de Facebook 'GameMod design'.\n\nObrigado!",
 	"donate": ""
@@ -35,20 +36,19 @@
   "main": {
     "getting": "Baixando {}",
     "firmware_text": "\u25c6 Firmwares disponíveis em 'https://darthsternie.net/switch-firmwares/'.\nDepois de baixada ela será extraído para a pasta '/firmware' e você pode, então, instalá-la usando o homebrew 'Daybreak'.\n\u25c6 Firmware atual: ",
-	"translations_text": "\u25c6 As traduções no Nintendo Switch são feitas por membros da cena e tem a finalidade de distribuir acessibilidade linguística aos jogos, visto que muitas produtoras, infelizmente, não se preocupam em traduzir oficialmente seus jogos.\n\nAbaixo estão listadas algumas das traduções atualmente disponíveis para o Nintendo Switch.",
+    "translations_text": "\u25c6 As traduções no Nintendo Switch são feitas por membros da cena e tem a finalidade de distribuir acessibilidade linguística aos jogos, visto que muitas produtoras, infelizmente, não se preocupam em traduzir oficialmente seus jogos.\n\nAbaixo estão listadas algumas das traduções atualmente disponíveis para o Nintendo Switch.",
     "firmware": "firmware",
     "not_found": "não encontrado",
-	"ams_text": "Nesta tela você pode baixar e atualizar seu Pacote Atmosphère (GMPACK).",
     "links_not_found": "Não foi possível encontrar um link de download, certifique-se de que seu Switch tenha acesso à Internet.\nSe o problema persistir, abra um 'issue' no GitHub.",
     "new_update": " (Nova atualização disponível)",
     "about": "Informações",
-	"update_ams": "Baixar GMPACK",
+    "update_ams": "Baixar GMPACK",
     "download_firmware": "Baixar firmwares",
-	"download_translations": "Baixar traduções",
+    "download_translations": "Baixar traduções",
     "tools": "Ferramentas",
     "launch_warning": "Por favor, preste atenção aos seguintes pontos antes de usar este homebrew:\n\n\u25c6 Leia e entenda sobre como manualmente atualizar seu Switch antes. Isto lhe ajudará a entender melhor este homebrew e você saberá o que fazer caso algo saia errado.\n\u25c6 Para evitar o risco de corrompimento de dados, o uso deste homebrew em um microSD formatado em exFAT é FORTEMENTE desaconselhado.\n\n\u25c6 As últimas informações sobre novas funções inseridas e/ou modificadas está disponível no menu Ferramentas->Changelog.\n\nEsta tela não aparecerá novamente.",
-	"footer_text" : "GameMod design - {} - {}Gb disponíveis",
-	"footer_text_not_connected" : "Offline",
+    "footer_text" : "GameMod design - {} - {}Gb disponíveis",
+    "footer_text_not_connected" : " - Offline",
     "theme_warning": "Parace que você tem um tema customizado instalado e isto pode fazer com que seu sistema falhe ao iniciar após a atualização.\nPor favor, considete deletar o tema antes de atualizar."
   },
   "tools": {
@@ -64,13 +64,14 @@
     "set_hekate_reboot_payload": "Você gostaria de copiar o payload Hekate '{}' para '{}'?",
     "not_an_archive": "O arquivo baixado não é um arquivo zip. Isto provavelmente aconteceu devido a um link quebrado. Se o problema persistir depois de 30 minutos, por favor, abra um 'issue' no Github.",
     "overwrite_inis": "Você deseja sobrescrever os arquivos de configuração .ini existentes?",
-	"fresh_install": "Você deseja realizar uma instalação limpa?\n\nUma instalação limpa removerá todo o conteúdo do microSD menos as pastas 'emuMMC' e 'Nintendo'."
+    "fresh_install": "Você deseja realizar uma instalação limpa?\n\nUma instalação limpa removerá todo o conteúdo do microSD menos as pastas 'emuMMC' e 'Nintendo'."
   },
   "ams_update": {
-	"current_ams": "Atmosphère atual: ",
-	"erista_rev": "Revisão: Erista",
-	"mariko_rev": "Revisão: Mariko",
-	"pack_label": "GMPACK é um pacote de custom firmware que inclui o Atmosphère, sigpatches, hekate, nyx e vários outros homebrews.",
+    "current_ams": "Atmosphère atual: ",
+    "erista_rev": "Revisão: Erista",
+    "mariko_rev": "Revisão: Mariko",
+    "pack_label": "GMPACK é um pacote all-in-one (tudo em um) baseado no custom firmware Atmosphère e inclui tudo de mais atual para seu Switch. Este é o pacote oficial da GameMod design.",
+    "goma_label": "GNX, também conhecido como GomaNX, é um pacote all-in-one (tudo em um) baseado no custom firmware Atmosphère feito pelo Bruno Goma.",
     "getting_ams": "Baixando GMPACK",
     "reboot_rcm": "O Switch agora irá reiniciar em um payload especial para concluir a instalação."
   },
