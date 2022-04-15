@@ -20,6 +20,9 @@ ChangelogPage::ChangelogPage() : AppletFrame(true, true)
 	
 	verTitles.push_back("v1.0.3");
 	changes.push_back("\uE016 Funções legadas do AIO que não serão usados pelo APG foram removidas.\n\uE016 Mais limpeza no código doi feita.\n\n\uE016 Erros de tradução foram corrigidos.");
+	
+	verTitles.push_back("v1.1.0");
+	changes.push_back("\uE016 Foi incluída a funções de baixar traduções.\n\uE016 Limpeza de código.\n\n\uE016 Erros de tradução foram corrigidos.");
 
     for (int i = verTitles.size() - 1; i >= 0; i--) {
         listItem = new brls::ListItem(verTitles[i]);
