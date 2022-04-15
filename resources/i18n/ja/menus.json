@@ -35,8 +35,8 @@
   },
   "main": {
     "getting": "Baixando {}",
-    "firmware_text": "\u25c6 Firmwares disponíveis em 'https://darthsternie.net/switch-firmwares/'.\nDepois de baixada ela será extraído para a pasta '/firmware' e você pode, então, instalá-la usando o homebrew 'Daybreak'.\n\u25c6 Firmware atual: ",
-    "translations_text": "\u25c6 As traduções no Nintendo Switch são feitas por membros da cena e tem a finalidade de distribuir acessibilidade linguística aos jogos, visto que muitas produtoras, infelizmente, não se preocupam em traduzir oficialmente seus jogos.\n\nAbaixo estão listadas algumas das traduções atualmente disponíveis para o Nintendo Switch.",
+    "firmware_text": "Firmwares disponíveis em 'https://darthsternie.net/switch-firmwares/'.\nDepois de baixada ela será extraído para a pasta '/firmware' e você pode, então, instalá-la usando o homebrew 'Daybreak'.\nFirmware atual: ",
+    "translations_text": "As traduções são feitas por membros da cena e tem a finalidade de distribuir acessibilidade linguística aos jogos.\n\n\u2605 Algumas traduções precisam de passos específicos para que funcionem. Para maiores detalhes consulte os sites dos criadores das legendas:\nhttps://www.jumpmanclubbrasil.com.br/\nhttps://traducoespkg.tumblr.com/\nhttps://nintendonxbr.blogspot.com/\n\nAbaixo estão listadas algumas traduções disponíveis para download.",
     "firmware": "firmware",
     "not_found": "não encontrado",
     "links_not_found": "Não foi possível encontrar o link de download! Seu Switch está conectado à Internet?\nSe o problema persistir, abra um 'issue' no GitHub.",

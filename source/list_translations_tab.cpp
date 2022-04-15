@@ -113,7 +113,7 @@ void ListTranslationsTab::setDescription(contentType type)
     switch (type) {
         case contentType::translations: {
             SetSysFirmwareVersion ver;
-            description->setText(fmt::format("{}{}", "menus/main/translations_text"_i18n, R_SUCCEEDED(setsysGetFirmwareVersion(&ver)) ? ver.display_version : "menus/main/not_found"_i18n));
+            description->setText("menus/main/translations_text"_i18n);
             break;
         }
         default:
