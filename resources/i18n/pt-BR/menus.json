@@ -48,7 +48,7 @@
     "tools": "Ferramentas",
     "launch_warning": "Por favor, preste atenção aos seguintes pontos antes de usar este homebrew:\n\n\u25c6 Leia e entenda sobre como manualmente atualizar seu Switch antes. Isto lhe ajudará a entender melhor este homebrew e você saberá o que fazer caso algo saia errado.\n\u25c6 Para evitar o risco de corrompimento de dados, o uso deste homebrew em um microSD formatado em exFAT é FORTEMENTE desaconselhado.\n\n\u25c6 As últimas informações sobre novas funções inseridas e/ou modificadas está disponível no menu Ferramentas->Changelog.\n\nEsta tela não aparecerá novamente.",
 	"footer_text" : "GameMod design - {} - {}Gb disponíveis",
-	"footer_text_not_connected" : "Offline",
+	"footer_text_not_connected" : " - Offline",
     "theme_warning": "Parace que você tem um tema customizado instalado e isto pode fazer com que seu sistema falhe ao iniciar após a atualização.\nPor favor, considete deletar o tema antes de atualizar."
   },
   "tools": {
