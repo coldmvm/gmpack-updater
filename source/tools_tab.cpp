@@ -3,16 +3,11 @@
 #include <filesystem>
 #include <fstream>
 
-//#include "JC_page.hpp"
-//#include "PC_page.hpp"
 #include "changelog_page.hpp"
-//#include "cheats_page.hpp"
 #include "confirm_page.hpp"
 #include "extract.hpp"
 #include "fs.hpp"
-#include "hide_tabs_page.hpp"
 #include "net_page.hpp"
-//#include "payload_page.hpp"
 #include "utils.hpp"
 #include "worker_page.hpp"
 
@@ -24,7 +19,7 @@ namespace {
     constexpr const char AppVersion[] = APP_VERSION;
 }
 
-ToolsTab::ToolsTab(const std::string& tag, const nlohmann::ordered_json& payloads, bool erista, const nlohmann::json& hideStatus) : brls::List()
+ToolsTab::ToolsTab(const std::string& tag, bool erista, const nlohmann::json& hideStatus) : brls::List()
 {
     //fetching the version as a number
 	std::string temp = "";

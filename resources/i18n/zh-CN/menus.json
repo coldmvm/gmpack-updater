@@ -67,18 +67,9 @@
 	"current_ams": "Atmosphère atual: ",
 	"erista_rev": "Revisão: Erista",
 	"mariko_rev": "Revisão: Mariko",
-	"deepsea_label": "GMPACK é um pacote de custom firmware que inclui o Atmosphère, sigpatches, hekate, nyx e vários outros homebrews.",
-    "get_custom_deepsea": "Get custom DeepSea package",
-    "custom_packs_label": "\u25c6 Here are packs listed in the {} file. Be aware that those are not endorsed by Atualizador Pacote GameMod so make sure you trust their source.",
+	"pack_label": "GMPACK é um pacote de custom firmware que inclui o Atmosphère, sigpatches, hekate, nyx e vários outros homebrews.",
     "getting_ams": "Baixando GMPACK",
-    "reboot_rcm": "O Switch agora irá reiniciar em um payload especial para concluir a instalação.",
-    "depends_on": "The following modules will also be installed:",
-    "show_module_description": "Show module's description",
-	"download_deepsea_package": "Compile and download",
-    "deepsea_builder": "DeepSea builder",
-    "cant_fetch_deepsea": "Couldn't fetch packages. Open a Github issue if this persists.",
-    "build_your_deepsea": "Build your own custom DeepSea package by selecting packages",
-    "install_hekate": "Do you want to also download hekate?\nIf not, the Switch will now reboot to a special payload in order to finalise the install."
+    "reboot_rcm": "O Switch agora irá reiniciar em um payload especial para concluir a instalação."
   },
   "firmware": {
     "launch_daybreak": "Você gostaria de iniciar o Daybreak para instalar o firmware baixado?"

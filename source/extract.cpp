@@ -80,9 +80,9 @@ namespace extract {
                 unzipper.extractEntry(entry.name);
                 if (entry.name.substr(0, 13) == "hekate_ctcaer") {
                     fs::copyFile("/" + entry.name, UPDATE_BIN_PATH);
-                    if (CurrentCfw::running_cfw == CFW::ams && util::showDialogBoxBlocking(fmt::format("menus/utils/set_hekate_reboot_payload"_i18n, UPDATE_BIN_PATH, REBOOT_PAYLOAD_PATH), "menus/common/yes"_i18n, "menus/common/no"_i18n) == 0) {
-                        fs::copyFile(UPDATE_BIN_PATH, REBOOT_PAYLOAD_PATH);
-                    }
+                    //if (CurrentCfw::running_cfw == CFW::ams && util::showDialogBoxBlocking(fmt::format("menus/utils/set_hekate_reboot_payload"_i18n, UPDATE_BIN_PATH, REBOOT_PAYLOAD_PATH), "menus/common/yes"_i18n, "menus/common/no"_i18n) == 0) {
+                    //    fs::copyFile(UPDATE_BIN_PATH, REBOOT_PAYLOAD_PATH);
+                    //}
                 }
             }
             ProgressEvent::instance().incrementStep(1);
@@ -178,57 +178,6 @@ namespace extract {
                 break;
         }
         return 0;
-    }
-
-    void extractCheats(const std::string& zipPath, const std::vector<std::string>& titles, CFW cfw, const std::string& version, bool extractAll)
-    {
-        zipper::Unzipper unzipper(zipPath);
-        std::vector<zipper::ZipEntry> entries = unzipper.entries();
-        int offset = computeOffset(cfw);
-
-        if (!extractAll) {
-            ProgressEvent::instance().setTotalSteps(titles.size() + 1);
-            for (const auto& title : titles) {
-                if (ProgressEvent::instance().getInterupt()) {
-                    break;
-                }
-                auto matches = entries | std::views::filter([&title, offset](zipper::ZipEntry entry) {
-                                   if ((int)entry.name.size() > offset + 16 + 7) {
-                                       return caselessCompare((title.substr(0, 13)), entry.name.substr(offset, 13)) && caselessCompare(entry.name.substr(offset + 16, 7), "/cheats");
-                                   }
-                                   else {
-                                       return false;
-                                   }
-                               });
-                for (const auto& match : matches) {
-                    unzipper.extractEntry(match.name);
-                }
-                ProgressEvent::instance().incrementStep(1);
-            }
-        }
-        else {
-            ProgressEvent::instance().setTotalSteps(entries.size() + 1);
-            for (const auto& entry : entries) {
-                if (ProgressEvent::instance().getInterupt()) {
-                    break;
-                }
-
-                if ((int)entry.name.size() > offset + 16 + 7 && caselessCompare(entry.name.substr(offset + 16, 7), "/cheats")) {
-                    unzipper.extractEntry(entry.name);
-                }
-                ProgressEvent::instance().incrementStep(1);
-            }
-        }
-        unzipper.close();
-        if (version != "offline" && version != "") {
-            util::saveToFile(version, CHEATS_VERSION);
-        }
-        ProgressEvent::instance().setStep(ProgressEvent::instance().getMax());
-    }
-
-    void extractAllCheats(const std::string& zipPath, CFW cfw, const std::string& version)
-    {
-        extractCheats(zipPath, {}, cfw, version, true);
     }
 
     bool isBID(const std::string& bid)

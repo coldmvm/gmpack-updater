@@ -8,7 +8,6 @@
 
 #include "confirm_page.hpp"
 #include "current_cfw.hpp"
-#include "download_cheats_page.hpp"
 #include "extract.hpp"
 #include "fs.hpp"
 #include "utils.hpp"
@@ -65,39 +64,6 @@ void AppPage::PopulatePage()
     this->setContentView(list);
 }
 
-void AppPage::CreateDownloadAllButton()
-{
-    std::string text("menus/cheats/downloading"_i18n);
-    std::string url = "";
-    switch (CurrentCfw::running_cfw) {
-        case CFW::ams:
-            url += CHEATS_URL_CONTENTS;
-            break;
-        case CFW::rnx:
-            url += CHEATS_URL_CONTENTS;
-            break;
-        case CFW::sxos:
-            url += CHEATS_URL_CONTENTS;
-            break;
-    }
-    text += url;
-    download = new brls::ListItem("menus/cheats/dl_latest"_i18n);
-    download->getClickEvent()->subscribe([url, text](brls::View* view) {
-        brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
-        stagedFrame->setTitle("menus/cheats/getting_cheats"_i18n);
-        stagedFrame->addStage(
-            new ConfirmPage(stagedFrame, text));
-        stagedFrame->addStage(
-            new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [url]() { util::downloadArchive(url, contentType::cheats); }));
-        stagedFrame->addStage(
-            new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, []() { util::extractArchive(contentType::cheats); }));
-        stagedFrame->addStage(
-            new ConfirmPage(stagedFrame, "menus/common/all_done"_i18n, true));
-        brls::Application::pushView(stagedFrame);
-    });
-    list->addView(download);
-}
-
 u32 AppPage::InitControlData(NsApplicationControlData** controlData)
 {
     free(*controlData);
@@ -149,47 +115,6 @@ uint64_t AppPage::GetCurrentApplicationId()
     if (rc == 0x20f || R_FAILED(rc)) return 0;
 
     return tid;
-}
-
-AppPage_CheatSlips::AppPage_CheatSlips() : AppPage()
-{
-    this->PopulatePage();
-    this->registerAction("menus/cheats/cheatslips_logout"_i18n, brls::Key::X, [this] {
-        std::filesystem::remove(TOKEN_PATH);
-        return true;
-    });
-}
-
-void AppPage_CheatSlips::CreateLabel()
-{
-    this->setTitle("menus/cheats/cheatslips_title"_i18n);
-    label = new brls::Label(brls::LabelStyle::DESCRIPTION, "menus/cheats/cheatslips_select"_i18n, true);
-    list->addView(label);
-}
-
-void AppPage_CheatSlips::DeclareGameListItem(const std::string& name, u64 tid, NsApplicationControlData** controlData)
-{
-    listItem->getClickEvent()->subscribe([tid, name](brls::View* view) { brls::Application::pushView(new DownloadCheatsPage_CheatSlips(tid, name)); });
-    AppPage::DeclareGameListItem(name, tid, controlData);
-}
-
-AppPage_Gbatemp::AppPage_Gbatemp() : AppPage()
-{
-    this->PopulatePage();
-    this->setIcon("romfs:/gbatemp_icon.png");
-}
-
-void AppPage_Gbatemp::CreateLabel()
-{
-    this->setTitle("menus/cheats/gbatemp_title"_i18n);
-    label = new brls::Label(brls::LabelStyle::DESCRIPTION, "menus/cheats/cheatslips_select"_i18n, true);
-    list->addView(label);
-}
-
-void AppPage_Gbatemp::DeclareGameListItem(const std::string& name, u64 tid, NsApplicationControlData** controlData)
-{
-    listItem->getClickEvent()->subscribe([tid, name](brls::View* view) { brls::Application::pushView(new DownloadCheatsPage_GbaTemp(tid, name)); });
-    AppPage::DeclareGameListItem(name, tid, controlData);
 }
 
 AppPage_Exclude::AppPage_Exclude() : AppPage()
@@ -258,46 +183,4 @@ void AppPage_Exclude::PopulatePage()
     });
 
     this->setContentView(list);
-}
-
-AppPage_DownloadedCheats::AppPage_DownloadedCheats() : AppPage()
-{
-    GetExistingCheatsTids();
-    this->PopulatePage();
-}
-
-void AppPage_DownloadedCheats::CreateLabel()
-{
-    this->setTitle("menus/cheats/installed"_i18n);
-    label = new brls::Label(brls::LabelStyle::DESCRIPTION, "menus/cheats/label"_i18n, true);
-    list->addView(label);
-}
-
-void AppPage_DownloadedCheats::DeclareGameListItem(const std::string& name, u64 tid, NsApplicationControlData** controlData)
-{
-    auto tid_str = util::formatApplicationId(tid);
-    if (titles.find(tid_str) != titles.end()) {
-        listItem->getClickEvent()->subscribe([tid, name](brls::View* view) { show_cheats::ShowCheatFiles(tid, name); });
-        listItem->registerAction("menus/cheats/delete_cheats"_i18n, brls::Key::Y, [tid_str] {
-            util::showDialogBoxInfo(extract::removeCheatsDirectory(fmt::format("{}{}", util::getContentsPath(), tid_str)) ? "menus/common/all_done"_i18n : fmt::format("menus/cheats/deletion_error"_i18n, tid_str));
-            return true;
-        });
-        AppPage::DeclareGameListItem(name, tid, controlData);
-    }
-}
-
-void AppPage_DownloadedCheats::GetExistingCheatsTids()
-{
-    std::string path = util::getContentsPath();
-    for (const auto& entry : std::filesystem::directory_iterator(path)) {
-        std::string cheatsPath = entry.path().string() + "/cheats";
-        if (std::filesystem::exists(cheatsPath) && !std::filesystem::is_empty(cheatsPath)) {
-            for (const auto& cheatFile : std::filesystem::directory_iterator(cheatsPath)) {
-                if (extract::isBID(cheatFile.path().filename().stem())) {
-                    titles.insert(util::upperCase(cheatsPath.substr(cheatsPath.length() - 7 - 16, 16)));
-                    break;
-                }
-            }
-        }
-    }
 }
