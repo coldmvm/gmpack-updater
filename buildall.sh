@@ -15,11 +15,11 @@ make
 cd ..
 echo ""
 
-echo "******************* Building gmpack-rcm..."
-cd gmpack-rcm
-make
-cd ..
-echo ""
+#echo "******************* Building gmpack-rcm..."
+#cd gmpack-rcm
+#make
+#cd ..
+#echo ""
 
 echo "******************* Building gmpack-updater..."
 make
