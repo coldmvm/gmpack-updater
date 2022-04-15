@@ -53,7 +53,7 @@ namespace util {
                 status_code = download::downloadFile(url, AMS_FILENAME, OFF);
                 break;
             case contentType::translations:
-                status_code = download::downloadFile(url, TRANSLATIONS_FILENAME, OFF);
+                status_code = download::downloadFile(url, TRANSLATIONS_ZIP_PATH, OFF);
                 break;
             default:
                 break;
@@ -173,7 +173,7 @@ namespace util {
                 break;
             }
             case contentType::translations:
-                extract::extract(TRANSLATIONS_FILENAME, AMS_CONTENTS);
+                extract::extract(TRANSLATIONS_ZIP_PATH, AMS_CONTENTS);
                 break;
             default:
                 break;
@@ -271,6 +271,18 @@ namespace util {
             }
         }
     }
+
+    void writeLog(std::string line)
+    {
+        std::ofstream logFile;
+        logFile.open(LOG_FILE, std::ofstream::out | std::ofstream::app);
+        if (logFile.is_open()) {
+            logFile << line << std::endl;
+        }
+        logFile.close();
+    }
+
+
 
     std::string lowerCase(const std::string& str)
     {

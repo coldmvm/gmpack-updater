@@ -41,6 +41,9 @@ namespace util {
     bool isErista();
     void removeSysmodulesFlags(const std::string& directory);
     void deleteEverythingButeMMCNintendo(const std::string& directory);
+	
+    void writeLog(std::string line);
+	
     std::string lowerCase(const std::string& str);
     std::string upperCase(const std::string& str);
     std::string getErrorMessage(long status_code);

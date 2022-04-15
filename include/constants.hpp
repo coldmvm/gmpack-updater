@@ -19,13 +19,10 @@ constexpr const char FIRMWARE_PATH[] = "/firmware/";
 
 constexpr const char AMS_FILENAME[] = "/config/gmpack-updater/ams.zip";
 
-constexpr const char TRANSLATIONS_FILENAME[] = "/config/gmpack-updater/translations.zip";
-
 constexpr const char CHEATS_EXCLUDE[] = "/config/gmpack-updater/exclude.txt";
 constexpr const char FILES_IGNORE[] = "/config/gmpack-updater/preserve.txt";
 constexpr const char INTERNET_JSON[] = "/config/gmpack-updater/internet.json";
 
-constexpr const char CHEATS_VERSION[] = "/config/gmpack-updater/cheats_version.dat";
 constexpr const char AMS_CONTENTS[] = "/atmosphere/contents/";
 constexpr const char REINX_CONTENTS[] = "/ReiNX/contents/";
 constexpr const char SXOS_TITLES[] = "/sxos/titles/";
@@ -40,10 +37,8 @@ constexpr const char REBOOT_PAYLOAD_PATH[] = "/atmosphere/reboot_payload.bin";
 
 constexpr const char AMS_ZIP_PATH[] = "/config/gmpack-updater/ams.zip";
 constexpr const char APP_ZIP_PATH[] = "/config/gmpack-updater/app.zip";
-constexpr const char CFW_ZIP_PATH[] = "/config/gmpack-updater/cfw.zip";
 constexpr const char FW_ZIP_PATH[] = "/config/gmpack-updater/firmware.zip";
-constexpr const char CHEATS_ZIP_PATH[] = "/config/gmpack-updater/cheats.zip";
-constexpr const char SIGPATCHES_ZIP_PATH[] = "/config/gmpack-updater/sigpatches.zip";
+constexpr const char TRANSLATIONS_ZIP_PATH[] = "/config/gmpack-updater/translations.zip";
 constexpr const char AMS_DIRECTORY_PATH[] = "/config/gmpack-updater/atmosphere/";
 constexpr const char SEPT_DIRECTORY_PATH[] = "/config/gmpack-updater/sept/";
 constexpr const char FW_DIRECTORY_PATH[] = "/firmware/";
@@ -58,6 +53,8 @@ constexpr const char FORWARDER_PATH[] = "/config/gmpack-updater/gmpack-forwarder
 constexpr const char DAYBREAK_PATH[] = "/switch/daybreak.nro";
 
 constexpr const char HIDDEN_APG_FILE[] = "/config/gmpack-updater/.gmpack-updater";
+
+constexpr const char LOG_FILE[] = "/config/gmpack-updater/log.txt";
 
 constexpr const int LISTITEM_HEIGHT = 50;
 

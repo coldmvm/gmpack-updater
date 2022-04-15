@@ -31,8 +31,5 @@ namespace extract {
     std::vector<std::string> getInstalledTitlesNs();
     std::vector<std::string> excludeTitles(const std::string& path, const std::vector<std::string>& listedTitles);
     void writeTitlesToFile(const std::set<std::string>& titles, const std::string& path);
-    void removeCheats();
-    void removeOrphanedCheats();
-    bool removeCheatsDirectory(const std::string& entry);
     bool isBID(const std::string& bid);
 }  // namespace extract

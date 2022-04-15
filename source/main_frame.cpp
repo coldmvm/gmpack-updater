@@ -23,30 +23,46 @@ namespace {
 
 MainFrame::MainFrame() : TabFrame()
 {
-    this->setIcon("romfs:/gui_icon.png");
+util::writeLog("APG started");
+	this->setIcon("romfs:/gui_icon.png");
     this->setTitle(AppTitle);
 
     s64 freeStorage;
     std::string tag = util::getLatestTag(TAGS_INFO);
 
-    //fetching the version as a number
-	std::string temp = "";
-	int iTag = 0;
-	int iAppVersion = 0;
+	if (!tag.empty()) {
+        util::writeLog("fetching versions...");
+        //fetching the version as a number
+    	std::string temp = "";
+    	int iTag = 0;
+    	int iAppVersion = 0;
 
-    temp.reserve(tag.size()); // optional, avoids buffer reallocations in the loop
-    for(size_t i = 0; i < tag.size(); ++i)
-        if(tag[i] != '.') temp += tag[i]; // removing the . from the version
-    iTag = std::stoi(temp); // casting from string to integer
+        util::writeLog("fetching versions: tag: " + tag);
+        temp.reserve(tag.size()); // optional, avoids buffer reallocations in the loop
+        for(size_t i = 0; i < tag.size(); ++i)
+            if(tag[i] != '.') temp += tag[i]; // removing the . from the version
+        iTag = std::stoi(temp); // casting from string to integer
 
-    temp.reserve(strlen(AppVersion)); // optional, avoids buffer reallocations in the loop
-    for(size_t i = 0; i < strlen(AppVersion); ++i)
-        if(AppVersion[i] != '.') temp += AppVersion[i]; // removing the . from the version
-    iAppVersion = std::stoi(temp); // casting from string to integer
-	
-	this->setFooterText(fmt::format("menus/main/footer_text"_i18n,
-                                    (!tag.empty() && iTag > iAppVersion) ? AppVersion + "menus/main/new_update"_i18n : AppVersion,
-                                    R_SUCCEEDED(fs::getFreeStorageSD(freeStorage)) ? (float)freeStorage / 0x40000000 : -1));
+        temp = "";
+
+        util::writeLog("fetching versions: iTag: " + std::to_string(iTag));
+
+        util::writeLog("fetching versions: AppVersion: " + std::string(AppVersion));
+        temp.reserve(strlen(AppVersion)); // optional, avoids buffer reallocations in the loop
+        for(size_t i = 0; i < strlen(AppVersion); ++i)
+            if(AppVersion[i] != '.') temp += AppVersion[i]; // removing the . from the version
+        iAppVersion = std::stoi(temp); // casting from string to integer
+        util::writeLog("fetching versions: iAppVersion: " + std::to_string(iAppVersion));
+
+        this->setFooterText(fmt::format("menus/main/footer_text"_i18n,
+            (!tag.empty() && iTag > iAppVersion) ? "v" + std::string(AppVersion) + "menus/main/new_update"_i18n : AppVersion,
+            R_SUCCEEDED(fs::getFreeStorageSD(freeStorage)) ? (float)freeStorage / 0x40000000 : -1));
+    }
+    else {
+        this->setFooterText(fmt::format("menus/main/footer_text"_i18n, "menus/main/footer_text_not_connected"_i18n, R_SUCCEEDED(fs::getFreeStorageSD(freeStorage)) ? (float)freeStorage / 0x40000000 : -1));
+    }
+
+    util::writeLog("footer set: end");
 
     json hideStatus = fs::parseJsonFile(HIDE_TABS_JSON);
     nlohmann::ordered_json nxlinks;

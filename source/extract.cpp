@@ -201,49 +201,4 @@ namespace extract {
             updatedTitlesFile.close();
         }
     }
-
-    void removeCheats()
-    {
-        std::string path = util::getContentsPath();
-        ProgressEvent::instance().setTotalSteps(std::distance(std::filesystem::directory_iterator(path), std::filesystem::directory_iterator()) + 1);
-        for (const auto& entry : std::filesystem::directory_iterator(path)) {
-            if (ProgressEvent::instance().getInterupt()) {
-                break;
-            }
-            removeCheatsDirectory(entry.path().string());
-            ProgressEvent::instance().incrementStep(1);
-        }
-        std::filesystem::remove(CHEATS_VERSION);
-        ProgressEvent::instance().setStep(ProgressEvent::instance().getMax());
-    }
-
-    void removeOrphanedCheats()
-    {
-        auto path = util::getContentsPath();
-        std::vector<std::string> titles = getInstalledTitlesNs();
-        ProgressEvent::instance().setTotalSteps(std::distance(std::filesystem::directory_iterator(path), std::filesystem::directory_iterator()) + 1);
-        for (const auto& entry : std::filesystem::directory_iterator(path)) {
-            if (ProgressEvent::instance().getInterupt()) {
-                break;
-            }
-            if (std::find_if(titles.begin(), titles.end(), [&entry](std::string title) {
-                    return caselessCompare(entry.path().filename(), title);
-                }) == titles.end()) {
-                removeCheatsDirectory(entry.path().string());
-            }
-            ProgressEvent::instance().incrementStep(1);
-        }
-        std::filesystem::remove(CHEATS_VERSION);
-        ProgressEvent::instance().setStep(ProgressEvent::instance().getMax());
-    }
-
-    bool removeCheatsDirectory(const std::string& entry)
-    {
-        bool res = true;
-        std::string cheatsPath = fmt::format("{}/cheats", entry);
-        if (std::filesystem::exists(cheatsPath)) res &= fs::removeDir(cheatsPath);
-        if (std::filesystem::is_empty(entry)) res &= fs::removeDir(entry);
-        return res;
-    }
-
 }  // namespace extract

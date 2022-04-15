@@ -21,6 +21,25 @@ namespace {
 
 ToolsTab::ToolsTab(const std::string& tag, bool erista, const nlohmann::json& hideStatus) : brls::List()
 {
+    if (!tag.empty()) {
+        //fetching the version as a number
+    	std::string temp = "";
+    	int iTag = 0;
+    	int iAppVersion = 0;
+
+        temp.reserve(tag.size()); // optional, avoids buffer reallocations in the loop
+        for(size_t i = 0; i < tag.size(); ++i)
+            if(tag[i] != '.') temp += tag[i]; // removing the . from the version
+        iTag = std::stoi(temp); // casting from string to integer
+
+        temp = "";
+
+        temp.reserve(strlen(AppVersion)); // optional, avoids buffer reallocations in the loop
+        for(size_t i = 0; i < strlen(AppVersion); ++i)
+            if(AppVersion[i] != '.') temp += AppVersion[i]; // removing the . from the version
+        iAppVersion = std::stoi(temp); // casting from string to integer
+
+/*
     //fetching the version as a number
 	std::string temp = "";
 	int iTag = 0;
@@ -35,29 +54,29 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista, const nlohmann::json& hi
     for(size_t i = 0; i < strlen(AppVersion); ++i)
         if(AppVersion[i] != '.') temp += AppVersion[i]; // removing the . from the version
     iAppVersion = std::stoi(temp); // casting from string to integer
+*/
 
-    if (!tag.empty() && iTag > iAppVersion) {
-    //if (!tag.empty() && tag != AppVersion) {
-        updateApp = new brls::ListItem(fmt::format("menus/tools/update_app"_i18n, tag));
-        //std::string text("menus/tools/dl_app"_i18n + std::string(APP_URL));
-		std::string text(fmt::format("menus/tools/dl_app"_i18n, tag));
-        updateApp->getClickEvent()->subscribe([text, tag](brls::View* view) {
-            brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
-            stagedFrame->setTitle("menus/common/updating"_i18n);
-            stagedFrame->addStage(
-                new ConfirmPage(stagedFrame, text));
-            stagedFrame->addStage(
-                new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, []() { util::downloadArchive(APP_URL, contentType::app); }));
-            stagedFrame->addStage(
-                new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, []() { util::extractArchive(contentType::app); }));
-            stagedFrame->addStage(
-                new ConfirmPage(stagedFrame, "menus/common/all_done"_i18n, true));
-            brls::Application::pushView(stagedFrame);
-        });
-        updateApp->setHeight(LISTITEM_HEIGHT);
-        this->addView(updateApp);
+        if (iTag > iAppVersion) {
+            updateApp = new brls::ListItem(fmt::format("menus/tools/update_app"_i18n, tag));
+            //std::string text("menus/tools/dl_app"_i18n + std::string(APP_URL));
+		    std::string text(fmt::format("menus/tools/dl_app"_i18n, tag));
+            updateApp->getClickEvent()->subscribe([text, tag](brls::View* view) {
+                brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
+                stagedFrame->setTitle("menus/common/updating"_i18n);
+                stagedFrame->addStage(
+                    new ConfirmPage(stagedFrame, text));
+                stagedFrame->addStage(
+                    new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, []() { util::downloadArchive(APP_URL, contentType::app); }));
+                stagedFrame->addStage(
+                    new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, []() { util::extractArchive(contentType::app); }));
+                stagedFrame->addStage(
+                    new ConfirmPage(stagedFrame, "menus/common/all_done"_i18n, true));
+                brls::Application::pushView(stagedFrame);
+            });
+            updateApp->setHeight(LISTITEM_HEIGHT);
+            this->addView(updateApp);
+        }
     }
-
 /*    cheats = new brls::ListItem("menus/tools/cheats"_i18n);
     cheats->getClickEvent()->subscribe([](brls::View* view) {
         brls::PopupFrame::open("menus/cheats/menu"_i18n, new CheatsPage(), "", "");
@@ -94,7 +113,7 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista, const nlohmann::json& hi
         if (brls::Swkbd::openForText([&url](std::string text) { url = text; }, "cheatslips.com e-mail", "", 64, "https://duckduckgo.com", 0, "Submit", "https://website.tld")) {
             std::string error = "";
             int at = appletGetAppletType();
-            if (at == AppletType_Application) {  // Running as a title
+            if (at == AppletType_Application) {         // Running as a title
                 WebCommonConfig conf;
                 WebCommonReply out;
                 Result rc = webPageCreate(&conf, url.c_str());
@@ -136,11 +155,9 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista, const nlohmann::json& hi
     cleanUp->getClickEvent()->subscribe([](brls::View* view) {
         std::filesystem::remove(AMS_ZIP_PATH);
         std::filesystem::remove(APP_ZIP_PATH);
-        std::filesystem::remove(CFW_ZIP_PATH);
         std::filesystem::remove(FW_ZIP_PATH);
-        std::filesystem::remove(CHEATS_ZIP_PATH);
-        std::filesystem::remove(CHEATS_VERSION);
-        std::filesystem::remove(SIGPATCHES_ZIP_PATH);
+		std::filesystem::remove(TRANSLATIONS_ZIP_PATH);
+		std::filesystem::remove(LOG_FILE);
         fs::removeDir(AMS_DIRECTORY_PATH);
         fs::removeDir(SEPT_DIRECTORY_PATH);
         fs::removeDir(FW_DIRECTORY_PATH);
