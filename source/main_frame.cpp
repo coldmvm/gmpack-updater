@@ -23,7 +23,7 @@ namespace {
 
 MainFrame::MainFrame() : TabFrame()
 {
-    util::writeLog("APG started");
+    //util::writeLog("APG started");
 	this->setIcon("romfs:/gui_icon.png");
     this->setTitle(AppTitle);
 
