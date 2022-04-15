@@ -25,10 +25,10 @@ ChangelogPage::ChangelogPage() : AppletFrame(true, true)
 	changes.push_back("\uE016 Incluída uma função para baixar traduções.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Limpeza no código para remover dependencia com o AIO.");
 	
 	verTitles.push_back("v1.1.1");
-	changes.push_back("\uE016 Corrigido o problema de crash ao iniciar o homebrew sem internet.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Limpeza no código para remover dependencia com o AIO.");
+	changes.push_back("\uE016 Foi corrigido um problema de crash ao iniciar o homebrew sem internet.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Limpeza no código para remover dependencia com o AIO.");
 	
 	verTitles.push_back("v1.1.2");
-	changes.push_back("\uE016 Adicionada a opção de baixar o pacote GNX.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Ícone novo.");
+	changes.push_back("\uE016 Adicionada a opção de baixar o pacote GNX.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Nova imágem para o homebrew.");
 
     for (int i = verTitles.size() - 1; i >= 0; i--) {
         listItem = new brls::ListItem(verTitles[i]);

@@ -39,7 +39,7 @@
     "translations_text": "\u25c6 As traduções no Nintendo Switch são feitas por membros da cena e tem a finalidade de distribuir acessibilidade linguística aos jogos, visto que muitas produtoras, infelizmente, não se preocupam em traduzir oficialmente seus jogos.\n\nAbaixo estão listadas algumas das traduções atualmente disponíveis para o Nintendo Switch.",
     "firmware": "firmware",
     "not_found": "não encontrado",
-    "links_not_found": "Não foi possível encontrar um link de download, certifique-se de que seu Switch tenha acesso à Internet.\nSe o problema persistir, abra um 'issue' no GitHub.",
+    "links_not_found": "Não foi possível encontrar o link de download! Seu Switch está conectado à Internet?\nSe o problema persistir, abra um 'issue' no GitHub.",
     "new_update": " (Nova atualização disponível)",
     "about": "Informações",
     "update_ams": "Baixar GMPACK",
