@@ -52,6 +52,9 @@ namespace util {
             case contentType::ams_cfw:
                 status_code = download::downloadFile(url, AMS_FILENAME, OFF);
                 break;
+            case contentType::translations:
+                status_code = download::downloadFile(url, TRANSLATIONS_FILENAME, OFF);
+                break;
             default:
                 break;
         }
@@ -134,7 +137,7 @@ namespace util {
         }
     }
 
-    void extractArchive(contentType type, const std::string& version)
+    void extractArchive(contentType type)
     {
         chdir(ROOT_PATH);
         crashIfNotArchive(type);
@@ -169,6 +172,9 @@ namespace util {
                 extract::extract(AMS_FILENAME, ROOT_PATH, overwriteInis);
                 break;
             }
+            case contentType::translations:
+                extract::extract(TRANSLATIONS_FILENAME, AMS_CONTENTS);
+                break;
             default:
                 break;
         }

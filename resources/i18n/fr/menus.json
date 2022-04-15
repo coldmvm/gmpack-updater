@@ -35,6 +35,7 @@
   "main": {
     "getting": "Baixando {}",
     "firmware_text": "\u25c6 Firmwares disponíveis em 'https://darthsternie.net/switch-firmwares/'.\nDepois de baixada ela será extraído para a pasta '/firmware' e você pode, então, instalá-la usando o homebrew 'Daybreak'.\n\u25c6 Firmware atual: ",
+	"translations_text": "\u25c6 As traduções no Nintendo Switch são feitas por membros da cena e tem a finalidade de distribuir acessibilidade linguística aos jogos, visto que muitas produtoras, infelizmente, não se preocupam em traduzir oficialmente seus jogos.\n\nAbaixo estão listadas algumas das traduções atualmente disponíveis para o Nintendo Switch.",
     "firmware": "firmware",
     "not_found": "não encontrado",
 	"ams_text": "Nesta tela você pode baixar e atualizar seu Pacote Atmosphère (GMPACK).",
@@ -43,6 +44,7 @@
     "about": "Informações",
 	"update_ams": "Baixar GMPACK",
     "download_firmware": "Baixar firmwares",
+	"download_translations": "Baixar traduções",
     "tools": "Ferramentas",
     "launch_warning": "Por favor, preste atenção aos seguintes pontos antes de usar este homebrew:\n\n\u25c6 Leia e entenda sobre como manualmente atualizar seu Switch antes. Isto lhe ajudará a entender melhor este homebrew e você saberá o que fazer caso algo saia errado.\n\u25c6 Para evitar o risco de corrompimento de dados, o uso deste homebrew em um microSD formatado em exFAT é FORTEMENTE desaconselhado.\n\n\u25c6 As últimas informações sobre novas funções inseridas e/ou modificadas está disponível no menu Ferramentas->Changelog.\n\nEsta tela não aparecerá novamente.",
 	"footer_text" : "GameMod design - v{} - {}Gb disponíveis",

@@ -8,6 +8,7 @@
 #include "download.hpp"
 #include "fs.hpp"
 #include "list_download_tab.hpp"
+#include "list_translations_tab.hpp"
 #include "tools_tab.hpp"
 #include "utils.hpp"
 
@@ -44,7 +45,7 @@ MainFrame::MainFrame() : TabFrame()
     iAppVersion = std::stoi(temp); // casting from string to integer
 	
 	this->setFooterText(fmt::format("menus/main/footer_text"_i18n,
-                                    (!tag.empty() && iTag >= iAppVersion) ? AppVersion + "menus/main/new_update"_i18n : AppVersion,
+                                    (!tag.empty() && iTag > iAppVersion) ? AppVersion + "menus/main/new_update"_i18n : AppVersion,
                                     R_SUCCEEDED(fs::getFreeStorageSD(freeStorage)) ? (float)freeStorage / 0x40000000 : -1));
 
     json hideStatus = fs::parseJsonFile(HIDE_TABS_JSON);
@@ -58,6 +59,9 @@ MainFrame::MainFrame() : TabFrame()
 
     if (!util::getBoolValue(hideStatus, "atmosphere"))
         this->addTab("menus/main/update_ams"_i18n, new AmsTab(nxlinks, erista, util::getBoolValue(hideStatus, "atmosphereentries")));
+
+    if (!util::getBoolValue(hideStatus, "translations"))
+        this->addTab("menus/main/download_translations"_i18n, new ListTranslationsTab(contentType::translations, nxlinks));
 
     if (!util::getBoolValue(hideStatus, "firmwares"))
         this->addTab("menus/main/download_firmware"_i18n, new ListDownloadTab(contentType::fw, nxlinks));

@@ -26,7 +26,7 @@ namespace util {
     bool isArchive(const std::string& path);
     void downloadArchive(const std::string& url, contentType type);
     void downloadArchive(const std::string& url, contentType type, long& status_code);
-    void extractArchive(contentType type, const std::string& version = "");
+    void extractArchive(contentType type);
     std::string formatListItemTitle(const std::string& str, size_t maxScore = 140);
     std::string formatApplicationId(u64 ApplicationId);
     void shutDown(bool reboot = false);

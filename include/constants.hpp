@@ -19,6 +19,8 @@ constexpr const char FIRMWARE_PATH[] = "/firmware/";
 
 constexpr const char AMS_FILENAME[] = "/config/gmpack-updater/ams.zip";
 
+constexpr const char TRANSLATIONS_FILENAME[] = "/config/gmpack-updater/translations.zip";
+
 constexpr const char CHEATS_EXCLUDE[] = "/config/gmpack-updater/exclude.txt";
 constexpr const char FILES_IGNORE[] = "/config/gmpack-updater/preserve.txt";
 constexpr const char INTERNET_JSON[] = "/config/gmpack-updater/internet.json";
@@ -64,9 +66,10 @@ enum class contentType
     fw,
     app,
     ams_cfw,
+	translations,
 };
 
-constexpr std::string_view contentTypeNames[3]{"firmwares", "app", "cfws"};
+constexpr std::string_view contentTypeNames[4]{"firmwares", "app", "cfws", "translations"};
 
 enum class CFW
 {

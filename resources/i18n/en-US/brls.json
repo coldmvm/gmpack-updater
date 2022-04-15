@@ -1,10 +1,15 @@
 {
     "hints": {
-        "ok": "Ok",
+        "ok": "OK",
         "back": "Voltar",
         "exit": "Sair"
     },
+
     "crash_frame": {
-        "button": "Aceitar"
+        "button": "OK"
+    },
+
+    "thumbnail_sidebar": {
+        "save": "Salvar"
     }
 }
