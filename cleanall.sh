@@ -20,6 +20,7 @@ echo "cleaning gmpack-rcm..."
 cd gmpack-rcm
 rm -rf build
 rm -rf output
+cd ..
 
 echo "finishing..."
 rm gmpack-updater.zip
