@@ -21,7 +21,7 @@ RESOURCES	:=	resources
 DATA		:=	data
 INCLUDES	:=	include lib/zipper/include /lib/borealis/library/include/borealis/extern/nlohmann
 APP_TITLE	:=	Atualizador Pacote GameMod
-APP_AUTHOR	:=	GameMod design
+APP_AUTHOR	:=	coldmvm
 APP_VERSION :=  1.1.4
 TARGET		:=	$(notdir $(CURDIR))
 
