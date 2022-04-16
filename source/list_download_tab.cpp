@@ -6,6 +6,7 @@
 
 #include "app_page.hpp"
 #include "confirm_page.hpp"
+#include "list_download_tab_confirmation.hpp"
 #include "dialogue_page.hpp"
 #include "download.hpp"
 #include "extract.hpp"
@@ -44,6 +45,9 @@ void ListDownloadTab::createList(contentType type)
             listItem->getClickEvent()->subscribe([this, type, text, url, title](brls::View* view) {
                 brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
                 stagedFrame->setTitle(fmt::format("menus/main/getting"_i18n, contentTypeFullNames[(int)type].data()));
+
+                stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/download_time_warning"_i18n));
+
                 stagedFrame->addStage(new ConfirmPage(stagedFrame, text));
 				
                 stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [this, type, url]() { util::downloadArchive(url, type); }));
