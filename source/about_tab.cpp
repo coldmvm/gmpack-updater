@@ -23,9 +23,6 @@ AboutTab::AboutTab()
 
     // Links
     this->addView(new brls::Header("Disclaimers"));
-    brls::Label* links = new brls::Label(
-        brls::LabelStyle::SMALL,
-        "menus/about/disclaimers"_i18n + "\n" + "menus/about/donate"_i18n,
-        true);
+    brls::Label* links = new brls::Label(brls::LabelStyle::SMALL, "menus/about/disclaimers"_i18n, true);
     this->addView(links);
 }

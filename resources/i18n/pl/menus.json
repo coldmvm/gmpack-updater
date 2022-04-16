@@ -1,10 +1,13 @@
 {
-	
   "about": {
 	"title": "Atualizador Pacote GameMod (APG)",
     "copyright": "O Atualizador Pacote GameMod usa a licença GPL-3.0",
-    "disclaimers": "\u25c6 A GameMod design não detém nenhum direito de cópia sobre nenhum arquivo baixado por este homebrew e todo o crédito pertence aos seus respectivos proprietários.\n\u25c6 Os links serão atualizados sempre que um novo pacote estiver disponível ou for necessário. Se um link estiver quebrado, informe no grupo de Facebook 'GameMod design'.\n\nObrigado!",
-	"donate": ""
+    "disclaimers": "\u25c6 A GameMod design não detém nenhum direito de cópia sobre nenhum arquivo baixado por este homebrew e todo o crédito pertence aos seus respectivos proprietários.\n\u25c6 Os links serão atualizados sempre que um novo pacote estiver disponível ou for necessário. Se um link estiver quebrado, informe no grupo de Facebook 'GameMod design'.\n\nObrigado!"
+  },
+  "credits": {
+    "title1": "O Atualizador Pacote GameMod (APG) não seria possível sem a ajuda e ideias das seguintes pessoas/grupos:",
+	"title2": "Créditos",
+    "credits": "\u25c6 'HamletDuFromage' pelo brilhante homebew AIO-Switch-Updater.\n\u25c6 'natinusala' pela biblioteca Borealis.\n\u25c6 'Team Neptune' pelo código RCM usado.\n\u25c6 'CostebaBR' pela ideia da função de traduções e os links usados no homebrew."
   },
   "cheats": {
     "exclude_titles": "Excluir títulos",
@@ -42,6 +45,7 @@
     "links_not_found": "Não foi possível encontrar o link de download! Seu Switch está conectado à Internet?\nSe o problema persistir, abra um 'issue' no GitHub.",
     "new_update": " (Nova atualização disponível)",
     "about": "Informações",
+	"credits": "Créditos",
     "update_ams": "Baixar GMPACK",
     "download_firmware": "Baixar firmwares",
     "download_translations": "Baixar traduções",

@@ -9,6 +9,7 @@
 #include "fs.hpp"
 #include "list_download_tab.hpp"
 #include "list_translations_tab.hpp"
+#include "credits_tab.hpp"
 #include "tools_tab.hpp"
 #include "utils.hpp"
 
@@ -76,6 +77,9 @@ MainFrame::MainFrame() : TabFrame()
 
     if (!util::getBoolValue(hideStatus, "tools"))
         this->addTab("menus/main/tools"_i18n, new ToolsTab(tag, erista, hideStatus));
+
+    if (!util::getBoolValue(hideStatus, "credits"))
+        this->addTab("menus/main/credits"_i18n, new CreditsTab());
 
     this->registerAction("", brls::Key::B, [this] { return true; });
 }
