@@ -33,7 +33,7 @@ ChangelogPage::ChangelogPage() : AppletFrame(true, true)
     verTitles.push_back("v1.1.3");
 	changes.push_back("\uE016 Aba 'Créditos' incluída.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Limpeza no código em geral.");
 	
-	verTitles.push_back("v1.1.3");
+	verTitles.push_back("v1.1.4");
 	changes.push_back("\uE016 Uma mensagem de aviso foi adicionada antes de downloads grandes.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Agora o homebrew usa o ícone em toda aba.\n\uE016 Limpeza no código para remover dependencia com o AIO.");
 
     for (int i = verTitles.size() - 1; i >= 0; i--) {
