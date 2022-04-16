@@ -25,6 +25,13 @@ Copie o diretório `gmpack-updater/` para a pasta `/switch/` no seu microSD.
 ### ⬦ Baixar GMPACK
 - Baixa o custom firmware GMPACK. Após baixado, o programa irá instalar o pacote para você.
 
+### ⬦ Baixar traduções
+- As traduções são feitas por membros da cena e tem a finalidade de distribuir acessibilidade linguística aos jogos.
+- Algumas traduções precisam de passos específicos para que funcionem. Para maiores detalhes consulte os sites dos criadores das legendas:
+  - https://www.jumpmanclubbrasil.com.br/
+  - https://traducoespkg.tumblr.com/
+  - https://nintendonxbr.blogspot.com/
+
 ### ⬦ Baixar firmwares
 - Baixa os arquivos do firmware para a pasta `/firmware` que, posteriormente, podem ser instalados usando o homebrew DayBreak.
 
@@ -32,12 +39,14 @@ Copie o diretório `gmpack-updater/` para a pasta `/switch/` no seu microSD.
 - Atualizar o homwbrew automaticamente quando existir uma nova versão.
 - Editar as configurações da internet (DNS, endereço IP, MTU, etc). Adicione suas próprias configurações em `config/aio-switch-updater/internet.json`. Você vai achar um modelo desta configuração neste repositório.
 - Abrir o navegador de internet do Switch (precisa abrir usando um jogo e pressionar R).
+- Limpar os arquivos temporários baixados.
+- Consultar as alterações sofridas pelo homebrew (changelog).
 
 ## Disclaimer
 A GameMod design não detém nenhum direito de cópia sobre nenhum arquivo baixado por este homebrew e todo o crédito pertence aos seus respectivos proprietários. Se o atual proprietário do arquivo baixado por este atualizador solicitar, removeremos imediatamente a habilidade de baixar qualquer arquivo problemático.
 
 ## Agradecimentos especiais
-- [HamletDuFromage](https://github.com/HamletDuFromage/) pela brilhante homebew AIO-Switch-Updater.
+- [HamletDuFromage](https://github.com/HamletDuFromage/) pelo brilhante homebew AIO-Switch-Updater.
 - [natinusala](https://github.com/natinusala) pela biblioteca Borealis.
 - [Team Neptune](https://github.com/Team-Neptune) pelo código RCM usado.
 
