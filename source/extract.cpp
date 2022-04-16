@@ -26,11 +26,6 @@ using namespace i18n::literals;
 namespace extract {
 
     namespace {
-        bool caselessCompare(const std::string& a, const std::string& b)
-        {
-            return strcasecmp(a.c_str(), b.c_str()) == 0;
-        }
-
         void preWork(zipper::Unzipper& unzipper, const std::string& workingPath, std::vector<zipper::ZipEntry>& entries)
         {
             chdir(workingPath.c_str());
@@ -80,9 +75,6 @@ namespace extract {
                 unzipper.extractEntry(entry.name);
                 if (entry.name.substr(0, 13) == "hekate_ctcaer") {
                     fs::copyFile("/" + entry.name, UPDATE_BIN_PATH);
-//                    if (CurrentCfw::running_cfw == CFW::ams && util::showDialogBoxBlocking(fmt::format("menus/utils/set_hekate_reboot_payload"_i18n, UPDATE_BIN_PATH, REBOOT_PAYLOAD_PATH), "menus/common/yes"_i18n, "menus/common/no"_i18n) == 0) {
-//                        fs::copyFile(UPDATE_BIN_PATH, REBOOT_PAYLOAD_PATH);
-//                    }
                 }
             }
             ProgressEvent::instance().incrementStep(1);

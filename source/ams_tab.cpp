@@ -78,6 +78,7 @@ void AmsTab::CreateDownloadItems(const nlohmann::ordered_json& cfw_links, bool h
         description->setHorizontalAlign(NVG_ALIGN_CENTER);
         this->addView(description);
     }
+
 }
 
 void AmsTab::CreateStagedFrames(const std::string& text, const std::string& url, const std::string& operation, bool erista, bool hekate, const std::string& text_hekate, const std::string& hekate_url)

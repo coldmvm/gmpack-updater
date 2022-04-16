@@ -9,29 +9,22 @@
 	"title2": "Créditos",
     "credits": "\u25c6 'HamletDuFromage' pelo brilhante homebew AIO-Switch-Updater.\n\u25c6 'natinusala' pela biblioteca Borealis.\n\u25c6 'Team Neptune' pelo código RCM usado.\n\u25c6 'CostelaBR' pela ideia da função de traduções e os links usados no homebrew."
   },
-  "cheats": {
-    "exclude_titles": "Excluir títulos",
-    "exclude_titles_desc": "Você pode desativar as atualizações de trapaças neste menu.",
-    "exclude_titles_save": "Salvar escolha e retornar."
-  },
   "common": {
     "download": "Baixando:\n",
     "downloading": "Baixando…",
     "from": "\n\nDe:\n",
     "extracting": "Extraindo…",
-    "selected": "Selected",
-    "off": "Off",
-    "all_done": "Finalizado!",
+    "applet_mode_not_supported": "Esta função não está disponível no modo applet. Por favor, inicia o Atualizador Pacote GameMod através do redirecionados de títulos para acessa-la.",
     "back": "Voltar",
     "continue": "Continuar",
-    "no": "Não",
     "yes": "Sim",
+    "no": "Não",
+    "all_done": "Finalizado!",
     "go_back": "Voltar",
     "confirm": "Confirm",
     "cancel": "Cancelar",
     "updating": "Atualizando app",
-    "ok": "Ok",
-    "applet_mode_not_supported": "Esta função não está disponível no modo applet. Por favor, inicia o Atualizador Pacote GameMod através do redirecionados de títulos para acessa-la."
+    "ok": "Ok"
   },
   "changelog": {
     "changelog": "Alterações"
@@ -65,16 +58,16 @@
     "changelog": "Alterações"
   },
   "utils": {
-    "set_hekate_reboot_payload": "Você gostaria de copiar o payload Hekate '{}' para '{}'?",
     "not_an_archive": "O arquivo baixado não é um arquivo zip. Isto provavelmente aconteceu devido a um link quebrado. Se o problema persistir depois de 30 minutos, por favor, abra um 'issue' no Github.",
+    "fresh_install": "Você deseja realizar uma instalação limpa?\n\nUma instalação limpa removerá todo o conteúdo do microSD menos as pastas 'emuMMC' e 'Nintendo'.",
     "overwrite_inis": "Você deseja sobrescrever os arquivos de configuração .ini existentes?",
-    "fresh_install": "Você deseja realizar uma instalação limpa?\n\nUma instalação limpa removerá todo o conteúdo do microSD menos as pastas 'emuMMC' e 'Nintendo'."
+	"delete_sysmodules_flags": "Você gostaria de apagar todos os sinalizadores de início dos módulos de sistema (boo2.flag)? Isto desligará todos os módulos de sistema para prevenir erros se você tem algum módulo de sistema instalado que não suporte o último Atmosphère."
   },
   "ams_update": {
+    "pack_label": "GMPACK é um pacote all-in-one (tudo em um) baseado no custom firmware Atmosphère e inclui tudo de mais atual para seu Switch. Este é o pacote oficial da GameMod design.",
     "current_ams": "Atmosphère atual: ",
     "erista_rev": "Revisão: Erista",
     "mariko_rev": "Revisão: Mariko",
-    "pack_label": "GMPACK é um pacote all-in-one (tudo em um) baseado no custom firmware Atmosphère e inclui tudo de mais atual para seu Switch. Este é o pacote oficial da GameMod design.",
     "goma_label": "GNX, também conhecido como GomaNX, é um pacote all-in-one (tudo em um) baseado no custom firmware Atmosphère feito pelo Bruno Goma.",
     "getting_ams": "Baixando GMPACK",
     "reboot_rcm": "O Switch agora irá reiniciar em um payload especial para concluir a instalação."
@@ -86,8 +79,8 @@
     "title": "Configurações da internet"
   },
   "errors": {
+    "mariko_payload_missing": "Para atualizar o Atmosphère em Switches corrigidos o payload precisa ter o nome de \"payload.bin\" e deve estar na raiz do seu microSD.",
     "insufficient_storage": "Não há espaço suficiente no seu microSD para executar esta operação.",
-    "error_message": "{}\nPor favor, tente novamente em alguns minutos. Se o problema persistir, por favor, abra um 'issue' no Github.",
-    "mariko_payload_missing": "Para atualizar o Atmosphère em Switches corrigidos o payload precisa ter o nome de \"payload.bin\" e deve estar na raiz do seu microSD."
+    "error_message": "{}\nPor favor, tente novamente em alguns minutos. Se o problema persistir, por favor, abra um 'issue' no Github."
   }
 }

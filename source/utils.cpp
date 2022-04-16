@@ -157,7 +157,7 @@ namespace util {
             case contentType::ams_cfw: {
 				//int freshInstall = showDialogBoxBlocking("menus/utils/fresh_install"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
                 //int overwriteInis = showDialogBoxBlocking("menus/utils/overwrite_inis"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
-				//int deleteContents = showDialogBoxBlocking("menus/ams_update/delete_sysmodules_flags"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
+				//int deleteContents = showDialogBoxBlocking("menus/utils/delete_sysmodules_flags"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
 				
 				int freshInstall = 0;
 				int overwriteInis = 1;

@@ -6,11 +6,9 @@
 
 #include "app_page.hpp"
 #include "confirm_page.hpp"
-//#include "current_cfw.hpp"
 #include "dialogue_page.hpp"
 #include "download.hpp"
 #include "extract.hpp"
-//#include "fs.hpp"
 #include "utils.hpp"
 #include "worker_page.hpp"
 
@@ -48,22 +46,8 @@ void ListDownloadTab::createList(contentType type)
                 stagedFrame->setTitle(fmt::format("menus/main/getting"_i18n, contentTypeNames[(int)type].data()));
                 stagedFrame->addStage(new ConfirmPage(stagedFrame, text));
 				
-                //if (type != contentType::payloads && type != contentType::hekate_ipl) {
-                    //if (type != contentType::cheats || (this->newCheatsVer != this->currentCheatsVer && this->newCheatsVer != "offline")) {
-                        stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [this, type, url]() { util::downloadArchive(url, type); }));
-                    //}
-                    stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, [this, type]() { util::extractArchive(type); }));
-                //}
-                /*else if (type == contentType::payloads) {
-                    fs::createTree(BOOTLOADER_PL_PATH);
-                    std::string path = std::string(BOOTLOADER_PL_PATH) + title;
-                    stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [url, path]() { download::downloadFile(url, path, OFF); }));
-                }
-                else if (type == contentType::hekate_ipl) {
-                    fs::createTree(BOOTLOADER_PATH);
-                    std::string path = std::string(BOOTLOADER_PATH) + title;
-                    stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [url, path]() { download::downloadFile(url, path, OFF); }));
-                }*/
+                stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [this, type, url]() { util::downloadArchive(url, type); }));
+                stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, [this, type]() { util::extractArchive(type); }));
 				
 				std::string doneMsg = "menus/common/all_done"_i18n;
                 switch (type) {

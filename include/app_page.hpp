@@ -36,14 +36,3 @@ protected:
 public:
     AppPage();
 };
-
-class AppPage_Exclude : public AppPage
-{
-private:
-    std::set<std::pair<brls::ToggleListItem*, std::string>> items;
-    void PopulatePage() override;
-    void CreateLabel() override;
-
-public:
-    AppPage_Exclude();
-};
