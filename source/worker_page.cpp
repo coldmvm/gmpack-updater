@@ -15,6 +15,8 @@ using namespace i18n::literals;
 
 WorkerPage::WorkerPage(brls::StagedAppletFrame* frame, const std::string& text, worker_func_t worker_func) : frame(frame), workerFunc(worker_func), text(text)
 {
+    this->icon = (new brls::Image("romfs:/gui_icon.png"));
+
     this->progressDisp = new brls::ProgressDisplay();
     this->progressDisp->setParent(this);
 
@@ -35,6 +37,8 @@ WorkerPage::WorkerPage(brls::StagedAppletFrame* frame, const std::string& text, 
 
 void WorkerPage::draw(NVGcontext* vg, int x, int y, unsigned width, unsigned height, brls::Style* style, brls::FrameContext* ctx)
 {
+    this->icon->frame(ctx);
+
     if (this->draw_page) {
         if (!this->workStarted) {
             this->workStarted = true;
@@ -71,6 +75,12 @@ void WorkerPage::draw(NVGcontext* vg, int x, int y, unsigned width, unsigned hei
 
 void WorkerPage::layout(NVGcontext* vg, brls::Style* style, brls::FontStash* stash)
 {
+    //page icon
+    this->icon->setWidth(52);
+    this->icon->setHeight(52);
+	this->icon->setBoundaries(style->AppletFrame.imageLeftPadding, style->AppletFrame.imageTopPadding, style->AppletFrame.imageSize, style->AppletFrame.imageSize);
+    this->icon->invalidate(true);
+
     this->label->setWidth(roundf((float)this->width * style->CrashFrame.labelWidth));
 
     this->label->setBoundaries(
@@ -104,6 +114,7 @@ WorkerPage::~WorkerPage()
         if (this->workerThread)
             delete this->workerThread;
     }
+    delete this->icon;
     delete this->progressDisp;
     delete this->label;
     delete this->button;

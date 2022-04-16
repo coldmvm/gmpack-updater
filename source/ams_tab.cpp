@@ -4,6 +4,7 @@
 #include <string>
 
 #include "confirm_page.hpp"
+#include "list_download_tab_confirmation.hpp"
 #include "current_cfw.hpp"
 #include "dialogue_page.hpp"
 #include "download.hpp"
@@ -85,6 +86,10 @@ void AmsTab::CreateStagedFrames(const std::string& text, const std::string& url,
 {
     brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
     stagedFrame->setTitle(operation);
+
+    stagedFrame->addStage(
+        new ListDownloadConfirmationPage(stagedFrame, "menus/main/download_time_warning"_i18n));
+
     stagedFrame->addStage(
         new ConfirmPage(stagedFrame, text));
     stagedFrame->addStage(

@@ -34,7 +34,7 @@ NetPage::NetPage() : AppletFrame(true, true)
         labelText = "Please connect to internet to use this feature.";
         label = new brls::Label(brls::LabelStyle::DESCRIPTION, labelText, true);
         list->addView(label);
-        cancel = new brls::ListItem("menus/common/go_back"_i18n);
+        cancel = new brls::ListItem("menus/common/back"_i18n);
         cancel->getClickEvent()->subscribe([](brls::View* view) { brls::Application::pushView(new MainFrame()); });
         list->addView(cancel);
     }

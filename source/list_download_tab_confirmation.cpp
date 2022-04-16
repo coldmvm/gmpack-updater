@@ -1,4 +1,4 @@
-#include "confirm_page.hpp"
+#include "list_download_tab_confirmation.hpp"
 
 #include <algorithm>
 #include <filesystem>
@@ -10,11 +10,12 @@
 
 namespace i18n = brls::i18n;
 using namespace i18n::literals;
-ConfirmPage::ConfirmPage(brls::StagedAppletFrame* frame, const std::string& text, bool done, bool reboot, bool erista) : done(done), reboot(reboot), erista(erista)
+ListDownloadConfirmationPage::ListDownloadConfirmationPage(brls::StagedAppletFrame* frame, const std::string& text, bool done) : done(done)
 {
     this->icon = (new brls::Image("romfs:/gui_icon.png"));
+	this->image = (new brls::Image("romfs:/warning.png"));
 
-    this->button = (new brls::Button(brls::ButtonStyle::REGULAR))->setLabel(done ? "menus/common/back"_i18n : "menus/common/continue"_i18n);
+	this->button = (new brls::Button(brls::ButtonStyle::REGULAR))->setLabel(done ? "menus/common/back"_i18n : "menus/common/continue"_i18n);
     this->button->setParent(this);
     this->button->getClickEvent()->subscribe([frame, this](View* view) {
         if (!frame->isLastStage()) {
@@ -23,32 +24,17 @@ ConfirmPage::ConfirmPage(brls::StagedAppletFrame* frame, const std::string& text
         else if (this->done) {
             brls::Application::pushView(new MainFrame());
         }
-        else if (this->reboot) {
-            if (this->erista) {
-                util::rebootToPayload(RCM_PAYLOAD_PATH);
-            }
-            else {
-                if (std::filesystem::exists(UPDATE_BIN_PATH)) {
-                    fs::copyFile(UPDATE_BIN_PATH, MARIKO_PAYLOAD_PATH_TEMP);
-                }
-                else {
-                    fs::copyFile(REBOOT_PAYLOAD_PATH, MARIKO_PAYLOAD_PATH_TEMP);
-                }
-                fs::copyFile(RCM_PAYLOAD_PATH, MARIKO_PAYLOAD_PATH);
-                util::shutDown(true);
-            }
-        }
     });
 
-    this->label = new brls::Label(brls::LabelStyle::DIALOG, text, true);
-    this->label->setHorizontalAlign(NVG_ALIGN_CENTER);
+    this->label = new brls::Label(brls::LabelStyle::REGULAR, text, true);
+    this->label->setHorizontalAlign(NVG_ALIGN_LEFT);
     this->label->setParent(this);
 
-    if (this->done || this->reboot)
+    if (this->done)
         this->registerAction("", brls::Key::B, [this] { return true; });
 }
 
-void ConfirmPage::draw(NVGcontext* vg, int x, int y, unsigned width, unsigned height, brls::Style* style, brls::FrameContext* ctx)
+void ListDownloadConfirmationPage::draw(NVGcontext* vg, int x, int y, unsigned width, unsigned height, brls::Style* style, brls::FrameContext* ctx)
 {
     if (!this->done) {
         auto end = std::chrono::high_resolution_clock::now();
@@ -68,16 +54,17 @@ void ConfirmPage::draw(NVGcontext* vg, int x, int y, unsigned width, unsigned he
         this->button->setState(brls::ButtonState::ENABLED);
     }
     this->icon->frame(ctx);
+    this->image->frame(ctx);
     this->label->frame(ctx);
     this->button->frame(ctx);
 }
 
-brls::View* ConfirmPage::getDefaultFocus()
+brls::View* ListDownloadConfirmationPage::getDefaultFocus()
 {
     return this->button;
 }
 
-void ConfirmPage::layout(NVGcontext* vg, brls::Style* style, brls::FontStash* stash)
+void ListDownloadConfirmationPage::layout(NVGcontext* vg, brls::Style* style, brls::FontStash* stash)
 {
     //page icon
     this->icon->setWidth(52);
@@ -85,12 +72,23 @@ void ConfirmPage::layout(NVGcontext* vg, brls::Style* style, brls::FontStash* st
 	this->icon->setBoundaries(style->AppletFrame.imageLeftPadding, style->AppletFrame.imageTopPadding, style->AppletFrame.imageSize, style->AppletFrame.imageSize);
     this->icon->invalidate(true);
 
+    //watrning image
+    this->image->setWidth(112);
+    this->image->setHeight(102);
+	this->image->setBoundaries(
+        this->x + this->width / 2 - this->image->getWidth() / 2,
+		96,
+        this->image->getWidth(),
+        this->image->getHeight());
+    this->image->invalidate(true);
+	
     this->label->setWidth(this->width);
     this->label->invalidate(true);
     // this->label->setBackground(brls::ViewBackground::DEBUG);
     this->label->setBoundaries(
         this->x + this->width / 2 - this->label->getWidth() / 2,
-        this->y + (this->height - this->label->getHeight() - this->y - style->CrashFrame.buttonHeight) / 2,
+        //this->y + (this->height - this->label->getHeight() - this->y - style->CrashFrame.buttonHeight) / 2,
+		214,
         this->label->getWidth(),
         this->label->getHeight());
 
@@ -104,9 +102,10 @@ void ConfirmPage::layout(NVGcontext* vg, brls::Style* style, brls::FontStash* st
     start = std::chrono::high_resolution_clock::now() + std::chrono::milliseconds(150);
 }
 
-ConfirmPage::~ConfirmPage()
+ListDownloadConfirmationPage::~ListDownloadConfirmationPage()
 {
-	delete this->icon;
+    delete this->icon;
     delete this->label;
     delete this->button;
+	delete this->image;
 }

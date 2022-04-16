@@ -16,6 +16,7 @@ private:
     int progressValue = 0;
     bool workStarted = false;
     bool draw_page = true;
+    brls::Image* icon = nullptr;
     std::thread* workerThread;
     worker_func_t workerFunc;
 

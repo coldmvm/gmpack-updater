@@ -69,6 +69,7 @@ enum class contentType
 };
 
 constexpr std::string_view contentTypeNames[4]{"firmwares", "app", "cfws", "translations"};
+constexpr std::string_view contentTypeFullNames[4]{"o firmware", "o homebrew", "o CFW", "a tradução"};
 
 enum class CFW
 {
