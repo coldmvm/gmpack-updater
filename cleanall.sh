@@ -23,7 +23,8 @@ rm -rf output
 cd ..
 
 echo "finishing..."
-rm gmpack-updater.zip
+rm -rf gmpack-updater.*
+
 
 echo ""
 echo "****************************************************************"
