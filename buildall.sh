@@ -5,7 +5,9 @@ echo "****************************************************************"
 echo "*                        SCRIPT STARTED                        *"
 echo "****************************************************************"
 echo ""
-echo "******************* Updating from GitHub..."
+echo "******************* Updating from GitHub (DISCARDING ALL LOCAL CHANGES)..."
+git fetch --all
+git reset --hard origin/main
 git pull origin main
 echo ""
 
