@@ -19,13 +19,13 @@ ChangelogPage::ChangelogPage() : AppletFrame(true, true)
     changes.push_back("\uE016 Aba 'Ferramentas' incluída.\n\uE016 Várias opções incluídas na aba 'Ferramentas'.\n\uE016 Opção de atualizar o homebrew online incluída.\n\uE016 Código limpo.");
 	
 	verTitles.push_back("v1.0.3");
-	changes.push_back("\uE016 Funções extras do AIO que não serão usados pelo APG foram removidas.\n\uE016 Melhorias nos textos.\n\uE016 Limpeza no código para remover dependencia com o AIO.");
+	changes.push_back("\uE016 Funções extras do AIO que não serão usados pelo APG foram removidas.\n\uE016 Melhorias nos textos.\n\uE016 Limpeza no código para remover dependência com o AIO.");
 	
 	verTitles.push_back("v1.1.0");
-	changes.push_back("\uE016 Incluída uma função para baixar traduções.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Limpeza no código para remover dependencia com o AIO.");
+	changes.push_back("\uE016 Incluída uma função para baixar traduções.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Limpeza no código para remover dependência com o AIO.");
 	
 	verTitles.push_back("v1.1.1");
-	changes.push_back("\uE016 Foi corrigido um problema de crash ao iniciar o homebrew sem internet.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Limpeza no código para remover dependencia com o AIO.");
+	changes.push_back("\uE016 Foi corrigido um problema de crash ao iniciar o homebrew sem internet.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Limpeza no código para remover dependência com o AIO.");
 	
 	verTitles.push_back("v1.1.2");
 	changes.push_back("\uE016 Adicionada a opção de baixar o pacote GNX.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Nova imagem para o homebrew.");
@@ -34,7 +34,7 @@ ChangelogPage::ChangelogPage() : AppletFrame(true, true)
 	changes.push_back("\uE016 Aba 'Créditos' incluída.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Limpeza no código em geral.");
 	
 	verTitles.push_back("v1.1.4");
-	changes.push_back("\uE016 Uma mensagem de aviso foi adicionada antes de downloads grandes.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Agora o homebrew usa o ícone em toda aba.\n\uE016 Limpeza no código para remover dependencia com o AIO.");
+	changes.push_back("\uE016 Uma mensagem de aviso foi adicionada antes de downloads grandes.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Agora o homebrew usa o ícone em toda aba.\n\uE016 Limpeza no código para remover dependência com o AIO.");
 
     for (int i = verTitles.size() - 1; i >= 0; i--) {
         listItem = new brls::ListItem(verTitles[i]);
