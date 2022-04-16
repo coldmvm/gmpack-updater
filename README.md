@@ -49,6 +49,7 @@ A GameMod design não detém nenhum direito de cópia sobre nenhum arquivo baixa
 - [HamletDuFromage](https://github.com/HamletDuFromage/) pelo brilhante homebew AIO-Switch-Updater.
 - [natinusala](https://github.com/natinusala) pela biblioteca Borealis.
 - [Team Neptune](https://github.com/Team-Neptune) pelo código RCM usado.
+- [CostelaBR](https://github.com/AMSNX) pela sugestão da função de baixar traduções.
 
 ## 📝 Licença
 
