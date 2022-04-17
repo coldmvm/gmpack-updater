@@ -33,11 +33,11 @@ void ListTranslationsTab::createList(contentType type)
     if (links.size()) {
         for (const auto& link : links) {
 
-            const std::string title = link.first;
             const std::string url = link.second;
+            const std::string title = util::getTranslationName(url);
             //const std::string text("menus/common/download"_i18n + link.first + "menus/common/from"_i18n + url);
-            const std::string text("menus/common/download"_i18n + link.first);
-            listItem = new brls::ListItem(link.first);
+            const std::string text("menus/common/download"_i18n + title);
+            listItem = new brls::ListItem(title);
             listItem->setHeight(LISTITEM_HEIGHT);
             listItem->getClickEvent()->subscribe([this, type, text, url, title](brls::View* view) {
                 brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();

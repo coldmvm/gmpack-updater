@@ -52,4 +52,5 @@ namespace util {
     std::string getGMPackVersion();
     std::vector<std::string> isTranslationPresent(const std::string& url, std::string& name, std::string& link);
     void doDelete(std::vector<std::string> folders, contentType type);
+    std::string getTranslationName(const std::string& url);
 }  // namespace util

@@ -427,4 +427,14 @@ namespace util {
         }
         ProgressEvent::instance().incrementStep(1);
     }
+
+    std::string getTranslationName(const std::string& url)
+    {
+        nlohmann::ordered_json transLinks;
+        download::getRequest(url, transLinks);
+
+        std::vector<std::pair<std::string, std::string>> transVec;
+        transVec = download::getLinksFromJson(util::getValueFromKey(transLinks, "details"));
+		return transVec[0].second;
+    }
 }  // namespace util
