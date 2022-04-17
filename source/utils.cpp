@@ -386,17 +386,45 @@ namespace util {
         return line;
     }
 
-    bool isTranslationPresent(const auto& tid)
+    std::vector<std::string> isTranslationPresent(const std::string& url, std::string& name, std::string& link)
     {
+        std::vector<std::string> folders;
+        nlohmann::ordered_json transLinks;
+        download::getRequest(url, transLinks);
+
+        std::vector<std::pair<std::string, std::string>> transVec;
+        transVec = download::getLinksFromJson(util::getValueFromKey(transLinks, "folders"));
+
         std::string contentsPath = util::getContentsPath();
-		const auto& tid2 = {"0100000000001000", "0100000000001007", "0100000000001013"};
-        for (const auto& searchTID : tid2) {
-            if (std::filesystem::exists(contentsPath + searchTID) && !std::filesystem::is_empty(contentsPath + searchTID)) {
-                return true;
-                break;
+
+        for (const auto& folder : transVec) {
+            if (std::filesystem::exists(contentsPath + folder.second) && !std::filesystem::is_empty(contentsPath + folder.second)) {
+                folders.push_back(contentsPath + folder.second);
             }
         }
-        return false;
+
+        transVec.clear();
+        transVec = download::getLinksFromJson(util::getValueFromKey(transLinks, "details"));
+		name = transVec[0].second;
+        link = transVec[1].second;
+
+        return folders;
     }
 
+    void doDelete(std::vector<std::string> folders, contentType type)
+    {
+        ProgressEvent::instance().setTotalSteps(folders.size() + 1);
+        ProgressEvent::instance().setStep(0);
+        switch (type) {
+            case contentType::translations:
+                for (std::string f : folders) {
+                  std::filesystem::remove_all(f);
+				  ProgressEvent::instance().incrementStep(1);
+                }
+                break;
+            default:
+                break;
+        }
+        ProgressEvent::instance().incrementStep(1);
+    }
 }  // namespace util
