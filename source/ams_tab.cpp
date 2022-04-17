@@ -32,18 +32,18 @@ AmsTab::AmsTab(const nlohmann::json& nxlinks, const bool erista, const bool hide
 			(erista ? "\n" + "menus/ams_update/erista_rev"_i18n : "\n" + "menus/ams_update/mariko_rev"_i18n), true);
         this->addView(description);
 
-        CreateDownloadItems(util::getValueFromKey(cfws, "GMPack"), false);
+        CreateDownloadItems(util::getValueFromKey(cfws, "GMPack"), false, "GMPACK");
 
         description = new brls::Label(brls::LabelStyle::DESCRIPTION, "menus/ams_update/goma_label"_i18n, true);
         this->addView(description);
 
-		CreateDownloadItems(util::getValueFromKey(cfws, "GNX"), false);
+		CreateDownloadItems(util::getValueFromKey(cfws, "GNX"), false, "GNX");
     }
 }
 
-void AmsTab::CreateDownloadItems(const nlohmann::ordered_json& cfw_links, bool hekate)
+void AmsTab::CreateDownloadItems(const nlohmann::ordered_json& cfw_links, bool hekate, const std::string& pack)
 {
-    std::string operation("menus/ams_update/getting_ams"_i18n);
+    std::string operation(fmt::format("menus/main/getting"_i18n, pack));
     std::vector<std::pair<std::string, std::string>> links;
     links = download::getLinksFromJson(cfw_links);
     if (links.size()) {
