@@ -31,7 +31,7 @@
   "main": {
     "getting": "Baixando {}",
     "firmware_text": "Firmwares disponíveis em 'https://darthsternie.net/switch-firmwares/'.\nDepois de baixada ela será extraído para a pasta '/firmware' e você pode, então, instalá-la usando o homebrew 'Daybreak'.\nFirmware atual: ",
-    "translations_text": "As traduções são feitas por membros da cena e tem a finalidade de distribuir acessibilidade linguística aos jogos.\n\n\u25c6 Algumas traduções precisam de passos específicos para que funcionem. Para maiores detalhes consulte os sites dos criadores das legendas:\nhttps://www.jumpmanclubbrasil.com.br/\nhttps://traducoespkg.tumblr.com/\nhttps://nintendonxbr.blogspot.com/\n\nAbaixo estão listadas algumas traduções disponíveis para download.",
+    "translations_text": "As traduções são feitas por membros da cena e tem a finalidade de distribuir acessibilidade linguística aos jogos.\n\n\u25c6 Algumas traduções precisam de passos específicos para que funcionem. Para maiores detalhes consulte os sites dos criadores das traduções:\nhttps://www.jumpmanclubbrasil.com.br/\nhttps://traducoespkg.tumblr.com/\nhttps://nintendonxbr.blogspot.com/\n\nAbaixo estão listadas algumas traduções disponíveis para download.",
     "firmware": "firmware",
     "not_found": "não encontrado",
     "links_not_found": "Não foi possível encontrar o link de download! Seu Switch está conectado à Internet?\nSe o problema persistir, abra um 'issue' no GitHub.",
