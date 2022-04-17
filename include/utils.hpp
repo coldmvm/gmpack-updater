@@ -40,9 +40,6 @@ namespace util {
     std::string readFile(const std::string& path);
     bool isErista();
     void removeSysmodulesFlags(const std::string& directory);
-    void deleteEverythingButeMMCNintendo(const std::string& directory);
-    void writeLog(std::string line);
-    std::string getGMPackVersion();
     std::string lowerCase(const std::string& str);
     std::string upperCase(const std::string& str);
     std::string getErrorMessage(long status_code);
@@ -50,4 +47,8 @@ namespace util {
     std::string getContentsPath();
     bool getBoolValue(const nlohmann::json& jsonFile, const std::string& key);
     const nlohmann::ordered_json getValueFromKey(const nlohmann::ordered_json& jsonFile, const std::string& key);
+    void deleteEverythingButeMMCNintendo(const std::string& directory);
+    void writeLog(std::string line);
+    std::string getGMPackVersion();
+	bool isTranslationPresent(const auto& tid);
 }  // namespace util

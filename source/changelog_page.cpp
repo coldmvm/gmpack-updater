@@ -37,7 +37,7 @@ ChangelogPage::ChangelogPage() : AppletFrame(true, true)
 	changes.push_back("\uE016 Uma mensagem de aviso foi adicionada antes de downloads grandes.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Agora o homebrew usa o ícone em toda aba.\n\uE016 Limpeza no código para remover dependência com o AIO.");
 
     verTitles.push_back("v1.1.5");
-	changes.push_back("\uECorrigido um erro que fazia com que a aplicação não trocasse o nome do CFW sendo baixado.\n\uE016 Melhorias nos textos do homebrew.");
+	changes.push_back("\uE016 Corrigido um erro que fazia com que a aplicação não trocasse o nome do CFW sendo baixado.\n\uE016 Melhorias nos textos do homebrew.");
 
     for (int i = verTitles.size() - 1; i >= 0; i--) {
         listItem = new brls::ListItem(verTitles[i]);
