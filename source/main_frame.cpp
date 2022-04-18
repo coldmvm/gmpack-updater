@@ -51,7 +51,7 @@ MainFrame::MainFrame() : TabFrame()
 
         this->setFooterText(fmt::format("menus/main/footer_text"_i18n,
             (!tag.empty() && iTag > iAppVersion) ? "v" + std::string(AppVersion) + "menus/main/new_update"_i18n : AppVersion,
-            R_SUCCEEDED(fs::getFreeStorageSD(freeStorage)) ? (float)freeStorage / 0x40000000 : -1));
+            R_SUCCEEDED(fs::getFreeStorageSD(freeStorage)) ? floor(((float)freeStorage / 0x40000000) * 100.0) / 100.0 : -1));
     }
     else {
         this->setFooterText(fmt::format("menus/main/footer_text"_i18n, std::string(AppVersion) + "menus/main/footer_text_not_connected"_i18n, R_SUCCEEDED(fs::getFreeStorageSD(freeStorage)) ? (float)freeStorage / 0x40000000 : -1));

@@ -386,55 +386,36 @@ namespace util {
         return line;
     }
 
-    std::vector<std::string> isTranslationPresent(const std::string& url, std::string& name, std::string& link)
-    {
-        std::vector<std::string> folders;
-        nlohmann::ordered_json transLinks;
-        download::getRequest(url, transLinks);
-
-        std::vector<std::pair<std::string, std::string>> transVec;
-        transVec = download::getLinksFromJson(util::getValueFromKey(transLinks, "folders"));
-
-        std::string contentsPath = util::getContentsPath();
-
-        for (const auto& folder : transVec) {
-            if (std::filesystem::exists(contentsPath + folder.second) && !std::filesystem::is_empty(contentsPath + folder.second)) {
-                folders.push_back(contentsPath + folder.second);
-            }
-        }
-
-        transVec.clear();
-        transVec = download::getLinksFromJson(util::getValueFromKey(transLinks, "details"));
-		name = transVec[0].second;
-        link = transVec[1].second;
-
-        return folders;
-    }
-
     void doDelete(std::vector<std::string> folders, contentType type)
     {
         ProgressEvent::instance().setTotalSteps(folders.size() + 1);
         ProgressEvent::instance().setStep(0);
         switch (type) {
-            case contentType::translations:
+            case contentType::translations: {
+                std::string contentsPath = util::getContentsPath();
                 for (std::string f : folders) {
-                  std::filesystem::remove_all(f);
+                  std::filesystem::remove_all(contentsPath + f);
+				  util::writeLog("apagando: " + contentsPath + f);
 				  ProgressEvent::instance().incrementStep(1);
                 }
                 break;
+		    }
             default:
                 break;
         }
         ProgressEvent::instance().incrementStep(1);
     }
 
-    std::string getTranslationName(const std::string& url)
+    bool isTranslationPresent(const std::vector<std::string> folders)
     {
-        nlohmann::ordered_json transLinks;
-        download::getRequest(url, transLinks);
-
-        std::vector<std::pair<std::string, std::string>> transVec;
-        transVec = download::getLinksFromJson(util::getValueFromKey(transLinks, "details"));
-		return transVec[0].second;
+        std::string contentsPath = util::getContentsPath();
+        for (const auto& folder : folders) {
+            if (std::filesystem::exists(contentsPath + folder) && !std::filesystem::is_empty(contentsPath + folder)) {
+				util::writeLog("pasta istranslationpresent: " + contentsPath + folder);
+                return true;
+				break;
+            }
+        }
+        return false;
     }
 }  // namespace util

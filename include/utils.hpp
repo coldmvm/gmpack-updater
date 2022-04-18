@@ -50,7 +50,6 @@ namespace util {
     void deleteEverythingButeMMCNintendo(const std::string& directory);
     void writeLog(std::string line);
     std::string getGMPackVersion();
-    std::vector<std::string> isTranslationPresent(const std::string& url, std::string& name, std::string& link);
     void doDelete(std::vector<std::string> folders, contentType type);
-    std::string getTranslationName(const std::string& url);
+    bool isTranslationPresent(const std::vector<std::string>);
 }  // namespace util

@@ -12,7 +12,7 @@ constexpr const char APP_URL[] = "https://github.com/coldmvm/gmpack-updater/rele
 constexpr const char TAGS_INFO[] = "https://api.github.com/repos/coldmvm/gmpack-updater/releases/latest";
 constexpr const char APP_FILENAME[] = "/config/gmpack-updater/app.zip";
 
-constexpr const char NXLINKS_URL[] = "https://raw.githubusercontent.com/coldmvm/nx-links/master/nx-links-v115.json";
+constexpr const char NXLINKS_URL[] = "https://raw.githubusercontent.com/coldmvm/nx-links/main/nx-links-v115.json";
 
 constexpr const char FIRMWARE_FILENAME[] = "/config/gmpack-updater/firmware.zip";
 constexpr const char FIRMWARE_PATH[] = "/firmware/";
