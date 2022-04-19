@@ -24,6 +24,8 @@ namespace {
 
 MainFrame::MainFrame() : TabFrame()
 {
+    bool newversion = false;
+
     //util::writeLog("APG started");
 	this->setIcon("romfs:/gui_icon.png");
     this->setTitle(AppTitle);
@@ -49,8 +51,10 @@ MainFrame::MainFrame() : TabFrame()
             if(AppVersion[i] != '.') temp += AppVersion[i]; // removing the . from the version
         iAppVersion = std::stoi(temp); // casting from string to integer
 
+        newversion = (iTag > iAppVersion);
+
         this->setFooterText(fmt::format("menus/main/footer_text"_i18n,
-            (!tag.empty() && iTag > iAppVersion) ? "v" + std::string(AppVersion) + "menus/main/new_update"_i18n : AppVersion,
+            (!tag.empty() && newversion) ? "v" + std::string(AppVersion) + "menus/main/new_update"_i18n : AppVersion,
             R_SUCCEEDED(fs::getFreeStorageSD(freeStorage)) ? floor(((float)freeStorage / 0x40000000) * 100.0) / 100.0 : -1));
     }
     else {
@@ -61,25 +65,36 @@ MainFrame::MainFrame() : TabFrame()
     nlohmann::ordered_json nxlinks;
     download::getRequest(NXLINKS_URL, nxlinks);
 
-    bool erista = util::isErista();
+//    if (!newversion) {
+        bool erista = util::isErista();
+        if (!util::getBoolValue(hideStatus, "about"))
+            this->addTab("menus/main/about"_i18n, new AboutTab());
 
-    if (!util::getBoolValue(hideStatus, "about"))
-        this->addTab("menus/main/about"_i18n, new AboutTab());
+        if (!util::getBoolValue(hideStatus, "atmosphere"))
+            this->addTab("menus/main/update_ams"_i18n, new AmsTab(nxlinks, erista, util::getBoolValue(hideStatus, "atmosphereentries")));
 
-    if (!util::getBoolValue(hideStatus, "atmosphere"))
-        this->addTab("menus/main/update_ams"_i18n, new AmsTab(nxlinks, erista, util::getBoolValue(hideStatus, "atmosphereentries")));
+        if (!util::getBoolValue(hideStatus, "firmwares"))
+            this->addTab("menus/main/download_firmware"_i18n, new ListDownloadTab(contentType::fw, nxlinks));
 
-    if (!util::getBoolValue(hideStatus, "translations"))
-        this->addTab("menus/main/download_translations"_i18n, new ListTranslationsTab(contentType::translations, nxlinks));
+        if (!util::getBoolValue(hideStatus, "translations"))
+            this->addTab("menus/main/download_translations"_i18n, new ListTranslationsTab(contentType::translations, nxlinks));
 
-    if (!util::getBoolValue(hideStatus, "firmwares"))
-        this->addTab("menus/main/download_firmware"_i18n, new ListDownloadTab(contentType::fw, nxlinks));
+        if (!util::getBoolValue(hideStatus, "tools"))
+            this->addTab("menus/main/tools"_i18n, new ToolsTab(tag, erista, hideStatus));
 
-    if (!util::getBoolValue(hideStatus, "tools"))
-        this->addTab("menus/main/tools"_i18n, new ToolsTab(tag, erista, hideStatus));
+        this->addSeparator();
 
-    if (!util::getBoolValue(hideStatus, "credits"))
-        this->addTab("menus/main/credits"_i18n, new CreditsTab());
+        if (!util::getBoolValue(hideStatus, "credits"))
+            this->addTab("menus/main/credits"_i18n, new CreditsTab());
 
-    this->registerAction("", brls::Key::B, [this] { return true; });
+        this->registerAction("", brls::Key::B, [this] { return true; });
+/*    }
+    else
+    {
+        if (!util::getBoolValue(hideStatus, "updating"))
+            this->addTab("menus/main/about"_i18n, new UpdatingTab());
+
+        //TIRAR DEPOIS DE PRONTO
+        this->registerAction("", brls::Key::B, [this] { return true; });
+    }*/
 }

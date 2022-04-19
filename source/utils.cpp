@@ -174,6 +174,7 @@ namespace util {
             }
             case contentType::translations:
                 extract::extract(TRANSLATIONS_ZIP_PATH, AMS_CONTENTS);
+				
                 break;
             default:
                 break;
@@ -395,7 +396,6 @@ namespace util {
                 std::string contentsPath = util::getContentsPath();
                 for (std::string f : folders) {
                   std::filesystem::remove_all(contentsPath + f);
-				  util::writeLog("apagando: " + contentsPath + f);
 				  ProgressEvent::instance().incrementStep(1);
                 }
                 break;
@@ -411,7 +411,6 @@ namespace util {
         std::string contentsPath = util::getContentsPath();
         for (const auto& folder : folders) {
             if (std::filesystem::exists(contentsPath + folder) && !std::filesystem::is_empty(contentsPath + folder)) {
-				util::writeLog("pasta istranslationpresent: " + contentsPath + folder);
                 return true;
 				break;
             }
