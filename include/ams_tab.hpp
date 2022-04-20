@@ -11,20 +11,9 @@ private:
     brls::Label* description;
     int size = 0;
     bool erista;
-    //nlohmann::ordered_json hekate;
-    std::string GetRepoName(const std::string& repo);
-    std::set<std::string> GetLastDownloadedModules(const std::string& json_path);
-    void CreateStagedFrames(const std::string& text, const std::string& url, const std::string& operation, bool erista, bool hekate = false, const std::string& text_hekate = "", const std::string& hekate_url = "");
-    void CreateDownloadItems(const nlohmann::ordered_json& cfw_links, bool hekate = true, const std::string& pack = "");
-    nlohmann::ordered_json SortDeepseaModules(const nlohmann::ordered_json& modules);
+    void CreateStagedFrames(const std::string& text, const std::string& url, const std::string& operation, bool erista);
+    void CreateDownloadItems(const nlohmann::ordered_json& cfw_links, const std::string& pack = "");
 
 public:
     AmsTab(const nlohmann::json& nxlinks, const bool erista = true, const bool hideStandardEntries = false);
-};
-
-class UnTogglableListItem : public brls::ToggleListItem
-{
-public:
-    UnTogglableListItem(const std::string& label, bool initialValue, std::string description = "", std::string onValue = "On", std::string offValue = "Off") : ToggleListItem(label, initialValue, description, onValue, offValue) {}
-    virtual bool onClick() override;
 };
