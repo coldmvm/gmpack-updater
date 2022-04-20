@@ -15,5 +15,5 @@ private:
     brls::StagedAppletFrame* stagedFrame;
 
 public:
-    ToolsTab(const std::string& tag, bool erista = true, const nlohmann::json& hideStatus = {});
+    ToolsTab(const std::string& tag, bool erista = true);
 };

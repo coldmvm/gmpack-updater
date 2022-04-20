@@ -19,7 +19,7 @@ namespace {
     constexpr const char AppVersion[] = APP_VERSION;
 }
 
-ToolsTab::ToolsTab(const std::string& tag, bool erista, const nlohmann::json& hideStatus) : brls::List()
+ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
 {
     if (!tag.empty()) {
         //fetching the version as a number
@@ -112,8 +112,8 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista, const nlohmann::json& hi
     });
     changelog->setHeight(LISTITEM_HEIGHT);
 
-    if (!util::getBoolValue(hideStatus, "netsettings")) this->addView(netSettings);
-    if (!util::getBoolValue(hideStatus, "browser")) this->addView(browser);
-    if (!util::getBoolValue(hideStatus, "cleanup")) this->addView(cleanUp);
+    this->addView(netSettings);
+    this->addView(browser);
+    this->addView(cleanUp);
     this->addView(changelog);
 }

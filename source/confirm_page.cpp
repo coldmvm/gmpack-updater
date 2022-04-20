@@ -10,7 +10,7 @@
 
 namespace i18n = brls::i18n;
 using namespace i18n::literals;
-ConfirmPage::ConfirmPage(brls::StagedAppletFrame* frame, const std::string& text, bool done, bool reboot, bool erista) : done(done), reboot(reboot), erista(erista)
+ConfirmPage::ConfirmPage(brls::StagedAppletFrame* frame, const std::string& text, bool done, bool reboot, bool erista, const bool& isUpdating) : done(done), reboot(reboot), erista(erista)
 {
     this->icon = (new brls::Image("romfs:/gui_icon.png"));
 
@@ -44,8 +44,17 @@ ConfirmPage::ConfirmPage(brls::StagedAppletFrame* frame, const std::string& text
     this->label->setHorizontalAlign(NVG_ALIGN_CENTER);
     this->label->setParent(this);
 
-    if (this->done || this->reboot)
+    if (!isUpdating)
+    {
+        if (this->done || this->reboot)
+            this->registerAction("", brls::Key::B, [this] { return true; });
+    }
+    else
+    {
+        this->registerAction("", brls::Key::A, [this] { return true; });
         this->registerAction("", brls::Key::B, [this] { return true; });
+        this->registerAction("", brls::Key::PLUS, [this] { return true; });
+    }
 }
 
 void ConfirmPage::draw(NVGcontext* vg, int x, int y, unsigned width, unsigned height, brls::Style* style, brls::FrameContext* ctx)

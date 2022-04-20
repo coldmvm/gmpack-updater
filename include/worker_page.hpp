@@ -21,7 +21,7 @@ private:
     worker_func_t workerFunc;
 
 public:
-    WorkerPage(brls::StagedAppletFrame* frame, const std::string& text, worker_func_t worker_func);
+    WorkerPage(brls::StagedAppletFrame* frame, const std::string& text, worker_func_t worker_func, const bool& isUpdating = false);
     ~WorkerPage();
 
     void draw(NVGcontext* vg, int x, int y, unsigned width, unsigned height, brls::Style* style, brls::FrameContext* ctx) override;

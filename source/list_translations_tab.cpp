@@ -94,10 +94,6 @@ void ListTranslationsTab::createList(contentType type)
             itemFoldersTemp.push_back(folders.substr(pos_start));
 
             const std::string title = fmt::format("{} {} ({})", foundTitle, entry.name, entry.size);
-			util::writeLog("title: " + title);
-			util::writeLog("entry.name: " + entry.name);
-            util::writeLog("entry.size: " + entry.size);
-            util::writeLog("\n");
             //const std::string title = foundTitle + entry.name;
 
 			const std::vector<std::string> itemFolders(itemFoldersTemp);

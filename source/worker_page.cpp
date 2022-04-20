@@ -13,7 +13,7 @@
 namespace i18n = brls::i18n;
 using namespace i18n::literals;
 
-WorkerPage::WorkerPage(brls::StagedAppletFrame* frame, const std::string& text, worker_func_t worker_func) : frame(frame), workerFunc(worker_func), text(text)
+WorkerPage::WorkerPage(brls::StagedAppletFrame* frame, const std::string& text, worker_func_t worker_func, const bool& isUpdating) : frame(frame), workerFunc(worker_func), text(text)
 {
     this->icon = (new brls::Image("romfs:/gui_icon.png"));
 
@@ -27,12 +27,21 @@ WorkerPage::WorkerPage(brls::StagedAppletFrame* frame, const std::string& text, 
     this->button = new brls::Button(brls::ButtonStyle::REGULAR);
     this->button->setParent(this);
 
-    this->registerAction("menus/common/cancel"_i18n, brls::Key::B, [this] {
-        ProgressEvent::instance().setInterupt(true);
-        return true;
-    });
-    this->registerAction("", brls::Key::A, [this] { return true; });
-    this->registerAction("", brls::Key::PLUS, [this] { return true; });
+    if (!isUpdating)
+    {
+        this->registerAction("menus/common/cancel"_i18n, brls::Key::B, [this] {
+            ProgressEvent::instance().setInterupt(true);
+            return true;
+        });
+        this->registerAction("", brls::Key::A, [this] { return true; });
+        this->registerAction("", brls::Key::PLUS, [this] { return true; });
+    }
+    else
+    {
+        this->registerAction("", brls::Key::A, [this] { return true; });
+        this->registerAction("", brls::Key::B, [this] { return true; });
+        this->registerAction("", brls::Key::PLUS, [this] { return true; });
+    }
 }
 
 void WorkerPage::draw(NVGcontext* vg, int x, int y, unsigned width, unsigned height, brls::Style* style, brls::FrameContext* ctx)

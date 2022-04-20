@@ -24,6 +24,7 @@
     "confirm": "Confirmar",
     "cancel": "Cancelar",
     "updating": "Atualizando o homebrew",
+    "update_label": "Chegou a hora de fazer mais uma atualização do APG!\nSiga os passos na tela para atualizá-lo e, após o processo ser concluído, o homebrew será reiniciado para que você possa aproveitar as novas funções.",
     "ok": "Ok"
   },
   "changelog": {
@@ -52,7 +53,7 @@
   },
   "tools": {
     "batch_copy_not_found": "Os segintes arquivos não foram encontrados e não puderam ser copiados:\n",
-    "update_app": "Atualizar o aplicativo (v{})",
+    "update_app": "Atualizar o homebrew (v{})",
     "dl_app": "Baixar:\nAtualizador Pacote GameMod (v{})",
     "internet_settings": "Editar configurações de internet",
     "browser": "Navegador web",

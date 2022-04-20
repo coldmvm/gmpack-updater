@@ -12,7 +12,7 @@ constexpr const char APP_URL[] = "https://github.com/coldmvm/gmpack-updater/rele
 constexpr const char TAGS_INFO[] = "https://api.github.com/repos/coldmvm/gmpack-updater/releases/latest";
 constexpr const char APP_FILENAME[] = "/config/gmpack-updater/app.zip";
 
-constexpr const char NXLINKS_URL[] = "https://raw.githubusercontent.com/coldmvm/nx-links/main/nx-links-v115.json";
+constexpr const char NXLINKS_URL[] = "https://raw.githubusercontent.com/coldmvm/nx-links/master/nx-links-v116.json";
 
 constexpr const char FIRMWARE_FILENAME[] = "/config/gmpack-updater/firmware.zip";
 constexpr const char FIRMWARE_PATH[] = "/firmware/";
@@ -43,7 +43,6 @@ constexpr const char AMS_DIRECTORY_PATH[] = "/config/gmpack-updater/atmosphere/"
 constexpr const char SEPT_DIRECTORY_PATH[] = "/config/gmpack-updater/sept/";
 constexpr const char FW_DIRECTORY_PATH[] = "/firmware/";
 
-constexpr const char HIDE_TABS_JSON[] = "/config/gmpack-updater/hide_tabs.json";
 constexpr const char COPY_FILES_TXT[] = "/config/gmpack-updater/copy_files.txt";
 constexpr const char LANGUAGE_JSON[] = "/config/gmpack-updater/language.json";
 

@@ -16,28 +16,26 @@
 namespace i18n = brls::i18n;
 using namespace i18n::literals;
 
-AmsTab::AmsTab(const nlohmann::json& nxlinks, const bool erista, const bool hideStandardEntries) : brls::List()
+AmsTab::AmsTab(const nlohmann::json& nxlinks, const bool erista) : brls::List()
 {
     this->erista = erista;
     auto cfws = util::getValueFromKey(nxlinks, "cfws");
 
-    if (!hideStandardEntries) {
-        std::string packVersion = util::getGMPackVersion();
+    std::string packVersion = util::getGMPackVersion();
 
-        this->description = new brls::Label(brls::LabelStyle::DESCRIPTION,
-            "menus/ams_update/pack_label"_i18n + "\n" +
-            (CurrentCfw::running_cfw == CFW::ams ? "menus/ams_update/current_ams"_i18n + CurrentCfw::getAmsInfo() : "") +
-			(util::getGMPackVersion()) +
-			(erista ? "\n" + "menus/ams_update/erista_rev"_i18n : "\n" + "menus/ams_update/mariko_rev"_i18n), true);
-        this->addView(description);
+    this->description = new brls::Label(brls::LabelStyle::DESCRIPTION,
+        "menus/ams_update/pack_label"_i18n + "\n" +
+        (CurrentCfw::running_cfw == CFW::ams ? "menus/ams_update/current_ams"_i18n + CurrentCfw::getAmsInfo() : "") +
+        (util::getGMPackVersion()) +
+        (erista ? "\n" + "menus/ams_update/erista_rev"_i18n : "\n" + "menus/ams_update/mariko_rev"_i18n), true);
+    this->addView(description);
 
-        CreateDownloadItems(util::getValueFromKey(cfws, "GMPack"), "GMPACK");
+    CreateDownloadItems(util::getValueFromKey(cfws, "GMPack"), "GMPACK");
 
-        description = new brls::Label(brls::LabelStyle::DESCRIPTION, "menus/ams_update/goma_label"_i18n, true);
-        this->addView(description);
+    description = new brls::Label(brls::LabelStyle::DESCRIPTION, "menus/ams_update/goma_label"_i18n, true);
+    this->addView(description);
 
-		CreateDownloadItems(util::getValueFromKey(cfws, "GNX"), "GNX");
-    }
+    CreateDownloadItems(util::getValueFromKey(cfws, "GNX"), "GNX");
 }
 
 void AmsTab::CreateDownloadItems(const nlohmann::ordered_json& cfw_links, const std::string& pack)
@@ -82,13 +80,9 @@ void AmsTab::CreateStagedFrames(const std::string& text, const std::string& url,
     stagedFrame->addStage(
         new ListDownloadConfirmationPage(stagedFrame, "menus/main/download_time_warning"_i18n));
 
-    stagedFrame->addStage(
-        new ConfirmPage(stagedFrame, text));
-    stagedFrame->addStage(
-        new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [url]() { util::downloadArchive(url, contentType::ams_cfw); }));
-    stagedFrame->addStage(
-        new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, []() { util::extractArchive(contentType::ams_cfw); }));
-    stagedFrame->addStage(
-        new ConfirmPage(stagedFrame, "menus/ams_update/reboot_rcm"_i18n, false, true, erista));
+    stagedFrame->addStage(new ConfirmPage(stagedFrame, text));
+    stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [url]() { util::downloadArchive(url, contentType::ams_cfw); }));
+    stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, []() { util::extractArchive(contentType::ams_cfw); }));
+    stagedFrame->addStage(new ConfirmPage(stagedFrame, "menus/ams_update/reboot_rcm"_i18n, false, true, erista));
     brls::Application::pushView(stagedFrame);
 }

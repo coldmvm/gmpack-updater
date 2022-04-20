@@ -5,6 +5,7 @@
 
 #include "about_tab.hpp"
 #include "ams_tab.hpp"
+#include "update_tab.hpp"
 #include "download.hpp"
 #include "fs.hpp"
 #include "list_download_tab.hpp"
@@ -26,7 +27,6 @@ MainFrame::MainFrame() : TabFrame()
 {
     bool newversion = false;
 
-    //util::writeLog("APG started");
 	this->setIcon("romfs:/gui_icon.png");
     this->setTitle(AppTitle);
 
@@ -61,40 +61,33 @@ MainFrame::MainFrame() : TabFrame()
         this->setFooterText(fmt::format("menus/main/footer_text"_i18n, std::string(AppVersion) + "menus/main/footer_text_not_connected"_i18n, R_SUCCEEDED(fs::getFreeStorageSD(freeStorage)) ? (float)freeStorage / 0x40000000 : -1));
     }
 
-    json hideStatus = fs::parseJsonFile(HIDE_TABS_JSON);
     nlohmann::ordered_json nxlinks;
     download::getRequest(NXLINKS_URL, nxlinks);
 
-//    if (!newversion) {
+//newversion = false;
+
         bool erista = util::isErista();
-        if (!util::getBoolValue(hideStatus, "about"))
-            this->addTab("menus/main/about"_i18n, new AboutTab());
 
-        if (!util::getBoolValue(hideStatus, "atmosphere"))
-            this->addTab("menus/main/update_ams"_i18n, new AmsTab(nxlinks, erista, util::getBoolValue(hideStatus, "atmosphereentries")));
+    if (!newversion) {
+        this->addTab("menus/main/about"_i18n, new AboutTab());
 
-        if (!util::getBoolValue(hideStatus, "firmwares"))
-            this->addTab("menus/main/download_firmware"_i18n, new ListDownloadTab(contentType::fw, nxlinks));
+        this->addTab("menus/main/update_ams"_i18n, new AmsTab(nxlinks, erista));
 
-        if (!util::getBoolValue(hideStatus, "translations"))
-            this->addTab("menus/main/download_translations"_i18n, new ListTranslationsTab(contentType::translations, nxlinks));
+        this->addTab("menus/main/download_firmware"_i18n, new ListDownloadTab(contentType::fw, nxlinks));
 
-        if (!util::getBoolValue(hideStatus, "tools"))
-            this->addTab("menus/main/tools"_i18n, new ToolsTab(tag, erista, hideStatus));
+        this->addTab("menus/main/download_translations"_i18n, new ListTranslationsTab(contentType::translations, nxlinks));
+
+        this->addTab("menus/main/tools"_i18n, new ToolsTab(tag, erista));
 
         this->addSeparator();
 
-        if (!util::getBoolValue(hideStatus, "credits"))
-            this->addTab("menus/main/credits"_i18n, new CreditsTab());
+        this->addTab("menus/main/credits"_i18n, new CreditsTab());
 
         this->registerAction("", brls::Key::B, [this] { return true; });
-/*    }
+    }
     else
     {
-        if (!util::getBoolValue(hideStatus, "updating"))
-            this->addTab("menus/main/about"_i18n, new UpdatingTab());
-
-        //TIRAR DEPOIS DE PRONTO
+        this->addTab("Nova atualização", new UpdateTab());
         this->registerAction("", brls::Key::B, [this] { return true; });
-    }*/
+    }
 }
