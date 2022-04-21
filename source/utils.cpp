@@ -406,7 +406,7 @@ namespace util {
         ProgressEvent::instance().incrementStep(1);
     }
 
-    bool isTranslationPresent(const std::vector<std::string> folders)
+    bool isExtraPresent(const std::vector<std::string> folders)
     {
         std::string contentsPath = util::getContentsPath();
         for (const auto& folder : folders) {

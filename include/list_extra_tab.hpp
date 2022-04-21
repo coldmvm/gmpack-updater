@@ -17,6 +17,7 @@ private:
     void setDescription();
     void setDescription(contentType type);
     void displayNotFound();
+    void noItemsToDisplay();
 
 public:
     ListExtraTab(const contentType type, const nlohmann::ordered_json& nxlinks = nlohmann::ordered_json::object());

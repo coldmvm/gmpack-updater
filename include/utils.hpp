@@ -51,5 +51,5 @@ namespace util {
     void writeLog(std::string line);
     std::string getGMPackVersion();
     void doDelete(std::vector<std::string> folders, contentType type);
-    bool isTranslationPresent(const std::vector<std::string>);
+    bool isExtraPresent(const std::vector<std::string>);
 }  // namespace util
