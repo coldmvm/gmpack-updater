@@ -28,7 +28,12 @@ void showScreen(const bool& existHiddenFile)
             brls::Application::pushView(new MainFrame());
     }
     else
-        brls::Application::pushView(new WarningPage("menus/main/launch_warning"_i18n, true));
+    {
+        if (util::getMOTD() != "")
+            brls::Application::pushView(new WarningPage("menus/main/launch_warning"_i18n, true));
+        else
+            brls::Application::pushView(new WarningPage("menus/main/launch_warning"_i18n, false));
+    }
 }
 int main(int argc, char* argv[])
 {
@@ -67,15 +72,6 @@ int main(int argc, char* argv[])
 
     brls::Logger::setLogLevel(brls::LogLevel::DEBUG);
     brls::Logger::debug("Start");
-
-/*
-    if (std::filesystem::exists(HIDDEN_APG_FILE)) {
-        brls::Application::pushView(new MainFrame());
-    }
-    else {
-        brls::Application::pushView(new WarningPage("menus/main/launch_warning"_i18n));
-    }
-*/
 
     showScreen(std::filesystem::exists(HIDDEN_APG_FILE));
 

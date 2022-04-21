@@ -410,24 +410,27 @@ namespace util {
         std::string hiddenFileLine;
 
         std::string MOTDLine = getMOTD();
+        if (MOTDLine != "")
+        {
+            //getting only the first line of the MOTD
+            std::string firstLine;
+            size_t pos_end;
 
-        //getting only the first line of the MOTD
-        std::string firstLine;
-        size_t pos_end;
+            if ((pos_end = MOTDLine.find("\n", 0)) != std::string::npos)
+                firstLine = MOTDLine.substr(0, pos_end);
+            else
+                firstLine = MOTDLine;
 
-        if ((pos_end = MOTDLine.find("\n", 0)) != std::string::npos)
-		    firstLine = MOTDLine.substr(0, pos_end);
-		else
-			firstLine = MOTDLine;
-
-        std::ifstream MOTDFile;
-        MOTDFile.open(HIDDEN_APG_FILE);
-        if (MOTDFile.is_open()) {
-            getline(MOTDFile, hiddenFileLine);
+            std::ifstream MOTDFile;
+            MOTDFile.open(HIDDEN_APG_FILE);
+            if (MOTDFile.is_open()) {
+                getline(MOTDFile, hiddenFileLine);
+            }
+            MOTDFile.close();
+            return (hiddenFileLine == firstLine);
         }
-        MOTDFile.close();
-
-        return (hiddenFileLine == firstLine);
+        else
+            return true;
     }
 
     std::string getMOTD()
