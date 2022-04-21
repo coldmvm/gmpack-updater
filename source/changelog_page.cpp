@@ -34,10 +34,13 @@ ChangelogPage::ChangelogPage() : AppletFrame(true, true)
     changes.push_back("\uE016 Aba 'Créditos' incluída.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Limpeza no código em geral.");
 
     verTitles.push_back("v1.1.4");
-	changes.push_back("\uE016 Uma mensagem de aviso foi adicionada antes de downloads grandes.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Agora o homebrew usa o ícone em toda aba.\n\uE016 Limpeza no código para remover dependência com o AIO.");
+    changes.push_back("\uE016 Uma mensagem de aviso foi adicionada antes de downloads grandes.\n\uE016 Melhorias nos textos do homebrew.\n\uE016 Agora o homebrew usa o ícone em toda aba.\n\uE016 Limpeza no código para remover dependência com o AIO.");
 
     verTitles.push_back("v1.1.5");
-	changes.push_back("\uE016 Corrigido um erro que fazia com que a aplicação não trocasse o nome do CFW sendo baixado.\n\uE016 Adicionada a função de deletar legenda instalada.\n\uE016 Melhorias nos textos do homebrew.");
+    changes.push_back("\uE016 Corrigido um erro que fazia com que a aplicação não trocasse o nome do CFW sendo baixado.\n\uE016 Adicionada a função de deletar legenda instalada.\n\uE016 Melhorias nos textos do homebrew.");
+
+    verTitles.push_back("v1.1.6");
+    changes.push_back("\uE016 Aba 'Baixar modificações' incluída.\n\uE016 Incluída uma função que mostra com \u2605 as traduções e modificações instaladas.\n\uE016 Foi modificada a forma como o homebrew alerta sobre novas atualizações.\n\uE016 Limpeza no código em geral.\n\uE016 Melhorias nos textos do homebrew.");
 
     for (int i = verTitles.size() - 1; i >= 0; i--) {
         listItem = new brls::ListItem(verTitles[i]);
