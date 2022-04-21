@@ -5,7 +5,7 @@
 
 #include "constants.hpp"
 
-class ListTranslationsTab : public brls::List
+class ListExtraTab : public brls::List
 {
 private:
     brls::ListItem* listItem;
@@ -19,5 +19,5 @@ private:
     void displayNotFound();
 
 public:
-    ListTranslationsTab(const contentType type, const nlohmann::ordered_json& nxlinks = nlohmann::ordered_json::object());
+    ListExtraTab(const contentType type, const nlohmann::ordered_json& nxlinks = nlohmann::ordered_json::object());
 };

@@ -9,7 +9,7 @@
 #include "download.hpp"
 #include "fs.hpp"
 #include "list_download_tab.hpp"
-#include "list_translations_tab.hpp"
+#include "list_extra_tab.hpp"
 #include "credits_tab.hpp"
 #include "tools_tab.hpp"
 #include "utils.hpp"
@@ -75,9 +75,9 @@ MainFrame::MainFrame() : TabFrame()
 
         this->addTab("menus/main/download_firmware"_i18n, new ListDownloadTab(contentType::fw, nxlinks));
 
-        this->addTab("menus/main/download_translations"_i18n, new ListTranslationsTab(contentType::translations, nxlinks));
+        this->addTab("menus/main/download_translations"_i18n, new ListExtraTab(contentType::translations, nxlinks));
 
-        this->addTab("menus/main/download_mods"_i18n, new ListTranslationsTab(contentType::modifications, nxlinks));
+        this->addTab("menus/main/download_mods"_i18n, new ListExtraTab(contentType::modifications, nxlinks));
 
         this->addTab("menus/main/tools"_i18n, new ToolsTab(tag, erista));
 
