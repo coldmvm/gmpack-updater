@@ -1,4 +1,4 @@
-#include "main_frame.hpp"
+	#include "main_frame.hpp"
 
 #include <fstream>
 #include <json.hpp>
@@ -64,28 +64,19 @@ MainFrame::MainFrame() : TabFrame()
     nlohmann::ordered_json nxlinks;
     download::getRequest(NXLINKS_URL, nxlinks);
 
-//newversion = false;
-
-        bool erista = util::isErista();
+    bool erista = util::isErista();
 
     if (!newversion) {
-        this->addTab("menus/main/about"_i18n, new AboutTab());
+		this->addTab("menus/main/about"_i18n, new AboutTab());
+		this->addTab("menus/main/update_ams"_i18n, new AmsTab(nxlinks, erista));
+		this->addTab("menus/main/download_firmware"_i18n, new ListDownloadTab(contentType::fw, nxlinks));
+		this->addTab("menus/main/download_translations"_i18n, new ListExtraTab(contentType::translations, nxlinks));
+		this->addTab("menus/main/download_mods"_i18n, new ListExtraTab(contentType::modifications, nxlinks));
+		this->addTab("menus/main/tools"_i18n, new ToolsTab(tag, erista));
+		this->addSeparator();
+		this->addTab("menus/main/credits"_i18n, new CreditsTab());
 
-        this->addTab("menus/main/update_ams"_i18n, new AmsTab(nxlinks, erista));
-
-        this->addTab("menus/main/download_firmware"_i18n, new ListDownloadTab(contentType::fw, nxlinks));
-
-        this->addTab("menus/main/download_translations"_i18n, new ListExtraTab(contentType::translations, nxlinks));
-
-        this->addTab("menus/main/download_mods"_i18n, new ListExtraTab(contentType::modifications, nxlinks));
-
-        this->addTab("menus/main/tools"_i18n, new ToolsTab(tag, erista));
-
-        this->addSeparator();
-
-        this->addTab("menus/main/credits"_i18n, new CreditsTab());
-
-        this->registerAction("", brls::Key::B, [this] { return true; });
+		this->registerAction("", brls::Key::B, [this] { return true; });
     }
     else
     {

@@ -62,7 +62,8 @@
     "internet_settings": "Editar configurações de internet",
     "browser": "Navegador web",
     "clean_up": "Limpar arquivos baixados",
-    "changelog": "Alterações"
+    "changelog": "Alterações",
+    "motd_label": "Abrir quadro de avisos"
   },
   "utils": {
     "not_an_archive": "O arquivo baixado não é um arquivo zip. Isto provavelmente aconteceu devido a um link quebrado. Se o problema persistir depois de 30 minutos, por favor, abra um 'issue' no Github.",

@@ -98,6 +98,7 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
         std::filesystem::remove(APP_ZIP_PATH);
         std::filesystem::remove(FW_ZIP_PATH);
 		std::filesystem::remove(TRANSLATIONS_ZIP_PATH);
+        std::filesystem::remove(MODIFICATIONS_ZIP_PATH);
 		std::filesystem::remove(LOG_FILE);
         fs::removeDir(AMS_DIRECTORY_PATH);
         fs::removeDir(SEPT_DIRECTORY_PATH);
@@ -105,6 +106,12 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
         util::showDialogBoxInfo("menus/common/all_done"_i18n);
     });
     cleanUp->setHeight(LISTITEM_HEIGHT);
+
+/*    motd = new brls::ListItem("menus/tools/motd_label"_i18n);
+    motd->getClickEvent()->subscribe([](brls::View* view) {
+        util::showDialogBoxInfo(util::getMOTD());
+    });
+    motd->setHeight(LISTITEM_HEIGHT);*/
 
     changelog = new brls::ListItem("menus/tools/changelog"_i18n);
     changelog->getClickEvent()->subscribe([](brls::View* view) {
@@ -115,5 +122,6 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
     this->addView(netSettings);
     this->addView(browser);
     this->addView(cleanUp);
+//    this->addView(motd);
     this->addView(changelog);
 }

@@ -70,13 +70,7 @@ void ListExtraTab::createList(contentType type)
                 }
                 itemFolders.push_back(folders.substr(pos_start));
                 foundTitle = listItemName(folders.substr(pos_start));
-/*
-                std::string path = util::getContentsPath();
-                if (std::filesystem::exists(path + token))
-                    foundTitle = "\u2605";
-                else
-                    foundTitle = "";
-*/
+
                 const std::string finalTitle = fmt::format("{} {} ({})", foundTitle, title, size);
 
                 const std::string text("menus/common/download"_i18n + title);
@@ -102,8 +96,7 @@ void ListExtraTab::createList(contentType type)
                                 break;
                             }
 
-//                        stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/translation_exists_warning"_i18n));
-                        stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/deleting"_i18n, [this, type, itemFolders]() { util::doDelete(itemFolders, type); }));
+                        stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/deleting"_i18n, [this, type, itemFolders]() { util::doDelete(itemFolders); }));
                     }
                     else
                     {

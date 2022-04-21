@@ -50,6 +50,13 @@ namespace util {
     void deleteEverythingButeMMCNintendo(const std::string& directory);
     void writeLog(std::string line);
     std::string getGMPackVersion();
-    void doDelete(std::vector<std::string> folders, contentType type);
+    void doDelete(std::vector<std::string> folders);
     bool isExtraPresent(const std::vector<std::string>);
+    bool wasMOTDAlreadyDisplayed();
+    std::string getMOTD();
+/*
+Base64
+*/
+    std::string b64encode(const std::string& str);
+    std::string b64decode(const std::string& str64);
 }  // namespace util

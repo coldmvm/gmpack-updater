@@ -11,6 +11,7 @@ private:
     brls::ListItem* cleanUp;
     brls::ListItem* netSettings;
     brls::ListItem* browser;
+    brls::ListItem* motd;
 
     brls::StagedAppletFrame* stagedFrame;
 

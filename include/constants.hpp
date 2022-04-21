@@ -39,6 +39,7 @@ constexpr const char AMS_ZIP_PATH[] = "/config/gmpack-updater/ams.zip";
 constexpr const char APP_ZIP_PATH[] = "/config/gmpack-updater/app.zip";
 constexpr const char FW_ZIP_PATH[] = "/config/gmpack-updater/firmware.zip";
 constexpr const char TRANSLATIONS_ZIP_PATH[] = "/config/gmpack-updater/translations.zip";
+constexpr const char MODIFICATIONS_ZIP_PATH[] = "/config/gmpack-updater/modifications.zip";
 constexpr const char AMS_DIRECTORY_PATH[] = "/config/gmpack-updater/atmosphere/";
 constexpr const char SEPT_DIRECTORY_PATH[] = "/config/gmpack-updater/sept/";
 constexpr const char FW_DIRECTORY_PATH[] = "/firmware/";
@@ -56,6 +57,8 @@ constexpr const char HIDDEN_APG_FILE[] = "/config/gmpack-updater/.gmpack-updater
 constexpr const char LOG_FILE[] = "/config/gmpack-updater/log.txt";
 
 constexpr const char PACK_FILE[] = "/bootloader/hekate_ipl.ini";
+
+constexpr const char MOTD_KEY[] = "GMPACK-MOTD";
 
 constexpr const int LISTITEM_HEIGHT = 50;
 
