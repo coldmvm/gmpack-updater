@@ -12,7 +12,7 @@
 
 Um homebrew de Nintendo Switch, baseado no homebrew [AIO-Switch-Updater](https://github.com/HamletDuFromage/aio-switch-updater/), para fazer o download e atualizar firmwares e o custom firmware [GMPACK](https://github.com/coldmvm/gmpack/releases).
 
-GMPACK é um pacote de custom firmware que inclui o Atmosphère, sigpatches, hekate, nyx e vários outros homebrews.
+GMPACK é um pacote all-in-one (tudo em um) de custom firmware que inclui o Atmosphère, sigpatches, hekate, nyx e vários outros homebrews.
 
 Este homebrew suporta Atmosphère, ReiNX e SXOS, e funciona em consoles não corrigidos (`Erista`) and corrigidos (`V2/Mariko`).
 
@@ -23,7 +23,9 @@ Copie o diretório `gmpack-updater/` para a pasta `/switch/` no seu microSD.
 
 ## Descrição das funções
 ### ⬦ Baixar Atmosphère
-- Baixa o custom firmware GMPACK. Após baixado, o programa irá instalar o pacote para você.
+- Baixa o pacote (`GMPACK`).
+  - Também é possível baixar pacote all-in-one (`GNX`) feito pelo Goma.
+-  Após baixado, o programa irá instalar o pacote para você.
 
 ### ⬦ Baixar firmwares
 - Baixa os arquivos do firmware para a pasta `/firmware` que, posteriormente, podem ser instalados usando o homebrew DayBreak.
