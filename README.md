@@ -28,7 +28,7 @@ Copie o diretório `gmpack-updater/` para a pasta `/switch/` no seu microSD.
 -  Após baixado, o programa irá instalar o pacote para você.
 
 ### ⬦ Baixar firmwares
-- Baixa os arquivos do firmware para a pasta `/firmware` que, posteriormente, podem ser instalados usando o homebrew DayBreak.
+- Baixa os arquivos do firmware para a pasta `/firmware` que, posteriormente, podem ser instalados usando o homebrew Daybreak.
 
 ### ⬦ Baixar traduções
 - As traduções são feitas por membros da cena e tem a finalidade de distribuir acessibilidade linguística aos jogos.
