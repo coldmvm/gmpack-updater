@@ -22,8 +22,11 @@ Este homebrew suporta Atmosphère, ReiNX e SXOS, e funciona em consoles não cor
 Copie o diretório `gmpack-updater/` para a pasta `/switch/` no seu microSD.
 
 ## Descrição das funções
-### ⬦ Baixar GMPACK
+### ⬦ Baixar Atmosphère
 - Baixa o custom firmware GMPACK. Após baixado, o programa irá instalar o pacote para você.
+
+### ⬦ Baixar firmwares
+- Baixa os arquivos do firmware para a pasta `/firmware` que, posteriormente, podem ser instalados usando o homebrew DayBreak.
 
 ### ⬦ Baixar traduções
 - As traduções são feitas por membros da cena e tem a finalidade de distribuir acessibilidade linguística aos jogos.
@@ -32,8 +35,9 @@ Copie o diretório `gmpack-updater/` para a pasta `/switch/` no seu microSD.
   - https://traducoespkg.tumblr.com/
   - https://nintendonxbr.blogspot.com/
 
-### ⬦ Baixar firmwares
-- Baixa os arquivos do firmware para a pasta `/firmware` que, posteriormente, podem ser instalados usando o homebrew DayBreak.
+### ⬦ Baixar modificações
+- As modificações de jogos, também conhecidos por MODS, são feitas por membros da cena e tem a diversas finalidades. Vão desde melhorias gráficas até trapaças (cheats) ou trainers (uma espécie de trapaça adicionada quando o jogo não vem com trapaça "de fábrica".
+- Algumas modificaçõs precisam de passos específicos para que funcionem. Para maiores detalhes pesquise online sobre tais modificações e procure se inteirar sobre a mesma.
 
 ## Extras (na página `Ferramentas`)
 - Atualizar o homwbrew automaticamente quando existir uma nova versão.
@@ -55,6 +59,6 @@ A GameMod design não detém nenhum direito de cópia sobre nenhum arquivo baixa
 
 ![License](https://img.shields.io/badge/License-GPLv3-blue.svg)
 
-O nome Nintendo Switch e logo são marcas registradas de [Nintendo](https://github.com/Nintendo). Este repositório ñão é afiliado a [Nintendo](https://github.com/Nintendo) ou nenhum dos seus parceiros.
+O nome Nintendo Switch e logo são marcas registradas de [Nintendo](https://github.com/Nintendo). Este repositório não é afiliado a [Nintendo](https://github.com/Nintendo) ou nenhum dos seus parceiros.
 
 The Nintendo Switch names and logos are a trademark of [Nintendo](https://github.com/Nintendo). This repository is in no way affiliated with [Nintendo](https://github.com/Nintendo) or any of its partners.
