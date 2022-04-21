@@ -42,6 +42,9 @@ ChangelogPage::ChangelogPage() : AppletFrame(true, true)
     verTitles.push_back("v1.1.6");
     changes.push_back("\uE016 Aba 'Baixar modificações' incluída.\n\uE016 Incluída uma função que mostra com \u2605 as traduções e modificações instaladas.\n\uE016 Foi modificada a forma como o homebrew alerta sobre novas atualizações.\n\uE016 Limpeza no código em geral.\n\uE016 Melhorias nos textos do homebrew.");
 
+    verTitles.push_back("v1.1.7");
+    changes.push_back("\uE016 Corrigido um erro que fazia com que a aplicação não excluísse uma modificação instalada.\n\uE016 Incluída uma função para MOTD (message of the day - quadro de avisos).\n\uE016 Limpeza no código em geral.\n\uE016 Melhorias nos textos do homebrew.");
+
     for (int i = verTitles.size() - 1; i >= 0; i--) {
         listItem = new brls::ListItem(verTitles[i]);
         change = changes[i];
