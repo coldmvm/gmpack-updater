@@ -64,11 +64,12 @@ enum class contentType
     fw,
     app,
     ams_cfw,
-	translations,
+    translations,
+    modifications
 };
 
-constexpr std::string_view contentTypeNames[4]{"firmwares", "app", "cfws", "translations"};
-constexpr std::string_view contentTypeFullNames[4]{"o firmware", "o homebrew", "o CFW", "a tradução"};
+constexpr std::string_view contentTypeNames[5]{"firmwares", "app", "cfws", "translations", "modifications"};
+constexpr std::string_view contentTypeFullNames[5]{"o firmware", "o homebrew", "o CFW", "a tradução", "a modificação"};
 
 enum class CFW
 {

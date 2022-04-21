@@ -77,6 +77,8 @@ MainFrame::MainFrame() : TabFrame()
 
         this->addTab("menus/main/download_translations"_i18n, new ListTranslationsTab(contentType::translations, nxlinks));
 
+        this->addTab("menus/main/download_mods"_i18n, new ListTranslationsTab(contentType::modifications, nxlinks));
+
         this->addTab("menus/main/tools"_i18n, new ToolsTab(tag, erista));
 
         this->addSeparator();

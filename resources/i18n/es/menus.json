@@ -1,12 +1,12 @@
 {
   "about": {
-	"title": "Atualizador Pacote GameMod (APG)",
+    "title": "Atualizador Pacote GameMod (APG)",
     "copyright": "O Atualizador Pacote GameMod usa a licença GPL-3.0",
     "disclaimers": "\u25c6 A GameMod design não detém nenhum direito de cópia sobre nenhum arquivo baixado por este homebrew e todo o crédito pertence aos seus respectivos proprietários.\n\u25c6 Os links serão atualizados sempre que um novo pacote estiver disponível ou for necessário. Se um link estiver quebrado, informe no grupo de Facebook 'GameMod design'.\n\nObrigado!"
   },
   "credits": {
     "title1": "O Atualizador Pacote GameMod (APG) não seria possível sem a ajuda e ideias das seguintes pessoas/grupos:",
-	"title2": "Créditos",
+    "title2": "Créditos",
     "credits": "\u2605 'HamletDuFromage' pelo brilhante homebew AIO-Switch-Updater.\n\u2605 'natinusala' pela biblioteca Borealis.\n\u2605 'Team Neptune' pelo código RCM usado.\n\u2605 'CostelaBR' pela ideia da função de traduções e os links usados no homebrew."
   },
   "common": {
@@ -34,21 +34,23 @@
     "getting": "Baixando {}",
     "firmware_text": "Os firmwares estão disponíveis em 'https://darthsternie.net/switch-firmwares/'.\nDepois de baixado ele será extraído para a pasta '/firmware' e você poderá, então, instalá-lo usando o homebrew 'Daybreak'.\nFirmware atual: ",
     "translations_text": "As traduções são feitas por membros da cena e tem a finalidade de distribuir acessibilidade linguística aos jogos.\n\n\u25c6 Algumas traduções precisam de passos específicos para que funcionem. Para maiores detalhes consulte os sites dos criadores das traduções:\nhttps://www.jumpmanclubbrasil.com.br/\nhttps://traducoespkg.tumblr.com/\nhttps://nintendonxbr.blogspot.com/\n\nAbaixo estão listadas algumas traduções disponíveis para download.",
+    "modifications_text": "As modificações de jogos, também conhecidos por MODS, são feitas por membros da cena e tem a diversas finalidades. Vão desde melhorias gráficas até trapaças (cheats) ou trainers (uma espécie de trapaça adicionada quando o jogo não vem com trabalha \"de fábrica\".\n\n\u25c6 Algumas modificaçõs precisam de passos específicos para que funcionem. Para maiores detalhes pesquise sobre a modificação online.\n\nAbaixo estão listadas algumas traduções disponíveis para download.",
     "firmware": "firmware",
     "not_found": "não encontrado",
     "links_not_found": "Não foi possível encontrar o link de download! Seu Switch está conectado à Internet?\nSe o problema persistir, abra um 'issue' no GitHub.",
     "new_update": " (Nova atualização disponível)",
     "about": "Informações",
-	"credits": "Créditos",
+    "credits": "Créditos",
     "update_ams": "Baixar Atmosphère",
     "download_firmware": "Baixar firmwares",
     "download_translations": "Baixar traduções",
+    "download_mods": "Baixar modificações",
     "tools": "Ferramentas",
     "launch_warning": "Por favor, preste atenção aos seguintes pontos antes de usar este homebrew:\n\n\u25c6 Leia e entenda sobre como manualmente atualizar seu Switch antes. Isto lhe ajudará a entender melhor este homebrew e você saberá o que fazer caso algo saia errado.\n\u25c6 Para evitar o risco de corrompimento de dados, o uso deste homebrew em um microSD formatado em exFAT é FORTEMENTE desaconselhado.\n\n\u25c6 As últimas informações sobre novas funções inseridas e/ou modificadas estão disponíveis no menu Ferramentas->Alterações.\n\nEsta tela não aparecerá novamente.",
     "footer_text" : "GameMod design - {} - {}Gb disponíveis",
     "footer_text_not_connected" : " - Offline",
     "theme_warning": "Parace que você tem um tema customizado instalado e isto pode fazer com que seu sistema falhe ao iniciar após a atualização.\nPor favor, considete deletar o tema antes de atualizar.",
-	"download_time_warning": "AVISO!\n\nO download pode levar um tempo considerável dependendo do tamanho do arquivo e da velocidade da sua conexão!\nApós o arquivo ser baixado ele será descompactado no seu console e isso também levará um tempo. Se seu console aparentar estar travado não o desligue pois isto é normal!\n\nSeja paciente e espere o processo terminar!",
+    "download_time_warning": "AVISO!\n\nO download pode levar um tempo considerável dependendo do tamanho do arquivo e da velocidade da sua conexão!\nApós o arquivo ser baixado ele será descompactado no seu console e isso também levará um tempo. Se seu console aparentar estar travado não o desligue pois isto é normal!\n\nSeja paciente e espere o processo terminar!",
     "translation_exists_warning": "AVISO!\n\nA tradução que você escolheu já está instalada no seu Switch!\nAo clicar no botão abaixo você irá removê-la. Caso esta não seja sua intenção pressione o botão 'B' para escolher uma nova tradução\n\nVocê deseja remover a tradução selecionada?"
   },
   "tools": {
@@ -64,7 +66,7 @@
     "not_an_archive": "O arquivo baixado não é um arquivo zip. Isto provavelmente aconteceu devido a um link quebrado. Se o problema persistir depois de 30 minutos, por favor, abra um 'issue' no Github.",
     "fresh_install": "Você deseja realizar uma instalação limpa?\n\nUma instalação limpa removerá todo o conteúdo do microSD menos as pastas 'emuMMC' e 'Nintendo'.",
     "overwrite_inis": "Você deseja sobrescrever os arquivos de configuração .ini existentes?",
-	"delete_sysmodules_flags": "Você gostaria de apagar todos os sinalizadores de início dos módulos de sistema (boo2.flag)? Isto desligará todos os módulos de sistema para prevenir erros se você tem algum módulo de sistema instalado que não suporte o último Atmosphère."
+    "delete_sysmodules_flags": "Você gostaria de apagar todos os sinalizadores de início dos módulos de sistema (boo2.flag)? Isto desligará todos os módulos de sistema para prevenir erros se você tem algum módulo de sistema instalado que não suporte o último Atmosphère."
   },
   "ams_update": {
     "pack_label": "GMPACK é um pacote all-in-one (tudo em um) baseado no custom firmware Atmosphère e inclui tudo de mais atual para seu Switch. Este é o pacote oficial da GameMod design.",
