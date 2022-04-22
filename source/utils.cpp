@@ -169,8 +169,6 @@ namespace util {
                 usleep(800000);
                 if (deleteContents == 1)
                     removeSysmodulesFlags(AMS_CONTENTS);
-                if (freshInstall == 1)
-                    deleteEverythingButeMMCNintendo(ROOT_PATH);
 
                 extract::extract(AMS_FILENAME, ROOT_PATH, overwriteInis);
                 break;

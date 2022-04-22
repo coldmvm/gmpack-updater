@@ -47,7 +47,6 @@ namespace util {
     std::string getContentsPath();
     bool getBoolValue(const nlohmann::json& jsonFile, const std::string& key);
     const nlohmann::ordered_json getValueFromKey(const nlohmann::ordered_json& jsonFile, const std::string& key);
-    void deleteEverythingButeMMCNintendo(const std::string& directory);
     void writeLog(std::string line);
     std::string getGMPackVersion();
     void doDelete(std::vector<std::string> folders);
