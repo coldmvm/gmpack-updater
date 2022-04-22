@@ -370,7 +370,7 @@ namespace util {
             while (std::getline(file, line)) {
                 if(line.find("{GMPACK", 0) != std::string::npos)
                 {
-                    line = " - " + line.substr(1, line.size() - 2);
+                    line = line.substr(1, line.size() - 2) + " | AMS ";
                     break;
                 }
                 else

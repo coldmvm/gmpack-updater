@@ -24,9 +24,9 @@ AmsTab::AmsTab(const nlohmann::json& nxlinks, const bool erista) : brls::List()
     std::string packVersion = util::getGMPackVersion();
 
     this->description = new brls::Label(brls::LabelStyle::DESCRIPTION,
-        "menus/ams_update/pack_label"_i18n + "\n" +
-        (CurrentCfw::running_cfw == CFW::ams ? "menus/ams_update/current_ams"_i18n + CurrentCfw::getAmsInfo() : "") +
+        "menus/ams_update/pack_label"_i18n + "\n" + "menus/ams_update/current_ams"_i18n +
         (util::getGMPackVersion()) +
+        (CurrentCfw::running_cfw == CFW::ams ? CurrentCfw::getAmsInfo() : "") +
         (erista ? "\n" + "menus/ams_update/erista_rev"_i18n : "\n" + "menus/ams_update/mariko_rev"_i18n), true);
     this->addView(description);
 
