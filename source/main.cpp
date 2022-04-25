@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    nlohmann::json languageFile = fs::parseJsonFile(LANGUAGE_JSON);
+    nlohmann::json languageFile = fs::parseJsonFile(fmt::format(LANGUAGE_JSON, BASE_FOLDER_NAME));
     if (languageFile.find("language") != languageFile.end())
         i18n::loadTranslations(languageFile["language"]);
     else
@@ -68,12 +68,12 @@ int main(int argc, char* argv[])
 
     CurrentCfw::running_cfw = CurrentCfw::getCFW();
 
-    fs::createTree(CONFIG_PATH);
+    fs::createTree(fmt::format(CONFIG_PATH, BASE_FOLDER_NAME));
 
     brls::Logger::setLogLevel(brls::LogLevel::DEBUG);
     brls::Logger::debug("Start");
 
-    showScreen(std::filesystem::exists(HIDDEN_APG_FILE));
+    showScreen(std::filesystem::exists(fmt::format(HIDDEN_APG_FILE, BASE_FOLDER_NAME, BASE_FOLDER_NAME)));
 
     while (brls::Application::mainLoop());
 

@@ -12,10 +12,10 @@ private:
     nlohmann::ordered_json nxlinks;
     contentType type;
     int size = 0;
-    void createList();
-    void createList(contentType type);
-    void setDescription();
-    void setDescription(contentType type);
+    void createList(std::string& sVer);
+    void createList(contentType type, std::string& sVer);
+    void setDescription(std::string& sVer);
+    void setDescription(contentType type, std::string& sVer);
     void displayNotFound();
 
 public:

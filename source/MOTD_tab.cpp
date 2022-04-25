@@ -29,9 +29,8 @@ MOTDPage::MOTDPage()
     this->registerAction("", brls::Key::B, [this] { return true; });
 
     //recreating the HIDDEN FILE first
-
     std::ofstream MOTDFile;
-    MOTDFile.open(HIDDEN_APG_FILE, std::ofstream::out | std::ofstream::trunc);
+    MOTDFile.open(fmt::format(HIDDEN_APG_FILE, BASE_FOLDER_NAME, BASE_FOLDER_NAME), std::ofstream::out | std::ofstream::trunc);
     if (MOTDFile.is_open()) {
         //getting only the first line of the MOTD
         std::string firstLine;

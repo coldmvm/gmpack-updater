@@ -14,5 +14,5 @@ namespace download {
     std::string fetchTitle(const std::string& url);
     long downloadPage(const std::string& url, std::string& res, const std::vector<std::string>& headers = {}, const std::string& body = "");
     long getRequest(const std::string& url, nlohmann::ordered_json& res, const std::vector<std::string>& headers = {}, const std::string& body = "");
-
+    std::vector<std::pair<std::string, std::string>> getLinksFromGitHubReleases(std::string& url, int max);
 }  // namespace download

@@ -74,7 +74,7 @@ NetPage::NetPage() : AppletFrame(true, true)
         //ip_auto
         //dns_auto
 
-        json profiles = fs::parseJsonFile(INTERNET_JSON);
+        json profiles = fs::parseJsonFile(fmt::format(INTERNET_JSON, BASE_FOLDER_NAME));
         if (profiles.empty()) {
             profiles = json::array();
         }

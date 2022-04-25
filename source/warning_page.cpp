@@ -13,8 +13,8 @@ namespace i18n = brls::i18n;
 using namespace i18n::literals;
 WarningPage::WarningPage(const std::string& text, const bool& showMOTD)
 {
-    fs::createTree(CONFIG_PATH);
-    std::ofstream hiddenFile(HIDDEN_APG_FILE);
+    fs::createTree(fmt::format(CONFIG_PATH, BASE_FOLDER_NAME));
+    std::ofstream hiddenFile(fmt::format(HIDDEN_APG_FILE, BASE_FOLDER_NAME, BASE_FOLDER_NAME));
     this->button = (new brls::Button(brls::ButtonStyle::PRIMARY))->setLabel("menus/common/continue"_i18n);
     this->button->setParent(this);
     this->button->getClickEvent()->subscribe([this, showMOTD](View* view) {

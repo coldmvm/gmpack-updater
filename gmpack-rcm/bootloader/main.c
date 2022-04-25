@@ -441,7 +441,7 @@ void ipl_main()
 
 	gfx_clear_grey(0x1B);
 	display_backlight_brightness(150, 1000);
-	WPRINTF("Running gmpack-updater rcm payload...\n");
+	WPRINTF("Running Updater RCM payload...\n");
 
 	if (sd_mount()) {
 		easy_rename("atmosphere/fusee-secondary.bin.apg", "atmosphere/fusee-secondary.bin");

@@ -5,14 +5,17 @@
 #include <filesystem>
 #include <fstream>
 
+#include "unistd.h"
+#include "reboot_payload.h"
+
+#include "fs.hpp"
+
 #include "current_cfw.hpp"
 #include "download.hpp"
 #include "extract.hpp"
-#include "fs.hpp"
 #include "main_frame.hpp"
 #include "progress_event.hpp"
-#include "reboot_payload.h"
-#include "unistd.h"
+#include "constants.hpp"
 
 namespace i18n = brls::i18n;
 using namespace i18n::literals;
@@ -41,22 +44,22 @@ namespace util {
 
     void downloadArchive(const std::string& url, contentType type, long& status_code)
     {
-        fs::createTree(DOWNLOAD_PATH);
+        fs::createTree(fmt::format(DOWNLOAD_PATH, BASE_FOLDER_NAME));
         switch (type) {
             case contentType::fw:
-                status_code = download::downloadFile(url, FIRMWARE_FILENAME, OFF);
+                status_code = download::downloadFile(url, fmt::format(FIRMWARE_FILENAME, BASE_FOLDER_NAME), OFF);
                 break;
             case contentType::app:
-                status_code = download::downloadFile(url, APP_FILENAME, OFF);
+                status_code = download::downloadFile(url, fmt::format(APP_FILENAME, BASE_FOLDER_NAME), OFF);
                 break;
             case contentType::ams_cfw:
-                status_code = download::downloadFile(url, AMS_FILENAME, OFF);
+                status_code = download::downloadFile(url, fmt::format(AMS_FILENAME, BASE_FOLDER_NAME), OFF);
                 break;
             case contentType::translations:
-                status_code = download::downloadFile(url, TRANSLATIONS_ZIP_PATH, OFF);
+                status_code = download::downloadFile(url, fmt::format(TRANSLATIONS_ZIP_PATH, BASE_FOLDER_NAME), OFF);
                 break;
             case contentType::modifications:
-                status_code = download::downloadFile(url, MODIFICATIONS_ZIP_PATH, OFF);
+                status_code = download::downloadFile(url, fmt::format(MODIFICATIONS_ZIP_PATH, BASE_FOLDER_NAME), OFF);
                 break;
             default:
                 break;
@@ -124,13 +127,13 @@ namespace util {
         std::string filename;
         switch (type) {
             case contentType::fw:
-                filename = FIRMWARE_FILENAME;
+                filename = fmt::format(FIRMWARE_FILENAME, BASE_FOLDER_NAME);
                 break;
             case contentType::app:
-                filename = APP_FILENAME;
+                filename = fmt::format(APP_FILENAME, BASE_FOLDER_NAME);
                 break;
             case contentType::ams_cfw:
-                filename = AMS_FILENAME;
+                filename = fmt::format(AMS_FILENAME, BASE_FOLDER_NAME);
                 break;
             default:
                 return;
@@ -144,25 +147,30 @@ namespace util {
     {
         chdir(ROOT_PATH);
         crashIfNotArchive(type);
+        std::string tmp = fmt::format(FORWARDER_PATH, BASE_FOLDER_NAME, BASE_FOLDER_NAME);
         switch (type) {
             case contentType::fw:
                 if (std::filesystem::exists(FIRMWARE_PATH)) std::filesystem::remove_all(FIRMWARE_PATH);
                 fs::createTree(FIRMWARE_PATH);
-                extract::extract(FIRMWARE_FILENAME, FIRMWARE_PATH);
+                extract::extract(fmt::format(FIRMWARE_FILENAME, BASE_FOLDER_NAME), FIRMWARE_PATH);
                 break;
             case contentType::app:
-                extract::extract(APP_FILENAME, CONFIG_PATH);
-                fs::copyFile(ROMFS_FORWARDER, FORWARDER_PATH);
-                envSetNextLoad(FORWARDER_PATH, fmt::format("\"{}\"", FORWARDER_PATH).c_str());
+                extract::extract(fmt::format(APP_FILENAME, BASE_FOLDER_NAME), fmt::format(CONFIG_PATH, BASE_FOLDER_NAME));
+                fs::copyFile(fmt::format(ROMFS_FORWARDER, BASE_FOLDER_NAME), fmt::format(FORWARDER_PATH, BASE_FOLDER_NAME, BASE_FOLDER_NAME));
+
+                //creting the star file
+                createStarFile();
+
+                createForwarderConfig();
+                usleep(5000);
+                envSetNextLoad(tmp.c_str(), fmt::format("\"{}\"", tmp).c_str());
                 romfsExit();
                 brls::Application::quit();
                 break;
             case contentType::ams_cfw: {
-                //int freshInstall = showDialogBoxBlocking("menus/utils/fresh_install"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
                 //int overwriteInis = showDialogBoxBlocking("menus/utils/overwrite_inis"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
                 //int deleteContents = showDialogBoxBlocking("menus/utils/delete_sysmodules_flags"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
                 
-                int freshInstall = 0;
                 int overwriteInis = 1;
                 int deleteContents = 1;
 
@@ -170,21 +178,21 @@ namespace util {
                 if (deleteContents == 1)
                     removeSysmodulesFlags(AMS_CONTENTS);
 
-                extract::extract(AMS_FILENAME, ROOT_PATH, overwriteInis);
+                extract::extract(fmt::format(AMS_FILENAME, BASE_FOLDER_NAME), ROOT_PATH, overwriteInis);
                 break;
             }
             case contentType::translations:
-                extract::extract(TRANSLATIONS_ZIP_PATH, AMS_CONTENTS);
+                extract::extract(fmt::format(TRANSLATIONS_ZIP_PATH, BASE_FOLDER_NAME), AMS_CONTENTS);
                 break;
             case contentType::modifications:
-                extract::extract(MODIFICATIONS_ZIP_PATH, AMS_CONTENTS);
+                extract::extract(fmt::format(MODIFICATIONS_ZIP_PATH, BASE_FOLDER_NAME), AMS_CONTENTS);
                 break;
 
             default:
                 break;
         }
         if (type == contentType::ams_cfw)
-            fs::copyFiles(COPY_FILES_TXT);
+            fs::copyFiles(fmt::format(COPY_FILES_TXT, BASE_FOLDER_NAME));
     }
 
     std::string formatListItemTitle(const std::string& str, size_t maxScore)
@@ -215,14 +223,34 @@ namespace util {
         reboot_to_payload(path.c_str(), CurrentCfw::running_cfw != CFW::ams);
     }
 
-    std::string getLatestTag(const std::string& url)
+    std::string getLatestTag()
     {
         nlohmann::ordered_json tag;
-        download::getRequest(url, tag, {"accept: application/vnd.github.v3+json"});
+        download::getRequest(fmt::format(TAGS_INFO, BASE_WWW_NAME, BASE_FOLDER_NAME), tag, {"accept: application/vnd.github.v3+json"});
         if (tag.find("tag_name") != tag.end())
             return tag["tag_name"];
         else
             return "";
+    }
+
+    bool getLatestCFWPack(std::string& url, std::string& packName, std::string& packURL)
+    {
+        nlohmann::ordered_json json;
+        download::getRequest(url, json, {"accept: application/vnd.github.v3+json"});
+        if (json.find("name") != json.end())
+            packName = json["name"];
+        else
+            return false;
+
+        std:: string tmp = "";
+        json = getValueFromKey(json, "assets");
+        if (!json.empty())
+            tmp = json[0]["browser_download_url"];
+        else
+            return false;
+
+        packURL = tmp;
+        return true;
     }
 
     std::string downloadFileToString(const std::string& url)
@@ -351,7 +379,7 @@ namespace util {
     void writeLog(std::string line)
     {
         std::ofstream logFile;
-        logFile.open(LOG_FILE, std::ofstream::out | std::ofstream::app);
+        logFile.open(fmt::format(LOG_FILE, BASE_FOLDER_NAME), std::ofstream::out | std::ofstream::app);
         if (logFile.is_open()) {
             logFile << line << std::endl;
         }
@@ -420,7 +448,7 @@ namespace util {
                 firstLine = MOTDLine;
 
             std::ifstream MOTDFile;
-            MOTDFile.open(HIDDEN_APG_FILE);
+            MOTDFile.open(fmt::format(HIDDEN_APG_FILE, BASE_FOLDER_NAME, BASE_FOLDER_NAME));
             if (MOTDFile.is_open()) {
                 getline(MOTDFile, hiddenFileLine);
             }
@@ -437,10 +465,68 @@ namespace util {
         nlohmann::ordered_json nxlinks;
         download::getRequest(NXLINKS_URL, nxlinks);
         if (nxlinks.size())
-            text = nxlinks.at(MOTD_KEY);
+            text = nxlinks.at(fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME)));
 
         return text;
     }
+
+    void createForwarderConfig()
+    {
+        std::ofstream file;
+        file.open(fmt::format(FORWARDER_CONF, BASE_FOLDER_NAME), std::ofstream::out | std::ofstream::trunc);
+        if (file.is_open()) {
+            file << fmt::format("PATH=/switch/{}-updater/", BASE_FOLDER_NAME) << std::endl;
+            file << fmt::format("FULL_PATH=/switch/{}-updater/{}-updater.nro", BASE_FOLDER_NAME, BASE_FOLDER_NAME) << std::endl;
+            file << fmt::format("CONFIG_PATH=/config/{}-updater/switch/{}-updater/{}-updater.nro", BASE_FOLDER_NAME, BASE_FOLDER_NAME, BASE_FOLDER_NAME) << std::endl;
+            file << fmt::format("PREFIX=/switch/{}-updater/{}-updater-v", BASE_FOLDER_NAME, BASE_FOLDER_NAME) << std::endl;
+            file << fmt::format("FORWARDER_PATH=/config/{}-updater/{}-forwarder.nro", BASE_FOLDER_NAME, BASE_FOLDER_NAME) << std::endl;
+            file << fmt::format("CONFIG_SWITCH=/config/{}-updater/switch/", BASE_FOLDER_NAME) << std::endl;
+            file << fmt::format("HIDDEN_FILE=/config/{}-updater/.{}-updater", BASE_FOLDER_NAME, BASE_FOLDER_NAME) << std::endl;
+        }
+        file.close();
+    }
+
+    std::string readConfFile(const std::string& fileName, const std::string& section)
+    {
+        std::ifstream file(fileName.c_str());
+        std::string line;
+
+        if (file.is_open())
+        {
+            size_t pos_char;
+            while (std::getline(file, line)) {
+                if ((pos_char = line.find(section + "=", 0)) != std::string::npos)
+                {
+                    line = line.substr((pos_char + section.size() + 1), line.size() - (section.size() + 1));
+                    break;
+                }
+                else
+                    line = "";
+            }
+            file.close();
+        }
+        return line;
+    }
+
+    void cleanFiles()
+    {
+        std::filesystem::remove(fmt::format(AMS_ZIP_PATH, BASE_FOLDER_NAME));
+        std::filesystem::remove(fmt::format(APP_ZIP_PATH, BASE_FOLDER_NAME));
+        std::filesystem::remove(fmt::format(FW_ZIP_PATH, BASE_FOLDER_NAME));
+        std::filesystem::remove(fmt::format(TRANSLATIONS_ZIP_PATH, BASE_FOLDER_NAME));
+        std::filesystem::remove(fmt::format(MODIFICATIONS_ZIP_PATH, BASE_FOLDER_NAME));
+        std::filesystem::remove(fmt::format(LOG_FILE, BASE_FOLDER_NAME));
+        std::filesystem::remove(fmt::format(FORWARDER_CONF, BASE_FOLDER_NAME));
+        fs::removeDir(fmt::format(AMS_DIRECTORY_PATH, BASE_FOLDER_NAME));
+        fs::removeDir(fmt::format(SEPT_DIRECTORY_PATH, BASE_FOLDER_NAME));
+        fs::removeDir(FW_DIRECTORY_PATH);
+    }
+
+    void createStarFile()
+    {
+        std::ofstream starFile(fmt::format(APG_STAR_FILE, BASE_FOLDER_NAME, BASE_FOLDER_NAME));
+    }
+
 /*
 Base64
 */

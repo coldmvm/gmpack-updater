@@ -305,4 +305,23 @@ namespace download {
         return res;
     }
 
-}  // namespace download
+    std::vector<std::pair<std::string, std::string>> getLinksFromGitHubReleases(std::string& url, int max)
+    {
+        std::vector<std::pair<std::string, std::string>> res;
+		nlohmann::ordered_json json;
+        getRequest(url, json, {"accept: application/vnd.github.v3+json"});
+
+        std:: string tmpName = "";
+        std:: string tmpURL = "";
+        int i = 0;
+        for (auto it = json.begin(); it != json.end(); ++it) {
+            tmpName = (*it)["name"];
+            tmpURL = (*it)["assets"][0]["browser_download_url"];
+            res.push_back(std::make_pair(tmpName, tmpURL));
+            i++;
+            if (i >= max)
+                return res;
+        }
+        return res;
+    }
+}  // namespace download;

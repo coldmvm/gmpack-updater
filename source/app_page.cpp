@@ -56,7 +56,7 @@ void AppPage::PopulatePage()
             listItem = new brls::ListItem(name, "", util::formatApplicationId(tid));
             this->DeclareGameListItem(name, tid, &controlData);
         }
-        label = new brls::Label(brls::LabelStyle::SMALL, "menus/common/applet_mode_not_supported"_i18n, true);
+        label = new brls::Label(brls::LabelStyle::SMALL, fmt::format("menus/common/applet_mode_not_supported"_i18n, APP_FULL_NAME), true);
         list->addView(label);
     }
     delete[] records;

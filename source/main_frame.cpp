@@ -1,4 +1,4 @@
-	#include "main_frame.hpp"
+#include "main_frame.hpp"
 
 #include <fstream>
 #include <json.hpp>
@@ -25,13 +25,15 @@ namespace {
 
 MainFrame::MainFrame() : TabFrame()
 {
+    util::cleanFiles();
+
     bool newversion = false;
 
 	this->setIcon("romfs:/gui_icon.png");
     this->setTitle(AppTitle);
 
     s64 freeStorage;
-    std::string tag = util::getLatestTag(TAGS_INFO);
+    std::string tag = util::getLatestTag();
 
 	if (!tag.empty()) {
         //fetching the version as a number
@@ -53,12 +55,12 @@ MainFrame::MainFrame() : TabFrame()
 
         newversion = (iTag > iAppVersion);
 
-        this->setFooterText(fmt::format("menus/main/footer_text"_i18n,
-            (!tag.empty() && newversion) ? "v" + std::string(AppVersion) + "menus/main/new_update"_i18n : AppVersion,
+        this->setFooterText(fmt::format("menus/main/footer_text"_i18n, BRAND_FULL_NAME,
+            (!tag.empty() && newversion) ? "v" + std::string(AppVersion) + "menus/main/new_update_footer"_i18n : AppVersion,
             R_SUCCEEDED(fs::getFreeStorageSD(freeStorage)) ? floor(((float)freeStorage / 0x40000000) * 100.0) / 100.0 : -1));
     }
     else {
-        this->setFooterText(fmt::format("menus/main/footer_text"_i18n, std::string(AppVersion) + "menus/main/footer_text_not_connected"_i18n, R_SUCCEEDED(fs::getFreeStorageSD(freeStorage)) ? (float)freeStorage / 0x40000000 : -1));
+        this->setFooterText(fmt::format("menus/main/footer_text"_i18n, BRAND_FULL_NAME, std::string(AppVersion) + "menus/main/footer_text_not_connected"_i18n, R_SUCCEEDED(fs::getFreeStorageSD(freeStorage)) ? (float)freeStorage / 0x40000000 : -1));
     }
 
     nlohmann::ordered_json nxlinks;
@@ -80,7 +82,7 @@ MainFrame::MainFrame() : TabFrame()
     }
     else
     {
-        this->addTab("Nova atualização", new UpdateTab());
+        this->addTab("menus/main/new_update"_i18n, new UpdateTab(tag));
         this->registerAction("", brls::Key::B, [this] { return true; });
     }
 }

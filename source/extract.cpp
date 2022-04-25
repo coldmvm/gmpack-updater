@@ -54,7 +54,7 @@ namespace extract {
         std::vector<zipper::ZipEntry> entries;
 
         preWork(unzipper, workingPath, entries);
-        std::set<std::string> ignoreList = fs::readLineByLine(FILES_IGNORE);
+        std::set<std::string> ignoreList = fs::readLineByLine(fmt::format(FILES_IGNORE, BASE_FOLDER_NAME));
 
         for (const auto& entry : entries) {
             if (ProgressEvent::instance().getInterupt()) {

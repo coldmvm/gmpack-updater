@@ -10,6 +10,7 @@
 #include "net_page.hpp"
 #include "utils.hpp"
 #include "worker_page.hpp"
+#include "download.hpp"
 
 namespace i18n = brls::i18n;
 using namespace i18n::literals;
@@ -23,9 +24,9 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
 {
     if (!tag.empty()) {
         //fetching the version as a number
-    	std::string temp = "";
-    	int iTag = 0;
-    	int iAppVersion = 0;
+        std::string temp = "";
+        int iTag = 0;
+        int iAppVersion = 0;
 
         temp.reserve(tag.size()); // optional, avoids buffer reallocations in the loop
         for(size_t i = 0; i < tag.size(); ++i)
@@ -41,13 +42,12 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
 
         if (iTag > iAppVersion) {
             updateApp = new brls::ListItem(fmt::format("menus/tools/update_app"_i18n, tag));
-            //std::string text("menus/tools/dl_app"_i18n + std::string(APP_URL));
-		    std::string text(fmt::format("menus/tools/dl_app"_i18n, tag));
+            std::string text(fmt::format("menus/tools/dl_app"_i18n, APP_FULL_NAME, tag));
             updateApp->getClickEvent()->subscribe([text, tag](brls::View* view) {
                 brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
                 stagedFrame->setTitle("menus/common/updating"_i18n);
                 stagedFrame->addStage(new ConfirmPage(stagedFrame, text));
-                stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, []() { util::downloadArchive(APP_URL, contentType::app); }));
+                stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, []() { util::downloadArchive(fmt::format(APP_URL, BASE_WWW_NAME, BASE_FOLDER_NAME, BASE_FOLDER_NAME), contentType::app); }));
                 stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, []() { util::extractArchive(contentType::app); }));
                 stagedFrame->addStage(new ConfirmPage(stagedFrame, "menus/common/all_done"_i18n, true));
                 brls::Application::pushView(stagedFrame);
@@ -94,24 +94,16 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
 
     cleanUp = new brls::ListItem("menus/tools/clean_up"_i18n);
     cleanUp->getClickEvent()->subscribe([](brls::View* view) {
-        std::filesystem::remove(AMS_ZIP_PATH);
-        std::filesystem::remove(APP_ZIP_PATH);
-        std::filesystem::remove(FW_ZIP_PATH);
-		std::filesystem::remove(TRANSLATIONS_ZIP_PATH);
-        std::filesystem::remove(MODIFICATIONS_ZIP_PATH);
-		std::filesystem::remove(LOG_FILE);
-        fs::removeDir(AMS_DIRECTORY_PATH);
-        fs::removeDir(SEPT_DIRECTORY_PATH);
-        fs::removeDir(FW_DIRECTORY_PATH);
+        util::cleanFiles();
         util::showDialogBoxInfo("menus/common/all_done"_i18n);
     });
     cleanUp->setHeight(LISTITEM_HEIGHT);
 
-/*    motd = new brls::ListItem("menus/tools/motd_label"_i18n);
+    motd = new brls::ListItem("menus/tools/motd_label"_i18n);
     motd->getClickEvent()->subscribe([](brls::View* view) {
         util::showDialogBoxInfo(util::getMOTD());
     });
-    motd->setHeight(LISTITEM_HEIGHT);*/
+    motd->setHeight(LISTITEM_HEIGHT);
 
     changelog = new brls::ListItem("menus/tools/changelog"_i18n);
     changelog->getClickEvent()->subscribe([](brls::View* view) {
@@ -122,6 +114,6 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
     this->addView(netSettings);
     this->addView(browser);
     this->addView(cleanUp);
-//    this->addView(motd);
+    this->addView(motd);
     this->addView(changelog);
 }

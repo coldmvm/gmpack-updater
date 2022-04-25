@@ -25,7 +25,7 @@ ConfirmPage::ConfirmPage(brls::StagedAppletFrame* frame, const std::string& text
         }
         else if (this->reboot) {
             if (this->erista) {
-                util::rebootToPayload(RCM_PAYLOAD_PATH);
+                util::rebootToPayload(fmt::format(RCM_PAYLOAD_PATH, BASE_FOLDER_NAME));
             }
             else {
                 if (std::filesystem::exists(UPDATE_BIN_PATH)) {
@@ -34,7 +34,7 @@ ConfirmPage::ConfirmPage(brls::StagedAppletFrame* frame, const std::string& text
                 else {
                     fs::copyFile(REBOOT_PAYLOAD_PATH, MARIKO_PAYLOAD_PATH_TEMP);
                 }
-                fs::copyFile(RCM_PAYLOAD_PATH, MARIKO_PAYLOAD_PATH);
+                fs::copyFile(fmt::format(RCM_PAYLOAD_PATH, BASE_FOLDER_NAME), MARIKO_PAYLOAD_PATH);
                 util::shutDown(true);
             }
         }

@@ -24,13 +24,13 @@ AmsTab::AmsTab(const nlohmann::json& nxlinks, const bool erista) : brls::List()
     std::string packVersion = util::getGMPackVersion();
 
     this->description = new brls::Label(brls::LabelStyle::DESCRIPTION,
-        "menus/ams_update/pack_label"_i18n + "\n" + "menus/ams_update/current_ams"_i18n +
-        (util::getGMPackVersion()) +
+        fmt::format("menus/ams_update/pack_label"_i18n, util::upperCase(BASE_FOLDER_NAME), BRAND_FULL_NAME) + "\n" + "menus/ams_update/current_ams"_i18n +
+        packVersion +
         (CurrentCfw::running_cfw == CFW::ams ? CurrentCfw::getAmsInfo() : "") +
         (erista ? "\n" + "menus/ams_update/erista_rev"_i18n : "\n" + "menus/ams_update/mariko_rev"_i18n), true);
     this->addView(description);
 
-    CreateDownloadItems(util::getValueFromKey(cfws, "GMPack"), "GMPACK");
+    CreateDownloadItems(util::getValueFromKey(cfws, util::upperCase(BASE_FOLDER_NAME)), util::upperCase(BASE_FOLDER_NAME), packVersion);
 
     description = new brls::Label(brls::LabelStyle::DESCRIPTION, "menus/ams_update/goma_label"_i18n, true);
     this->addView(description);
@@ -38,27 +38,34 @@ AmsTab::AmsTab(const nlohmann::json& nxlinks, const bool erista) : brls::List()
     CreateDownloadItems(util::getValueFromKey(cfws, "GNX"), "GNX");
 }
 
-void AmsTab::CreateDownloadItems(const nlohmann::ordered_json& cfw_links, const std::string& pack)
+void AmsTab::CreateDownloadItems(const nlohmann::ordered_json& cfw_links, const std::string& pack, const std::string& sVer)
 {
     std::string operation(fmt::format("menus/main/getting"_i18n, pack));
     std::vector<std::pair<std::string, std::string>> links;
     links = download::getLinksFromJson(cfw_links);
     if (links.size()) {
         for (const auto& link : links) {
-            std::string url = link.second;
-            //std::string text("menus/common/download"_i18n + link.first + "menus/common/from"_i18n + url);
-            std::string text("menus/common/download"_i18n + link.first);
-            listItem = new brls::ListItem(link.first);
-            listItem->setHeight(LISTITEM_HEIGHT);
-            listItem->getClickEvent()->subscribe([this, text, url, operation](brls::View* view) {
-                if (!erista && !std::filesystem::exists(MARIKO_PAYLOAD_PATH)) {
-                    brls::Application::crash("menus/errors/mariko_payload_missing"_i18n);
-                }
-                else {
-                    CreateStagedFrames(text, url, operation, erista);
-                }
-            });
-            this->addView(listItem);
+            std::string json = link.second;
+            std::string name;
+            std::string url;
+            if (util::getLatestCFWPack(json, name, url))
+            {
+                if (name.find(sVer) != std::string::npos)
+                    listItem = new brls::ListItem(fmt::format("{}{}", "\u2605", name));
+                else
+                    listItem = new brls::ListItem(name);
+
+                listItem->setHeight(LISTITEM_HEIGHT);
+                listItem->getClickEvent()->subscribe([this, name, url, operation](brls::View* view) {
+                    if (!erista && !std::filesystem::exists(MARIKO_PAYLOAD_PATH)) {
+                        brls::Application::crash("menus/errors/mariko_payload_missing"_i18n);
+                    }
+                    else {
+                        CreateStagedFrames("menus/common/download"_i18n + name, url, operation, erista);
+                    }
+                });
+                this->addView(listItem);
+            }
         }
     }
     else {

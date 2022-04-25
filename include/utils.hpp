@@ -34,7 +34,8 @@ namespace util {
     void showDialogBoxInfo(const std::string& text);
     int showDialogBoxBlocking(const std::string& text, const std::string& opt);
     int showDialogBoxBlocking(const std::string& text, const std::string& opt1, const std::string& opt2);
-    std::string getLatestTag(const std::string& url);
+    std::string getLatestTag();
+    bool getLatestCFWPack(std::string& url, std::string& packName, std::string& packURL);
     std::string downloadFileToString(const std::string& url);
     void saveToFile(const std::string& text, const std::string& path);
     std::string readFile(const std::string& path);
@@ -53,6 +54,10 @@ namespace util {
     bool isExtraPresent(const std::vector<std::string>);
     bool wasMOTDAlreadyDisplayed();
     std::string getMOTD();
+    void createForwarderConfig();
+    std::string readConfFile(const std::string& fileName, const std::string& section);
+    void cleanFiles();
+    void createStarFile();
 /*
 Base64
 */
