@@ -22,7 +22,7 @@ DATA		:=	data
 INCLUDES	:=	include lib/zipper/include /lib/borealis/library/include/borealis/extern/nlohmann
 APP_TITLE	:=	Atualizador Pacote GameMod
 APP_AUTHOR	:=	coldmvm
-APP_VERSION :=  1.1.7
+APP_VERSION :=  1.1.8
 TARGET		:=	$(notdir $(CURDIR))
 
 ROMFS				:=	resources
@@ -164,10 +164,10 @@ $(ROMFS):
 	@cp -ruf $(CURDIR)/$(ROMFS)/i18n/zh-CN/. $(CURDIR)/$(ROMFS)/i18n/zh-Hans/
 	@cp -ruf $(CURDIR)/$(ROMFS)/i18n/zh-TW/. $(CURDIR)/$(ROMFS)/i18n/zh-Hant/
 	@rm -rf $(CURDIR)/$(ROMFS)/i18n/*/installer.json $(CURDIR)/$(ROMFS)/i18n/*/main.json $(CURDIR)/$(ROMFS)/i18n/*/popup.json $(CURDIR)/$(ROMFS)/i18n/*/custom_layout.json
-	@$(MAKE) -C $(CURDIR)/gmpack-rcm -f $(CURDIR)/gmpack-rcm/Makefile
-	@cp $(CURDIR)/gmpack-rcm/output/gmpack_rcm.bin $(CURDIR)/$(ROMFS)/gmpack_rcm.bin
-# @$(MAKE) -C $(CURDIR)/gmpack-forwarder -f $(CURDIR)/gmpack-forwarder/Makefile
-	@cp $(CURDIR)/gmpack-forwarder/gmpack-forwarder.nro $(CURDIR)/$(ROMFS)/gmpack-forwarder.nro
+	@$(MAKE) -C $(CURDIR)/app-rcm -f $(CURDIR)/app-rcm/Makefile
+	@cp $(CURDIR)/app-rcm/output/app_rcm.bin $(CURDIR)/$(ROMFS)/app_rcm.bin
+# @$(MAKE) -C $(CURDIR)/app-forwarder -f $(CURDIR)/app-forwarder/Makefile
+	@cp $(CURDIR)/app-forwarder/app-forwarder.nro $(CURDIR)/$(ROMFS)/app-forwarder.nro
 
 $(BUILD): $(ROMFS)
 	@[ -d $@ ] || mkdir -p $@
@@ -178,7 +178,7 @@ clean:
 	@echo clean ...
 ifeq ($(strip $(APP_JSON)),)
 	@rm -fr $(BUILD) $(notdir $(CURDIR))*.nro $(notdir $(CURDIR))*.nacp $(notdir $(CURDIR))*.elf
-# @rm -fr $(CURDIR)/gmpack-forwarder/build $(CURDIR)/gmpack-forwarder/*.nro $(CURDIR)/gmpack-forwarder/*.nacp $(CURDIR)/gmpack-forwarder/*.elf
+# @rm -fr $(CURDIR)/app-forwarder/build $(CURDIR)/app-forwarder/*.nro $(CURDIR)/app-forwarder/*.nacp $(CURDIR)/app-forwarder/*.elf
 else
 	@rm -fr $(BUILD) $(TARGET).nsp $(TARGET).nso $(TARGET).npdm $(TARGET).elf
 endif

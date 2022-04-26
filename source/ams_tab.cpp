@@ -24,10 +24,11 @@ AmsTab::AmsTab(const nlohmann::json& nxlinks, const bool erista) : brls::List()
     std::string packVersion = util::getGMPackVersion();
 
     this->description = new brls::Label(brls::LabelStyle::DESCRIPTION,
-        fmt::format("menus/ams_update/pack_label"_i18n, util::upperCase(BASE_FOLDER_NAME), BRAND_FULL_NAME) + "\n" + "menus/ams_update/current_ams"_i18n +
-        packVersion +
-        (CurrentCfw::running_cfw == CFW::ams ? CurrentCfw::getAmsInfo() : "") +
+        fmt::format("menus/ams_update/pack_label"_i18n, util::upperCase(BASE_FOLDER_NAME), BRAND_FULL_NAME) + "\n" +
+		fmt::format("menus/ams_update/current_ams"_i18n, (packVersion != "" ? packVersion + " | " : "")) + 
+        (CurrentCfw::running_cfw == CFW::ams ? "AMS " + CurrentCfw::getAmsInfo() : "Outros") +
         (erista ? "\n" + "menus/ams_update/erista_rev"_i18n : "\n" + "menus/ams_update/mariko_rev"_i18n), true);
+
     this->addView(description);
 
     CreateDownloadItems(util::getValueFromKey(cfws, util::upperCase(BASE_FOLDER_NAME)), util::upperCase(BASE_FOLDER_NAME), packVersion);
@@ -50,7 +51,7 @@ void AmsTab::CreateDownloadItems(const nlohmann::ordered_json& cfw_links, const 
             std::string url;
             if (util::getLatestCFWPack(json, name, url))
             {
-                if (name.find(sVer) != std::string::npos)
+                if ((sVer != "") && (name.find(sVer) != std::string::npos))
                     listItem = new brls::ListItem(fmt::format("{}{}", "\u2605", name));
                 else
                     listItem = new brls::ListItem(name);

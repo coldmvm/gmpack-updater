@@ -103,7 +103,7 @@ void DialoguePage_ams::instantiateButtons()
 
     this->button2->getClickEvent()->subscribe([this](View* view) {
         if (this->erista) {
-            util::rebootToPayload(fmt::format(RCM_PAYLOAD_PATH, BASE_FOLDER_NAME));
+            util::rebootToPayload(RCM_PAYLOAD_PATH);
         }
         else {
             if (std::filesystem::exists(UPDATE_BIN_PATH)) {
@@ -112,7 +112,7 @@ void DialoguePage_ams::instantiateButtons()
             else {
                 fs::copyFile(REBOOT_PAYLOAD_PATH, MARIKO_PAYLOAD_PATH_TEMP);
             }
-            fs::copyFile(fmt::format(RCM_PAYLOAD_PATH, BASE_FOLDER_NAME), MARIKO_PAYLOAD_PATH);
+            fs::copyFile(RCM_PAYLOAD_PATH, MARIKO_PAYLOAD_PATH);
             util::shutDown(true);
         }
         brls::Application::popView();

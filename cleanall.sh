@@ -8,22 +8,28 @@ echo ""
 echo "******************* Cleaning environment..."
 make clean
 
-echo "cleaning gmpack-forwarder..."
-cd gmpack-forwarder
+echo "cleaning forwarder..."
+cd app-forwarder
 rm -rf build
-rm gmpack-forwarder.elf
-rm gmpack-forwarder.nacp
-rm gmpack-forwarder.nro
+rm app-forwarder.elf
+rm app-forwarder.nacp
+rm app-forwarder.nro
 cd ..
 
-echo "cleaning gmpack-rcm..."
-cd gmpack-rcm
+echo "cleaning app-rcm..."
+cd app-rcm
 rm -rf build
 rm -rf output
 cd ..
 
+echo "cleaning resources..."
+cd resources
+rm -rf app_rcm.bin
+rm -rf app_forwarder.nro
+cd ..
+
 echo "finishing..."
-rm -rf gmpack-updater.*
+rm -rf *-updater.*
 
 
 echo ""

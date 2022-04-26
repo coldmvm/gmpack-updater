@@ -16,7 +16,7 @@ constexpr const char ROOT_PATH[] = "/";
 constexpr const char DOWNLOAD_PATH[] = "/config/{}-updater/";
 constexpr const char CONFIG_PATH[] = "/config/{}-updater/";
 
-constexpr const char RCM_PAYLOAD_PATH[] = "romfs:/{}_rcm.bin";
+constexpr const char RCM_PAYLOAD_PATH[] = "romfs:/app_rcm.bin";
 constexpr const char MARIKO_PAYLOAD_PATH[] = "/payload.bin";
 constexpr const char MARIKO_PAYLOAD_PATH_TEMP[] = "/payload.bin.apg";
 
@@ -58,8 +58,8 @@ constexpr const char FW_DIRECTORY_PATH[] = "/firmware/";
 constexpr const char COPY_FILES_TXT[] = "/config/{}-updater/copy_files.txt";
 constexpr const char LANGUAGE_JSON[] = "/config/{}-updater/language.json";
 
-constexpr const char ROMFS_FORWARDER[] = "romfs:/{}-forwarder.nro";
-constexpr const char FORWARDER_PATH[] = "/config/{}-updater/{}-forwarder.nro";
+constexpr const char ROMFS_FORWARDER[] = "romfs:/app-forwarder.nro";
+constexpr const char FORWARDER_PATH[] = "/config/{}-updater/app-forwarder.nro";
 constexpr const char FORWARDER_CONF[] = "/config/{}-updater/forwarder.conf";
 
 constexpr const char DAYBREAK_PATH[] = "/switch/daybreak.nro";

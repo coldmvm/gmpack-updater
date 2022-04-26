@@ -25,7 +25,7 @@ ConfirmPage::ConfirmPage(brls::StagedAppletFrame* frame, const std::string& text
         }
         else if (this->reboot) {
             if (this->erista) {
-                util::rebootToPayload(fmt::format(RCM_PAYLOAD_PATH, BASE_FOLDER_NAME));
+                util::rebootToPayload(RCM_PAYLOAD_PATH);
             }
             else {
                 if (std::filesystem::exists(UPDATE_BIN_PATH)) {
@@ -34,7 +34,7 @@ ConfirmPage::ConfirmPage(brls::StagedAppletFrame* frame, const std::string& text
                 else {
                     fs::copyFile(REBOOT_PAYLOAD_PATH, MARIKO_PAYLOAD_PATH_TEMP);
                 }
-                fs::copyFile(fmt::format(RCM_PAYLOAD_PATH, BASE_FOLDER_NAME), MARIKO_PAYLOAD_PATH);
+                fs::copyFile(RCM_PAYLOAD_PATH, MARIKO_PAYLOAD_PATH);
                 util::shutDown(true);
             }
         }
@@ -51,9 +51,12 @@ ConfirmPage::ConfirmPage(brls::StagedAppletFrame* frame, const std::string& text
     }
     else
     {
-        this->registerAction("", brls::Key::A, [this] { return true; });
-        this->registerAction("", brls::Key::B, [this] { return true; });
-        this->registerAction("", brls::Key::PLUS, [this] { return true; });
+        if (this->done || this->reboot)
+		{
+		    this->registerAction("", brls::Key::A, [this] { return true; });
+            this->registerAction("", brls::Key::B, [this] { return true; });
+            this->registerAction("", brls::Key::PLUS, [this] { return true; });
+        }
     }
 }
 
@@ -91,7 +94,7 @@ void ConfirmPage::layout(NVGcontext* vg, brls::Style* style, brls::FontStash* st
     //page icon
     this->icon->setWidth(52);
     this->icon->setHeight(52);
-	this->icon->setBoundaries(style->AppletFrame.imageLeftPadding, style->AppletFrame.imageTopPadding, style->AppletFrame.imageSize, style->AppletFrame.imageSize);
+    this->icon->setBoundaries(style->AppletFrame.imageLeftPadding, style->AppletFrame.imageTopPadding, style->AppletFrame.imageSize, style->AppletFrame.imageSize);
     this->icon->invalidate(true);
 
     this->label->setWidth(this->width);
@@ -115,7 +118,7 @@ void ConfirmPage::layout(NVGcontext* vg, brls::Style* style, brls::FontStash* st
 
 ConfirmPage::~ConfirmPage()
 {
-	delete this->icon;
+    delete this->icon;
     delete this->label;
     delete this->button;
 }

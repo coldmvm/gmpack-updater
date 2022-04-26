@@ -147,23 +147,27 @@ namespace util {
     {
         chdir(ROOT_PATH);
         crashIfNotArchive(type);
-        std::string tmp = fmt::format(FORWARDER_PATH, BASE_FOLDER_NAME, BASE_FOLDER_NAME);
         switch (type) {
             case contentType::fw:
                 if (std::filesystem::exists(FIRMWARE_PATH)) std::filesystem::remove_all(FIRMWARE_PATH);
                 fs::createTree(FIRMWARE_PATH);
                 extract::extract(fmt::format(FIRMWARE_FILENAME, BASE_FOLDER_NAME), FIRMWARE_PATH);
+
+                //removing firmware temporary zip file.
+                std::filesystem::remove(fmt::format(FW_ZIP_PATH, BASE_FOLDER_NAME));
                 break;
             case contentType::app:
                 extract::extract(fmt::format(APP_FILENAME, BASE_FOLDER_NAME), fmt::format(CONFIG_PATH, BASE_FOLDER_NAME));
-                fs::copyFile(fmt::format(ROMFS_FORWARDER, BASE_FOLDER_NAME), fmt::format(FORWARDER_PATH, BASE_FOLDER_NAME, BASE_FOLDER_NAME));
+                fs::copyFile(ROMFS_FORWARDER, fmt::format(FORWARDER_PATH, BASE_FOLDER_NAME));
 
                 //creting the star file
                 createStarFile();
 
+                //removing update temporary zip file.
+                std::filesystem::remove(fmt::format(APP_ZIP_PATH, BASE_FOLDER_NAME));
+
                 createForwarderConfig();
-                usleep(5000);
-                envSetNextLoad(tmp.c_str(), fmt::format("\"{}\"", tmp).c_str());
+                envSetNextLoad(fmt::format(FORWARDER_PATH, BASE_FOLDER_NAME).c_str(), fmt::format("\"{}\"", fmt::format(FORWARDER_PATH, BASE_FOLDER_NAME)).c_str());
                 romfsExit();
                 brls::Application::quit();
                 break;
@@ -179,6 +183,9 @@ namespace util {
                     removeSysmodulesFlags(AMS_CONTENTS);
 
                 extract::extract(fmt::format(AMS_FILENAME, BASE_FOLDER_NAME), ROOT_PATH, overwriteInis);
+
+                //removing custom firmware temporary zip file.
+                std::filesystem::remove(fmt::format(AMS_ZIP_PATH, BASE_FOLDER_NAME));
                 break;
             }
             case contentType::translations:
@@ -396,7 +403,7 @@ namespace util {
             while (std::getline(file, line)) {
                 if(line.find("{GMPACK", 0) != std::string::npos)
                 {
-                    line = line.substr(1, line.size() - 2) + " | AMS ";
+                    line = line.substr(1, line.size() - 3);
                     break;
                 }
                 else
@@ -479,7 +486,7 @@ namespace util {
             file << fmt::format("FULL_PATH=/switch/{}-updater/{}-updater.nro", BASE_FOLDER_NAME, BASE_FOLDER_NAME) << std::endl;
             file << fmt::format("CONFIG_PATH=/config/{}-updater/switch/{}-updater/{}-updater.nro", BASE_FOLDER_NAME, BASE_FOLDER_NAME, BASE_FOLDER_NAME) << std::endl;
             file << fmt::format("PREFIX=/switch/{}-updater/{}-updater-v", BASE_FOLDER_NAME, BASE_FOLDER_NAME) << std::endl;
-            file << fmt::format("FORWARDER_PATH=/config/{}-updater/{}-forwarder.nro", BASE_FOLDER_NAME, BASE_FOLDER_NAME) << std::endl;
+            file << fmt::format("FORWARDER_PATH=/config/{}-updater/app-forwarder.nro", BASE_FOLDER_NAME) << std::endl;
             file << fmt::format("CONFIG_SWITCH=/config/{}-updater/switch/", BASE_FOLDER_NAME) << std::endl;
             file << fmt::format("HIDDEN_FILE=/config/{}-updater/.{}-updater", BASE_FOLDER_NAME, BASE_FOLDER_NAME) << std::endl;
         }

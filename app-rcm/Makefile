@@ -10,7 +10,7 @@ IPL_LOAD_ADDR := 0x40008000
 
 ################################################################################
 
-TARGET := gmpack_rcm
+TARGET := app_rcm
 BUILDDIR := build
 OUTPUTDIR := output
 SOURCEDIR = bootloader
@@ -90,7 +90,7 @@ $(TARGET).bin: $(BUILDDIR)/$(TARGET)/$(TARGET).elf
 
 $(BUILDDIR)/$(TARGET)/$(TARGET).elf: $(OBJS)
 	@$(CC) $(LDFLAGS) -T $(SOURCEDIR)/link.ld $^ -o $@
-	@echo "gmpack-rcm was built with the following flags:\nCFLAGS:  "$(CFLAGS)"\nLDFLAGS: "$(LDFLAGS)
+	@echo "app-rcm was built with the following flags:\nCFLAGS:  "$(CFLAGS)"\nLDFLAGS: "$(LDFLAGS)
 
 $(BUILDDIR)/$(TARGET)/%.o: %.c
 	@echo Building $@

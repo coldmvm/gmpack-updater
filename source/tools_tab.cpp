@@ -12,6 +12,8 @@
 #include "worker_page.hpp"
 #include "download.hpp"
 
+#include <chrono>
+
 namespace i18n = brls::i18n;
 using namespace i18n::literals;
 using json = nlohmann::json;
@@ -53,7 +55,7 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
                 brls::Application::pushView(stagedFrame);
             });
             updateApp->setHeight(LISTITEM_HEIGHT);
-            this->addView(updateApp);
+            //this->addView(updateApp);
         }
     }
     netSettings = new brls::ListItem("menus/tools/internet_settings"_i18n);
@@ -101,7 +103,15 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
 
     motd = new brls::ListItem("menus/tools/motd_label"_i18n);
     motd->getClickEvent()->subscribe([](brls::View* view) {
-        util::showDialogBoxInfo(util::getMOTD());
+        //util::showDialogBoxInfo(util::getMOTD());
+	auto start = std::chrono::system_clock::now();
+    { // The code to test
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+    }
+    auto end = std::chrono::system_clock::now();
+
+    std::chrono::duration<double> elapsed = end - start;
+    util::showDialogBoxInfo(fmt::format("Elapsed time: {}", elapsed.count()));;
     });
     motd->setHeight(LISTITEM_HEIGHT);
 
@@ -114,6 +124,6 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
     this->addView(netSettings);
     this->addView(browser);
     this->addView(cleanUp);
-    this->addView(motd);
+//    this->addView(motd);
     this->addView(changelog);
 }
