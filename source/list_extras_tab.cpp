@@ -13,15 +13,6 @@
 namespace i18n = brls::i18n;
 using namespace i18n::literals;
 
-std::string listItemName(std::string folder)
-{
-    std::string path = util::getContentsPath();
-    if (std::filesystem::exists(path + folder))
-        return "\u2605";
-    else
-        return "";
-}
-
 ListExtraTab::ListExtraTab(const contentType type, const nlohmann::ordered_json& nxlinks) : brls::List(), type(type), nxlinks(nxlinks)
 {
     this->setDescription();
@@ -46,7 +37,16 @@ void ListExtraTab::createList(contentType type)
             const std::string url = (*it)["link"].get<std::string>();
             const std::string size = (*it)["size"].get<std::string>();
             bool enabled = (*it)["enabled"].get<bool>();
+            
+            std::string sHashFile = "";
+            std::string sHashSize = "";
 
+            if (it.value().contains("hash"))
+            {
+                sHashFile = (*it)["hash"]["hash_file"].get<std::string>();
+                sHashSize = (*it)["hash"]["hash_size"].get<std::string>();
+            }
+            
             if (enabled) {
                 counter++;
 
@@ -65,11 +65,11 @@ void ListExtraTab::createList(contentType type)
                         token = folders.substr(pos_start, pos_end - pos_start);
                         pos_start = pos_end + delim_len;
                         itemFolders.push_back(token);
-                        foundTitle = listItemName(token);
+                        foundTitle = listItemName(token, sHashFile, sHashSize);
                     }
                 }
                 itemFolders.push_back(folders.substr(pos_start));
-                foundTitle = listItemName(folders.substr(pos_start));
+                foundTitle = listItemName(folders.substr(pos_start), sHashFile, sHashSize);
 
                 const std::string finalTitle = fmt::format("{} {} ({})", foundTitle, title, size);
 
@@ -163,4 +163,35 @@ void ListExtraTab::setDescription(contentType type)
     }
 
     this->addView(description);
+}
+
+std::string ListExtraTab::listItemName(std::string folder, std::string sHashFile, std::string sHashSize)
+{
+    std::string path = util::getContentsPath();
+    if (std::filesystem::exists(path + folder))
+    {
+        if (sHashFile != "")
+        {
+            if (std::filesystem::exists(path + folder + sHashFile))
+            {
+                std::string filename = path + folder + sHashFile;
+                FILE *p_file = NULL;
+                p_file = fopen(filename.c_str(),"rb");
+                fseek(p_file,0,SEEK_END);
+                int size = ftell(p_file);
+                fclose(p_file);
+
+                if (size == std::stoi(sHashSize))
+                    return "\u2605";
+                else
+                    return "";
+            }
+            else
+                return "\u2605";
+        }
+        else
+            return "\u2605";
+    }
+    else
+        return "";
 }
