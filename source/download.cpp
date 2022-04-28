@@ -315,7 +315,7 @@ namespace download {
         std:: string tmpURL = "";
         int i = 0;
         for (auto it = json.begin(); it != json.end(); ++it) {
-            tmpName = (*it)["name"];
+            tmpName = fmt::format("{} ({}MB)", (*it)["name"], ((*it)["assets"][0]["size"].get<int>() / 1048576));
             tmpURL = (*it)["assets"][0]["browser_download_url"];
             res.push_back(std::make_pair(tmpName, tmpURL));
             i++;

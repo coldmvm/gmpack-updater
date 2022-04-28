@@ -240,7 +240,7 @@ namespace util {
             return "";
     }
 
-    bool getLatestCFWPack(std::string& url, std::string& packName, std::string& packURL)
+    bool getLatestCFWPack(std::string& url, std::string& packName, std::string& packURL, int& packSize, std::string& packBody)
     {
         nlohmann::ordered_json json;
         download::getRequest(url, json, {"accept: application/vnd.github.v3+json"});
@@ -248,16 +248,22 @@ namespace util {
             packName = json["name"];
         else
             return false;
-
-        std:: string tmp = "";
-        json = getValueFromKey(json, "assets");
-        if (!json.empty())
-            tmp = json[0]["browser_download_url"];
+		
+        if (json.find("body") != json.end())
+            packBody = json["body"];
         else
             return false;
 
-        packURL = tmp;
-        return true;
+        json = getValueFromKey(json, "assets");
+        if (!json.empty())
+        {
+            packURL = json[0]["browser_download_url"];
+            packSize = json[0]["size"];
+        }
+        else
+            return false;
+
+		return true;
     }
 
     std::string downloadFileToString(const std::string& url)

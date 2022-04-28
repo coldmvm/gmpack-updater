@@ -25,7 +25,7 @@ AmsTab::AmsTab(const nlohmann::json& nxlinks, const bool erista) : brls::List()
 
     this->description = new brls::Label(brls::LabelStyle::DESCRIPTION,
         fmt::format("menus/ams_update/pack_label"_i18n, util::upperCase(BASE_FOLDER_NAME), BRAND_FULL_NAME) + "\n" +
-		fmt::format("menus/ams_update/current_ams"_i18n, (packVersion != "" ? packVersion + " | " : "")) + 
+        fmt::format("menus/ams_update/current_ams"_i18n, (packVersion != "" ? packVersion + " | " : "")) + 
         (CurrentCfw::running_cfw == CFW::ams ? "AMS " + CurrentCfw::getAmsInfo() : "Outros") +
         (erista ? "\n" + "menus/ams_update/erista_rev"_i18n : "\n" + "menus/ams_update/mariko_rev"_i18n), true);
 
@@ -49,20 +49,24 @@ void AmsTab::CreateDownloadItems(const nlohmann::ordered_json& cfw_links, const 
             std::string json = link.second;
             std::string name;
             std::string url;
-            if (util::getLatestCFWPack(json, name, url))
+            int size;
+            std::string body;
+            if (util::getLatestCFWPack(json, name, url, size, body))
             {
+                int iSize = (size / 1048576);
+
                 if ((sVer != "") && (name.find(sVer) != std::string::npos))
-                    listItem = new brls::ListItem(fmt::format("{}{}", "\u2605", name));
+                    listItem = new brls::ListItem(fmt::format("{}{} ({}MB)", "\u2605", name, iSize));
                 else
-                    listItem = new brls::ListItem(name);
+                    listItem = new brls::ListItem(fmt::format("{} ({}MB)", name, iSize));
 
                 listItem->setHeight(LISTITEM_HEIGHT);
-                listItem->getClickEvent()->subscribe([this, name, url, operation](brls::View* view) {
+                listItem->getClickEvent()->subscribe([this, name, url, iSize, body, operation](brls::View* view) {
                     if (!erista && !std::filesystem::exists(MARIKO_PAYLOAD_PATH)) {
                         brls::Application::crash("menus/errors/mariko_payload_missing"_i18n);
                     }
                     else {
-                        CreateStagedFrames("menus/common/download"_i18n + name, url, operation, erista);
+                        CreateStagedFrames("menus/common/download"_i18n + name, url, iSize, body, operation, erista);
                     }
                 });
                 this->addView(listItem);
@@ -80,15 +84,13 @@ void AmsTab::CreateDownloadItems(const nlohmann::ordered_json& cfw_links, const 
 
 }
 
-void AmsTab::CreateStagedFrames(const std::string& text, const std::string& url, const std::string& operation, bool erista)
+void AmsTab::CreateStagedFrames(const std::string& text, const std::string& url, const int& size, const std::string& body, const std::string& operation, bool erista)
 {
     brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
     stagedFrame->setTitle(operation);
 
-    stagedFrame->addStage(
-        new ListDownloadConfirmationPage(stagedFrame, "menus/main/download_time_warning"_i18n));
-
-    stagedFrame->addStage(new ConfirmPage(stagedFrame, text));
+    stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/download_time_warning"_i18n));
+    stagedFrame->addStage(new ConfirmPage(stagedFrame, fmt::format("{} ({}MB)", text, size)));
     stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [url]() { util::downloadArchive(url, contentType::ams_cfw); }));
     stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, []() { util::extractArchive(contentType::ams_cfw); }));
     stagedFrame->addStage(new ConfirmPage(stagedFrame, "menus/ams_update/reboot_rcm"_i18n, false, true, erista));

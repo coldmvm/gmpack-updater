@@ -35,7 +35,7 @@ namespace util {
     int showDialogBoxBlocking(const std::string& text, const std::string& opt);
     int showDialogBoxBlocking(const std::string& text, const std::string& opt1, const std::string& opt2);
     std::string getLatestTag();
-    bool getLatestCFWPack(std::string& url, std::string& packName, std::string& packURL);
+    bool getLatestCFWPack(std::string& url, std::string& packName, std::string& packURL, int& packSize, std::string& packBody);
     std::string downloadFileToString(const std::string& url);
     void saveToFile(const std::string& text, const std::string& path);
     std::string readFile(const std::string& path);

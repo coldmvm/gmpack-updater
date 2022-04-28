@@ -10,7 +10,7 @@ private:
     brls::ListItem* listItem;
     brls::Label* description;
     bool erista;
-    void CreateStagedFrames(const std::string& text, const std::string& url, const std::string& operation, bool erista);
+    void CreateStagedFrames(const std::string& text, const std::string& url, const int& size, const std::string& body, const std::string& operation, bool erista);
     void CreateDownloadItems(const nlohmann::ordered_json& cfw_links, const std::string& pack = "", const std::string& sVer = "NFx.x.x");
 
 public:
