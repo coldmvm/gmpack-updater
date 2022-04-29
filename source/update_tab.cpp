@@ -4,7 +4,6 @@
 #include <string>
 
 #include "confirm_page.hpp"
-#include "list_download_tab_confirmation.hpp"
 #include "current_cfw.hpp"
 #include "dialogue_page.hpp"
 #include "download.hpp"

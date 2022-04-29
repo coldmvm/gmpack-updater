@@ -37,9 +37,9 @@ MOTDPage::MOTDPage()
         size_t pos_end;
 
         if ((pos_end = text.find("\n", 0)) != std::string::npos)
-		    firstLine = text.substr(0, pos_end);
-		else
-			firstLine = text;
+            firstLine = text.substr(0, pos_end);
+        else
+            firstLine = text;
 
         MOTDFile << firstLine << std::endl;
     }
@@ -82,7 +82,8 @@ void MOTDPage::layout(NVGcontext* vg, brls::Style* style, brls::FontStash* stash
 
     this->button->setBoundaries(
         this->x + this->width / 2 - style->CrashFrame.buttonWidth / 2,
-        this->y + (this->height - style->CrashFrame.buttonHeight * 3),
+        //this->y + (this->height - style->CrashFrame.buttonHeight * 3),
+        this->y + (this->height - (style->CrashFrame.buttonHeight * 1.25)),
         style->CrashFrame.buttonWidth,
         style->CrashFrame.buttonHeight);
     this->button->invalidate();

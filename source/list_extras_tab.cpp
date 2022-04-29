@@ -45,6 +45,11 @@ void ListExtraTab::createList(contentType type)
             {
                 sHashFile = (*it)["hash"]["hash_file"].get<std::string>();
                 sHashSize = (*it)["hash"]["hash_size"].get<std::string>();
+
+                for (auto it2 = (*it)["hash"]["base_path"].begin(); it2 != (*it)["hash"]["base_path"].end(); ++it2)
+				{
+				}
+
             }
             
             if (enabled) {
@@ -85,11 +90,11 @@ void ListExtraTab::createList(contentType type)
 
                         switch (type) {
                            case contentType::translations: {
-                               stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/translation_exists_warning"_i18n));
+                               stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/translation_exists_warning"_i18n, false));
                                break;
                             }
                             case contentType::modifications: {
-                                stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/modification_exists_warning"_i18n));
+                                stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/modification_exists_warning"_i18n, false));
                                 break;
                             }
                                 default:

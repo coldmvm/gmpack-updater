@@ -70,7 +70,7 @@ void ListDownloadTab::createList(contentType type, std::string& sVer)
                 brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
                 stagedFrame->setTitle(fmt::format("menus/main/getting"_i18n, contentTypeFullNames[(int)type].data()));
 
-                stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/download_time_warning"_i18n));
+                stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/download_time_warning"_i18n, false));
 
                 stagedFrame->addStage(new ConfirmPage(stagedFrame, text));
                 
