@@ -19,8 +19,6 @@ private:
     void displayNotFound();
     void noItemsToDisplay();
 
-    std::string listItemName(std::string folder, std::string sHashFile, std::string sHashSize);
-
 public:
     ListExtraTab(const contentType type, const nlohmann::ordered_json& nxlinks = nlohmann::ordered_json::object());
 };

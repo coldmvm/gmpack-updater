@@ -25,8 +25,6 @@ namespace {
 
 MainFrame::MainFrame() : TabFrame()
 {
-    util::cleanFiles();
-
     bool newversion = false;
 
 	this->setIcon("romfs:/gui_icon.png");

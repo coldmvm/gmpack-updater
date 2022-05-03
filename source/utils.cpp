@@ -2,8 +2,10 @@
 
 #include <switch.h>
 
+#include <chrono>
 #include <filesystem>
 #include <fstream>
+#include <thread>
 
 #include "unistd.h"
 #include "reboot_payload.h"
@@ -81,34 +83,32 @@ namespace util {
 
     int showDialogBoxBlocking(const std::string& text, const std::string& opt)
     {
-        int dialogResult = -1;
         int result = -1;
         brls::Dialog* dialog = new brls::Dialog(text);
-        brls::GenericEvent::Callback callback = [dialog, &dialogResult](brls::View* view) {
-            dialogResult = 0;
+        brls::GenericEvent::Callback callback = [dialog, &result](brls::View* view) {
+            result = 0;
             dialog->close();
         };
         dialog->addButton(opt, callback);
         dialog->setCancelable(false);
         dialog->open();
         while (result == -1) {
-            usleep(1);
-            result = dialogResult;
+            std::this_thread::sleep_for(std::chrono::microseconds(10));
         }
+        std::this_thread::sleep_for(std::chrono::microseconds(800000));
         return result;
     }
 
     int showDialogBoxBlocking(const std::string& text, const std::string& opt1, const std::string& opt2)
     {
-        int dialogResult = -1;
         int result = -1;
         brls::Dialog* dialog = new brls::Dialog(text);
-        brls::GenericEvent::Callback callback1 = [dialog, &dialogResult](brls::View* view) {
-            dialogResult = 0;
+        brls::GenericEvent::Callback callback1 = [dialog, &result](brls::View* view) {
+            result = 0;
             dialog->close();
         };
-        brls::GenericEvent::Callback callback2 = [dialog, &dialogResult](brls::View* view) {
-            dialogResult = 1;
+        brls::GenericEvent::Callback callback2 = [dialog, &result](brls::View* view) {
+            result = 1;
             dialog->close();
         };
         dialog->addButton(opt1, callback1);
@@ -116,9 +116,9 @@ namespace util {
         dialog->setCancelable(false);
         dialog->open();
         while (result == -1) {
-            usleep(1);
-            result = dialogResult;
+            std::this_thread::sleep_for(std::chrono::microseconds(10));
         }
+        std::this_thread::sleep_for(std::chrono::microseconds(800000));
         return result;
     }
 
@@ -178,7 +178,6 @@ namespace util {
                 int overwriteInis = 1;
                 int deleteContents = 1;
 
-                usleep(800000);
                 if (deleteContents == 1)
                     removeSysmodulesFlags(AMS_CONTENTS);
 
@@ -238,32 +237,6 @@ namespace util {
             return tag["tag_name"];
         else
             return "";
-    }
-
-    bool getLatestCFWPack(std::string& url, std::string& packName, std::string& packURL, int& packSize, std::string& packBody)
-    {
-        nlohmann::ordered_json json;
-        download::getRequest(url, json, {"accept: application/vnd.github.v3+json"});
-        if (json.find("name") != json.end())
-            packName = json["name"];
-        else
-            return false;
-		
-        if (json.find("body") != json.end())
-            packBody = json["body"];
-        else
-            return false;
-
-        json = getValueFromKey(json, "assets");
-        if (!json.empty())
-        {
-            packURL = json[0]["browser_download_url"];
-            packSize = json[0]["size"];
-        }
-        else
-            return false;
-
-		return true;
     }
 
     std::string downloadFileToString(const std::string& url)
@@ -389,6 +362,10 @@ namespace util {
         return (jsonFile.find(key) != jsonFile.end()) ? jsonFile.at(key) : nlohmann::ordered_json::object();
     }
 
+/*
+MY METHODS
+*/
+
     void writeLog(std::string line)
     {
         std::ofstream logFile;
@@ -422,27 +399,38 @@ namespace util {
 
     void doDelete(std::vector<std::string> folders)
     {
-        ProgressEvent::instance().setTotalSteps(folders.size());
-        ProgressEvent::instance().setStep(0);
+        if (!folders.empty())
+        {
+            ProgressEvent::instance().setTotalSteps(folders.size());
+            ProgressEvent::instance().setStep(0);
 
-        std::string contentsPath = util::getContentsPath();
-        for (std::string f : folders) {
-            std::filesystem::remove_all(contentsPath + f);
-            ProgressEvent::instance().incrementStep(1);
-        }
-    }
+            int index;
+            std::string tmpFolder;
+            std::string path = getContentsPath();
 
-    bool isExtraPresent(const std::vector<std::string> folders)
-    {
-        std::string contentsPath = util::getContentsPath();
-        for (const auto& folder : folders) {
-            if (std::filesystem::exists(contentsPath + folder) && !std::filesystem::is_empty(contentsPath + folder)) {
-                return true;
-                break;
+            for (std::string f : folders) {
+                tmpFolder = f + "/";
+                std::filesystem::remove_all(path + tmpFolder);
+                index = tmpFolder.find_last_of("/");
+                tmpFolder = tmpFolder.substr(0, index);
+
+                while(tmpFolder.find_last_of("/") != std::string::npos)
+                {
+                    index = tmpFolder.find_last_of("/");
+                    tmpFolder = tmpFolder.substr(0, index);
+
+                    if (std::filesystem::exists(path + tmpFolder))
+                    {
+                        if (std::filesystem::is_empty(path + tmpFolder))
+                            std::filesystem::remove_all(path + tmpFolder);
+                    }
+                }
+
+                ProgressEvent::instance().incrementStep(1);
             }
         }
-        return false;
     }
+
 
     bool wasMOTDAlreadyDisplayed()
     {
@@ -540,88 +528,29 @@ namespace util {
         std::ofstream starFile(fmt::format(APG_STAR_FILE, BASE_FOLDER_NAME, BASE_FOLDER_NAME));
     }
 
-/*
-Base64
-*/
-    static const char* B64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-
-    static const int B64index[256] =
+    bool getLatestCFWPack(std::string& url, std::string& packName, std::string& packURL, int& packSize, std::string& packBody)
     {
-        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  62, 63, 62, 62, 63,
-        52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 0,  0,  0,  0,  0,  0,
-        0,  0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14,
-        15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0,  0,  0,  0,  63,
-        0,  26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-        41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51
-    };
+        nlohmann::ordered_json json;
+        download::getRequest(url, json, {"accept: application/vnd.github.v3+json"});
+        if (json.find("name") != json.end())
+            packName = json["name"];
+        else
+            return false;
+        
+        if (json.find("body") != json.end())
+            packBody = json["body"];
+        else
+            return false;
 
-    const std::string b64encode(const void* data, const size_t &len)
-    {
-        std::string result((len + 2) / 3 * 4, '=');
-        unsigned char *p = (unsigned  char*) data;
-        char *str = &result[0];
-        size_t j = 0, pad = len % 3;
-        const size_t last = len - pad;
-
-        for (size_t i = 0; i < last; i += 3)
+        json = getValueFromKey(json, "assets");
+        if (!json.empty())
         {
-            int n = int(p[i]) << 16 | int(p[i + 1]) << 8 | p[i + 2];
-            str[j++] = B64chars[n >> 18];
-            str[j++] = B64chars[n >> 12 & 0x3F];
-            str[j++] = B64chars[n >> 6 & 0x3F];
-            str[j++] = B64chars[n & 0x3F];
+            packURL = json[0]["browser_download_url"];
+            packSize = json[0]["size"];
         }
-        if (pad)  /// Set padding
-        {
-            int n = --pad ? int(p[last]) << 8 | p[last + 1] : p[last];
-            str[j++] = B64chars[pad ? n >> 10 & 0x3F : n >> 2];
-            str[j++] = B64chars[pad ? n >> 4 & 0x03F : n << 4 & 0x3F];
-            str[j++] = pad ? B64chars[n << 2 & 0x3F] : '=';
-        }
-        return result;
-    }
+        else
+            return false;
 
-    const std::string b64decode(const void* data, const size_t &len)
-    {
-        if (len == 0) return "";
-
-        unsigned char *p = (unsigned char*) data;
-        size_t j = 0,
-            pad1 = len % 4 || p[len - 1] == '=',
-            pad2 = pad1 && (len % 4 > 2 || p[len - 2] != '=');
-        const size_t last = (len - pad1) / 4 << 2;
-        std::string result(last / 4 * 3 + pad1 + pad2, '\0');
-        unsigned char *str = (unsigned char*) &result[0];
-
-        for (size_t i = 0; i < last; i += 4)
-        {
-            int n = B64index[p[i]] << 18 | B64index[p[i + 1]] << 12 | B64index[p[i + 2]] << 6 | B64index[p[i + 3]];
-            str[j++] = n >> 16;
-            str[j++] = n >> 8 & 0xFF;
-            str[j++] = n & 0xFF;
-        }
-        if (pad1)
-        {
-            int n = B64index[p[last]] << 18 | B64index[p[last + 1]] << 12;
-            str[j++] = n >> 16;
-            if (pad2)
-            {
-                n |= B64index[p[last + 2]] << 6;
-                str[j++] = n >> 8 & 0xFF;
-            }
-        }
-        return result;
-    }
-
-    std::string b64encode(const std::string& str)
-    {
-        return b64encode(str.c_str(), str.size());
-    }
-
-    std::string b64decode(const std::string& str64)
-    {
-        return b64decode(str64.c_str(), str64.size());
+        return true;
     }
 }  // namespace util

@@ -28,68 +28,78 @@ void ListExtraTab::createList()
 void ListExtraTab::createList(contentType type)
 {
     int counter = 0;
+
+    std::string sInstalledFile = "";
+    int sInstalledSize = -1;
+    bool bInstalled;
+
+    std::string path = util::getContentsPath();
+    std::vector<std::string> itemFolders;
+
     const nlohmann::ordered_json jsonExtras = util::getValueFromKey(this->nxlinks, contentTypeNames[(int)type].data());
     if (jsonExtras.size()) {
         for (auto it = jsonExtras.begin(); it != jsonExtras.end(); ++it)
-        {
-            const std::string title = it.key();
-            const std::string folders = (*it)["folders"].get<std::string>();
-            const std::string url = (*it)["link"].get<std::string>();
-            const std::string size = (*it)["size"].get<std::string>();
+        {            
             bool enabled = (*it)["enabled"].get<bool>();
             
-            std::string sHashFile = "";
-            std::string sHashSize = "";
-
-            if (it.value().contains("hash"))
-            {
-                sHashFile = (*it)["hash"]["hash_file"].get<std::string>();
-                sHashSize = (*it)["hash"]["hash_size"].get<std::string>();
-
-                for (auto it2 = (*it)["hash"]["base_path"].begin(); it2 != (*it)["hash"]["base_path"].end(); ++it2)
-				{
-				}
-
-            }
-            
             if (enabled) {
-                counter++;
+                //resetting variables
+                sInstalledFile = "";
+                sInstalledSize = -1;
+                bInstalled = false;
 
-                std::string foundTitle;
+                //getting values from JSON
+                const std::string title = it.key();
+                const std::string url = (*it)["link"].get<std::string>();
+                const std::string size = (*it)["size"].get<std::string>();
 
-                std::vector<std::string> itemFolders;
-                itemFolders.clear();
-
-                //splitting folders and inserting into the vector
-                size_t pos_start = 0, pos_end, delim_len = 1;
-                std::string token;
-
-                if (folders.find(",", pos_start) != std::string::npos)
+                //checking whether the content exists in disk
+                if ((*it)["installed"].contains("hash_file"))
                 {
-                    while((pos_end = folders.find(",", pos_start)) != std::string::npos) {
-                        token = folders.substr(pos_start, pos_end - pos_start);
-                        pos_start = pos_end + delim_len;
-                        itemFolders.push_back(token);
-                        foundTitle = listItemName(token, sHashFile, sHashSize);
+                    sInstalledFile = path + (*it)["installed"]["hash_file"].get<std::string>();
+                    sInstalledSize = (*it)["installed"]["hash_size"].get<int>();
+
+                    if (std::filesystem::exists(sInstalledFile))
+                    {
+                        FILE *p_file = NULL;
+                        p_file = fopen(sInstalledFile.c_str(),"rb");
+                        fseek(p_file,0,SEEK_END);
+                        int size = ftell(p_file);
+                        fclose(p_file);
+
+                        if (size == sInstalledSize)
+                            bInstalled = true;
+                        else
+                            bInstalled = false;
                     }
                 }
-                itemFolders.push_back(folders.substr(pos_start));
-                foundTitle = listItemName(folders.substr(pos_start), sHashFile, sHashSize);
 
-                const std::string finalTitle = fmt::format("{} {} ({})", foundTitle, title, size);
-
+                //getting the list of files to delete
+                if ((*it)["installed"].contains("uninstall"))
+                {
+                    itemFolders.clear();
+                    
+                    for (auto it2 = (*it)["installed"]["uninstall"].begin(); it2 != (*it)["installed"]["uninstall"].end(); ++it2)
+                    {
+                        const std::string tmp = it2.value();
+                        itemFolders.push_back(tmp);
+                        
+                        if (sInstalledSize < 0)
+                            bInstalled = std::filesystem::exists(sInstalledFile);
+                    }
+                }
+                
                 const std::string text("menus/common/download"_i18n + title);
-                listItem = new brls::ListItem(finalTitle);
+                listItem = new brls::ListItem(fmt::format("{}{} ({})", (bInstalled ? "\u2605" : ""), title, size));
                 listItem->setHeight(LISTITEM_HEIGHT);
-                listItem->getClickEvent()->subscribe([this, type, text, url, itemFolders](brls::View* view) {
+                listItem->getClickEvent()->subscribe([this, type, text, url, itemFolders, bInstalled](brls::View* view) {
                     brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
                     stagedFrame->setTitle(fmt::format("menus/main/getting"_i18n, contentTypeFullNames[(int)type].data()));
 
-                    if (util::isExtraPresent(itemFolders))
+                    if (bInstalled)
                     {
-
                         switch (type) {
-                           case contentType::translations: {
+                            case contentType::translations: {
                                stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/translation_exists_warning"_i18n, false));
                                break;
                             }
@@ -99,7 +109,7 @@ void ListExtraTab::createList(contentType type)
                             }
                                 default:
                                 break;
-                            }
+                        }
 
                         stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/deleting"_i18n, [this, type, itemFolders]() { util::doDelete(itemFolders); }));
                     }
@@ -114,15 +124,17 @@ void ListExtraTab::createList(contentType type)
                     brls::Application::pushView(stagedFrame);
                 });
                 this->addView(listItem);
+
+                counter++;
             }
         }
+
+        if (counter <= 0)
+            this->noItemsToDisplay();
     }
     else {
         this->displayNotFound();
     }
-
-    if (counter <= 0)
-        this->noItemsToDisplay();
 }
 
 void ListExtraTab::displayNotFound()
@@ -168,35 +180,4 @@ void ListExtraTab::setDescription(contentType type)
     }
 
     this->addView(description);
-}
-
-std::string ListExtraTab::listItemName(std::string folder, std::string sHashFile, std::string sHashSize)
-{
-    std::string path = util::getContentsPath();
-    if (std::filesystem::exists(path + folder))
-    {
-        if (sHashFile != "")
-        {
-            if (std::filesystem::exists(path + folder + sHashFile))
-            {
-                std::string filename = path + folder + sHashFile;
-                FILE *p_file = NULL;
-                p_file = fopen(filename.c_str(),"rb");
-                fseek(p_file,0,SEEK_END);
-                int size = ftell(p_file);
-                fclose(p_file);
-
-                if (size == std::stoi(sHashSize))
-                    return "\u2605";
-                else
-                    return "";
-            }
-            else
-                return "\u2605";
-        }
-        else
-            return "\u2605";
-    }
-    else
-        return "";
 }
