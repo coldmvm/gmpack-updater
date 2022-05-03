@@ -15,9 +15,10 @@ private:
     bool done = false;
     brls::NavigationMap navigationMap;
     bool showChangelog = false;
+    std::string packName;
 
 public:
-    ListDownloadConfirmationPage(brls::StagedAppletFrame* frame, const std::string& text, const std::string& body, bool showChangelog = false, bool done = false);
+    ListDownloadConfirmationPage(brls::StagedAppletFrame* frame, const std::string& text, const std::string& pack = "", const std::string& body = "", bool showChangelog = false, bool done = false);
     ~ListDownloadConfirmationPage();
 
     void draw(NVGcontext* vg, int x, int y, unsigned width, unsigned height, brls::Style* style, brls::FrameContext* ctx) override;

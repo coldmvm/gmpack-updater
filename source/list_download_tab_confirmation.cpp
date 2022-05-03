@@ -11,9 +11,10 @@
 
 namespace i18n = brls::i18n;
 using namespace i18n::literals;
-ListDownloadConfirmationPage::ListDownloadConfirmationPage(brls::StagedAppletFrame* frame, const std::string& text, const std::string& body, bool showChangelog, bool done) : done(done)
+ListDownloadConfirmationPage::ListDownloadConfirmationPage(brls::StagedAppletFrame* frame, const std::string& text, const std::string& pack, const std::string& body, bool showChangelog, bool done) : done(done)
 {
     this->showChangelog = showChangelog;
+    this->packName = pack;
 
     this->icon = (new brls::Image("romfs:/gui_icon.png"));
     this->image = (new brls::Image("romfs:/warning.png"));
@@ -37,7 +38,7 @@ ListDownloadConfirmationPage::ListDownloadConfirmationPage(brls::StagedAppletFra
     {
         this->button2 = (new brls::Button(brls::ButtonStyle::REGULAR))->setLabel(done ? "menus/common/back"_i18n : "menus/common/continue"_i18n);
         this->button2->setParent(this);
-        this->button2->getClickEvent()->subscribe([frame, body, this](View* view) {
+        this->button2->getClickEvent()->subscribe([frame, pack, body](View* view) {
 
             int index = util::upperCase(body).find("[PROBLEMAS CONHECIDOS]", 0);
             std::string sChangelog = body.substr(body.find("]", 0) + 1, (index - 11));
@@ -46,7 +47,7 @@ ListDownloadConfirmationPage::ListDownloadConfirmationPage(brls::StagedAppletFra
             brls::TabFrame* popupTabFrame = new brls::TabFrame();
             popupTabFrame->addTab("menus/changelog/changelog"_i18n, new brls::Label(brls::LabelStyle::REGULAR, sChangelog, true)   );
             popupTabFrame->addTab("menus/changelog/known_issues"_i18n, new brls::Label(brls::LabelStyle::REGULAR, sKnownIssues, true)   );
-            brls::PopupFrame::open(fmt::format("{} no {}", "menus/changelog/changelog"_i18n, util::upperCase(BASE_FOLDER_NAME)), popupTabFrame, "menus/changelog/changelog"_i18n, "menus/changelog/known_issues"_i18n);
+            brls::PopupFrame::open(fmt::format("{} no {}", "menus/changelog/changelog"_i18n, pack), popupTabFrame, "menus/changelog/changelog"_i18n, "menus/changelog/known_issues"_i18n);
         });
 
     this->navigationMap.add(
@@ -82,7 +83,7 @@ void ListDownloadConfirmationPage::draw(NVGcontext* vg, int x, int y, unsigned w
 
         if (this->showChangelog)
         {        
-            this->button2->setLabel(fmt::format("{} no {}", "menus/changelog/changelog"_i18n, util::upperCase(BASE_FOLDER_NAME)));
+            this->button2->setLabel(fmt::format("{} no {}", "menus/changelog/changelog"_i18n, this->packName));
             this->button2->setState(brls::ButtonState::ENABLED);
             this->button2->invalidate();
         }

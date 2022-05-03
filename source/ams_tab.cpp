@@ -61,12 +61,12 @@ void AmsTab::CreateDownloadItems(const nlohmann::ordered_json& cfw_links, const 
                     listItem = new brls::ListItem(fmt::format("{} ({}MB)", name, iSize));
 
                 listItem->setHeight(LISTITEM_HEIGHT);
-                listItem->getClickEvent()->subscribe([this, name, url, iSize, body, operation](brls::View* view) {
+                listItem->getClickEvent()->subscribe([this, name, url, iSize, pack, body, operation](brls::View* view) {
                     if (!erista && !std::filesystem::exists(MARIKO_PAYLOAD_PATH)) {
                         brls::Application::crash("menus/errors/mariko_payload_missing"_i18n);
                     }
                     else {
-                        CreateStagedFrames("menus/common/download"_i18n + name, url, iSize, body, operation, erista);
+                        CreateStagedFrames("menus/common/download"_i18n + name, url, iSize, pack, body, operation, erista);
                     }
                 });
                 this->addView(listItem);
@@ -84,15 +84,15 @@ void AmsTab::CreateDownloadItems(const nlohmann::ordered_json& cfw_links, const 
 
 }
 
-void AmsTab::CreateStagedFrames(const std::string& text, const std::string& url, const int& size, const std::string& body, const std::string& operation, bool erista)
+void AmsTab::CreateStagedFrames(const std::string& text, const std::string& url, const int& size, const std::string& pack, const std::string& body, const std::string& operation, bool erista)
 {
     brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
     stagedFrame->setTitle(operation);
 
     if ((body != "") && (util::upperCase(body).find("[PROBLEMAS CONHECIDOS]", 0) != std::string::npos))
-        stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/download_time_warning"_i18n, body, true));
+        stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/download_time_warning"_i18n, pack, body, true));
     else
-        stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/download_time_warning"_i18n, body, false));
+        stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/download_time_warning"_i18n, pack, body, false));
 
     stagedFrame->addStage(new ConfirmPage(stagedFrame, fmt::format("{} ({}MB)", text, size)));
     stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [url]() { util::downloadArchive(url, contentType::ams_cfw); }));
