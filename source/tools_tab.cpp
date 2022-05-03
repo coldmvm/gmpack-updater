@@ -115,9 +115,9 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
     });
     motd->setHeight(LISTITEM_HEIGHT);
 
-    changelog = new brls::ListItem("menus/tools/changelog"_i18n);
+    changelog = new brls::ListItem(fmt::format("{} no homebrew", "menus/changelog/changelog"_i18n));
     changelog->getClickEvent()->subscribe([](brls::View* view) {
-        brls::PopupFrame::open("menus/tools/changelog"_i18n, new ChangelogPage(), "", "");
+        brls::PopupFrame::open(fmt::format("{} no homebrew", "menus/changelog/changelog"_i18n), new ChangelogPage(), "", "");
     });
     changelog->setHeight(LISTITEM_HEIGHT);
 

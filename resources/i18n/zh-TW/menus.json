@@ -29,7 +29,8 @@
     "ok": "Ok"
   },
   "changelog": {
-    "changelog": "Alterações"
+    "changelog": "Alterações",
+    "known_issues": "Problemas conhecidos"
   },
   "main": {
     "getting": "Baixando {}",
@@ -64,7 +65,6 @@
     "internet_settings": "Editar configurações de internet",
     "browser": "Navegador web",
     "clean_up": "Limpar arquivos baixados",
-    "changelog": "Alterações",
     "motd_label": "Abrir quadro de avisos"
   },
   "utils": {

@@ -89,7 +89,11 @@ void AmsTab::CreateStagedFrames(const std::string& text, const std::string& url,
     brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
     stagedFrame->setTitle(operation);
 
-    stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/download_time_warning"_i18n, true));
+    if ((body != "") && (util::upperCase(body).find("[PROBLEMAS CONHECIDOS]", 0) != std::string::npos))
+        stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/download_time_warning"_i18n, body, true));
+    else
+        stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/download_time_warning"_i18n, body, false));
+
     stagedFrame->addStage(new ConfirmPage(stagedFrame, fmt::format("{} ({}MB)", text, size)));
     stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [url]() { util::downloadArchive(url, contentType::ams_cfw); }));
     stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, []() { util::extractArchive(contentType::ams_cfw); }));

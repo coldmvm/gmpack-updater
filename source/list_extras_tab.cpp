@@ -85,7 +85,7 @@ void ListExtraTab::createList(contentType type)
                         itemFolders.push_back(tmp);
                         
                         if (sInstalledSize < 0)
-                            bInstalled = std::filesystem::exists(sInstalledFile);
+                            bInstalled = std::filesystem::exists(path + tmp);
                     }
                 }
                 
@@ -100,11 +100,11 @@ void ListExtraTab::createList(contentType type)
                     {
                         switch (type) {
                             case contentType::translations: {
-                               stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/translation_exists_warning"_i18n, false));
+                               stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/translation_exists_warning"_i18n, "", false));
                                break;
                             }
                             case contentType::modifications: {
-                                stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/modification_exists_warning"_i18n, false));
+                                stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/modification_exists_warning"_i18n, "", false));
                                 break;
                             }
                                 default:
