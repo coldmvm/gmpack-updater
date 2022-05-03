@@ -11,6 +11,6 @@ CreditsTab::CreditsTab()
 
     // Credits
     this->addView(new brls::Header("menus/credits/title2"_i18n));
-    brls::Label* links = new brls::Label(brls::LabelStyle::SMALL, "menus/credits/credits"_i18n, true);
+    brls::Label* links = new brls::Label(brls::LabelStyle::SMALL, fmt::format("menus/credits/credits"_i18n, APP_SHORT_NAME), true);
     this->addView(links);
 }
