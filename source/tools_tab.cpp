@@ -103,15 +103,7 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
 
     motd = new brls::ListItem("menus/tools/motd_label"_i18n);
     motd->getClickEvent()->subscribe([](brls::View* view) {
-        //util::showDialogBoxInfo(util::getMOTD());
-	auto start = std::chrono::system_clock::now();
-    { // The code to test
-        std::this_thread::sleep_for(std::chrono::seconds(2));
-    }
-    auto end = std::chrono::system_clock::now();
-
-    std::chrono::duration<double> elapsed = end - start;
-    util::showDialogBoxInfo(fmt::format("Elapsed time: {}", elapsed.count()));;
+        util::showDialogBoxInfo(util::getMOTD());
     });
     motd->setHeight(LISTITEM_HEIGHT);
 
@@ -124,6 +116,6 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
     this->addView(netSettings);
     this->addView(browser);
     this->addView(cleanUp);
-//    this->addView(motd);
+    this->addView(motd);
     this->addView(changelog);
 }
