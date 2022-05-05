@@ -19,7 +19,7 @@ Este homebrew suporta Atmosphère, ReiNX e SXOS, e funciona em consoles não cor
 ## **[FAÇA O DOWNLOAD POR AQUI!](https://github.com/coldmvm/gmpack-updater/releases)**
 
 ## Como instalar
-Copie o diretório `gmpack-updater/` para a pasta `/switch/` no seu microSD.
+Copie o diretório `gmpack-updater/` para a pasta `/switch/` ou, simplesmente, `extraia` o arquivo `gmpack-udpdater.zip` na `raiz` do microSD.
 
 ## Descrição das funções
 ### ⬦ Baixar Atmosphère
@@ -42,10 +42,10 @@ Copie o diretório `gmpack-updater/` para a pasta `/switch/` no seu microSD.
 - Algumas modificaçõs precisam de passos específicos para que funcionem. Para maiores detalhes pesquise online sobre tais modificações e procure se inteirar sobre a mesma.
 
 ## Extras (na página `Ferramentas`)
-- Atualizar o homwbrew automaticamente quando existir uma nova versão.
 - Editar as configurações da internet (DNS, endereço IP, MTU, etc). Adicione suas próprias configurações em `config/aio-switch-updater/internet.json`. Você vai achar um modelo desta configuração neste repositório.
 - Abrir o navegador de internet do Switch (precisa abrir usando um jogo e pressionar R).
 - Limpar os arquivos temporários baixados.
+- Abrir a última mensagem do dia (MOTD) disponível no servidor.
 - Consultar as alterações sofridas pelo homebrew (changelog).
 
 ## Disclaimer
