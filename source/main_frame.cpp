@@ -27,17 +27,17 @@ MainFrame::MainFrame() : TabFrame()
 {
     bool newversion = false;
 
-	this->setIcon("romfs:/gui_icon.png");
+    this->setIcon("romfs:/gui_icon.png");
     this->setTitle(AppTitle);
 
     s64 freeStorage;
     std::string tag = util::getLatestTag();
 
-	if (!tag.empty()) {
+    if (!tag.empty()) {
         //fetching the version as a number
-    	std::string temp = "";
-    	int iTag = 0;
-    	int iAppVersion = 0;
+        std::string temp = "";
+        int iTag = 0;
+        int iAppVersion = 0;
 
         temp.reserve(tag.size()); // optional, avoids buffer reallocations in the loop
         for(size_t i = 0; i < tag.size(); ++i)
@@ -67,20 +67,20 @@ MainFrame::MainFrame() : TabFrame()
     bool erista = util::isErista();
 
     if (!newversion) {
-		this->addTab("menus/main/about"_i18n, new AboutTab());
-		this->addTab("menus/main/update_ams"_i18n, new AmsTab(nxlinks, erista));
-		this->addTab("menus/main/download_firmware"_i18n, new ListDownloadTab(contentType::fw, nxlinks));
-		this->addTab("menus/main/download_translations"_i18n, new ListExtraTab(contentType::translations, nxlinks));
-		this->addTab("menus/main/download_mods"_i18n, new ListExtraTab(contentType::modifications, nxlinks));
-		this->addTab("menus/main/tools"_i18n, new ToolsTab(tag, erista));
-		this->addSeparator();
-		this->addTab("menus/main/credits"_i18n, new CreditsTab());
+        this->addTab("menus/main/about"_i18n, new AboutTab());
+        this->addTab("menus/main/update_ams"_i18n, new AmsTab(nxlinks, erista));
+        this->addTab("menus/main/download_firmware"_i18n, new ListDownloadTab(contentType::fw, nxlinks));
+        this->addTab("menus/main/download_translations"_i18n, new ListExtraTab(contentType::translations, nxlinks));
+        this->addTab("menus/main/download_mods"_i18n, new ListExtraTab(contentType::modifications, nxlinks));
+        this->addTab("menus/main/tools"_i18n, new ToolsTab(tag, erista));
+        this->addSeparator();
+        this->addTab("menus/main/credits"_i18n, new CreditsTab());
 
-		this->registerAction("", brls::Key::B, [this] { return true; });
+        this->registerAction("", brls::Key::B, [] { return true; });
     }
     else
     {
         this->addTab("menus/main/new_update"_i18n, new UpdateTab(tag));
-        this->registerAction("", brls::Key::B, [this] { return true; });
+        this->registerAction("", brls::Key::B, [] { return true; });
     }
 }
