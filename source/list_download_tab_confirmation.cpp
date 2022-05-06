@@ -44,10 +44,10 @@ ListDownloadConfirmationPage::ListDownloadConfirmationPage(brls::StagedAppletFra
             std::string sChangelog = body.substr(body.find("]", 0) + 1, (index - 11));
             std::string sKnownIssues = body.substr(index + 22, (body.length() - index));
 
-            brls::TabFrame* popupTabFrame = new brls::TabFrame();
-            popupTabFrame->addTab("menus/changelog/changelog"_i18n, new brls::Label(brls::LabelStyle::REGULAR, sChangelog, true)   );
-            popupTabFrame->addTab("menus/changelog/known_issues"_i18n, new brls::Label(brls::LabelStyle::REGULAR, sKnownIssues, true)   );
-            brls::PopupFrame::open(fmt::format("{} no {}", "menus/changelog/changelog"_i18n, pack), popupTabFrame, "menus/changelog/changelog"_i18n, "menus/changelog/known_issues"_i18n);
+            brls::TabFrame* popupChangelog = new brls::TabFrame();
+            popupChangelog->addTab("menus/changelog/changelog"_i18n, new brls::Label(brls::LabelStyle::REGULAR, sChangelog, true)   );
+            popupChangelog->addTab("menus/changelog/known_issues"_i18n, new brls::Label(brls::LabelStyle::REGULAR, sKnownIssues, true)   );
+            brls::PopupFrame::open(fmt::format("{} no {}", "menus/changelog/changelog"_i18n, pack), popupChangelog, "menus/changelog/changelog"_i18n, "menus/changelog/known_issues"_i18n);
         });
 
     this->navigationMap.add(

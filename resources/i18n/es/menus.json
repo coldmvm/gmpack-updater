@@ -49,14 +49,19 @@
     "download_translations": "Baixar traduções",
     "download_mods": "Baixar modificações",
     "tools": "Ferramentas",
-    "launch_warning": "Por favor, preste atenção aos seguintes pontos antes de usar este homebrew:\n\n\u25c6 Leia e entenda sobre como manualmente atualizar seu Switch antes. Isto lhe ajudará a entender melhor este homebrew e você saberá o que fazer caso algo saia errado.\n\u25c6 Para evitar o risco de corrompimento de dados, o uso deste homebrew em um microSD formatado em exFAT é FORTEMENTE desaconselhado.\n\n\u25c6 As últimas informações sobre novas funções inseridas e/ou modificadas estão disponíveis no menu Ferramentas->Alterações.\n\nEsta tela não aparecerá novamente.",
+    "launch_warning": "Por favor, preste atenção aos seguintes pontos antes de usar este homebrew:\n\n\u25c6 Leia e entenda sobre como manualmente atualizar seu Switch antes. Isto lhe ajudará a entender melhor este homebrew e você saberá o que fazer caso algo saia errado.\n\u25c6 Para evitar o risco de corrompimento de dados, o uso deste homebrew em um microSD formatado em exFAT é FORTEMENTE desaconselhado.\n\n\u25c6 As últimas informações sobre novas funções inseridas e/ou modificadas estão disponíveis no menu Ferramentas->Alterações.\n\n\u2605 Ao pressionar o botão \uE0E2 um popup de AJUDA aparecerá com explicações de como usar este homebrew.\n\nEsta tela não aparecerá novamente.",
     "footer_text" : "{} - {} - {}Gb disponíveis",
     "footer_text_not_connected" : " - Offline",
     "theme_warning": "Parace que você tem um tema customizado instalado e isto pode fazer com que seu sistema falhe ao iniciar após a atualização.\nPor favor, considete deletar o tema antes de atualizar.",
     "download_time_warning": "AVISO!\n\nO download pode levar um tempo considerável dependendo do tamanho do arquivo e da velocidade da sua conexão!\nApós o arquivo ser baixado ele será descompactado no seu console e isso também levará um tempo. Se seu console aparentar estar travado não o desligue pois isto é normal!\n\nSeja paciente e espere o processo terminar!",
     "translation_exists_warning": "AVISO!\n\nA tradução que você escolheu já está instalada no seu Switch!\nAo clicar no botão abaixo você irá removê-la. Caso esta não seja sua intenção pressione o botão 'B' para escolher uma nova tradução\n\nVocê deseja remover a tradução selecionada?",
     "modification_exists_warning": "AVISO!\n\nA modificação que você escolheu já está instalada no seu Switch!\nAo clicar no botão abaixo você irá removê-la. Caso esta não seja sua intenção pressione o botão 'B' para escolher uma nova modificação\n\nVocê deseja remover a modificação selecionada?",
-    "no_items_to_display": "Não há itens a serem exibidos no momento!"
+    "no_items_to_display": "Não há itens a serem exibidos no momento!",
+    "help": "Ajuda",
+    "help_how_to_use": "Como usar?",
+    "help_how_to_use_text": "\nComo usar este homebrew?\n\nUsar este homebrew é muito fácil!\n\n\u25c6 Navegue pelas abas horizontais na parte da esquerda com o direcional D-PAD (\uE0EA, \uE0EB, \uE0EC, \uE0ED e \uE0EE) ou os analógicos da esquerda (\uE104) ou direita (\uE105) e selecione com o botão \uE0E0.\n\n\u25c6 Ao entrar em um opção, para voltar à opção anterior ou cancelar/fechar uma opção/tela, pressione o botão \uE0E1.\n\n\u25c6 Para sair do homebrew pressione o botão \uE0EF.",
+    "help_order": "Ordem das atualizações",
+    "help_order_text": "\nQual ordem devo seguir para atualizar o console?\n\n\u26A0 Antes de mais nada, nunca atualize o console sem ter atualizado o Atmosphère (AMS) antes, a não ser que ele suporte a versão do console a ser instalada!\nPor exemplo o AMS 1.3.2 suporta da versão 14.1.1 até a versão 1.0.0, mas pode não funcionar com a próxima.\n\n\u25c6 Primeiro navegue até a aba '{}' e faça o download do '{}' ou 'GNX' (dependendo de qual você usa) e depois navegue até a aba '{}' para baixar Firmware do console.\n\nSeja paciente e dê ao homebrew o tempo necessário para que ele conclua a instalção."
   },
   "tools": {
     "batch_copy_not_found": "Os segintes arquivos não foram encontrados e não puderam ser copiados:\n",
@@ -65,7 +70,7 @@
     "internet_settings": "Editar configurações de internet",
     "browser": "Navegador web",
     "clean_up": "Limpar arquivos baixados",
-    "motd_label": "Abrir último quadro de avisos"
+    "motd_label": "Abrir último MOTD (quadro de avisos)"
   },
   "utils": {
     "not_an_archive": "O arquivo baixado não é um arquivo zip. Isto provavelmente aconteceu devido a um link quebrado. Se o problema persistir depois de 30 minutos, por favor, abra um 'issue' no Github.",
