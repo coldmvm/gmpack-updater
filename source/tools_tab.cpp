@@ -102,8 +102,9 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
     cleanUp->setHeight(LISTITEM_HEIGHT);
 
     motd = new brls::ListItem("menus/tools/motd_label"_i18n);
-    motd->getClickEvent()->subscribe([](brls::View* view) {
-        util::showDialogBoxInfo(util::getMOTD());
+	std::string sMOTD = util::getMOTD();
+    motd->getClickEvent()->subscribe([sMOTD](brls::View* view) {
+        util::showDialogBoxInfo(sMOTD);
     });
     motd->setHeight(LISTITEM_HEIGHT);
 
@@ -116,6 +117,7 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
     this->addView(netSettings);
     this->addView(browser);
     this->addView(cleanUp);
-    this->addView(motd);
+    if (sMOTD != "")
+	    this->addView(motd);
     this->addView(changelog);
 }

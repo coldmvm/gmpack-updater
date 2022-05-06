@@ -463,10 +463,17 @@ MY METHODS
     std::string getMOTD()
     {
         std::string text = "";
-        nlohmann::ordered_json nxlinks;
-        download::getRequest(NXLINKS_URL, nxlinks);
-        if (nxlinks.size())
-            text = nxlinks.at(fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME)));
+        nlohmann::ordered_json json;
+        download::getRequest(NXLINKS_URL, json);
+        if (json.size())
+        {
+            if (json.find(fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME)) + "2") != json.end())
+            {
+                bool enabled = json[fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME)) + "2"]["enabled"];
+				if (enabled)
+					text = json[fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME)) + "2"]["message"];
+            }
+        }
 
         return text;
     }
