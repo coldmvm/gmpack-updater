@@ -46,7 +46,7 @@ void UpdateTab::CreateStagedFrames(const std::string& text, const std::string& o
     stagedFrame->setTitle(operation);
 
     stagedFrame->addStage(new ConfirmPage(stagedFrame, text, false, false, false, true));
-    stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, []() { util::downloadArchive(fmt::format(APP_URL, BASE_WWW_NAME, BASE_FOLDER_NAME, BASE_FOLDER_NAME), contentType::app); }, true));
+    stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, []() { util::downloadArchive(fmt::format(APP_URL, GITHUB_USER, BASE_FOLDER_NAME, BASE_FOLDER_NAME), contentType::app); }, true));
     stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, []() { util::extractArchive(contentType::app); }, true));
     stagedFrame->addStage(new ConfirmPage(stagedFrame, "menus/common/app_update_done"_i18n, false, false, false, true));
     brls::Application::pushView(stagedFrame);

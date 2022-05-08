@@ -232,7 +232,7 @@ namespace util {
     std::string getLatestTag()
     {
         nlohmann::ordered_json tag;
-        download::getRequest(fmt::format(TAGS_INFO, BASE_WWW_NAME, BASE_FOLDER_NAME), tag, {"accept: application/vnd.github.v3+json"});
+        download::getRequest(fmt::format(TAGS_INFO, GITHUB_USER, BASE_FOLDER_NAME), tag, {"accept: application/vnd.github.v3+json"});
         if (tag.find("tag_name") != tag.end())
             return tag["tag_name"];
         else

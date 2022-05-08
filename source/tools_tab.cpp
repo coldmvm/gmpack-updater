@@ -49,7 +49,7 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
                 brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
                 stagedFrame->setTitle("menus/common/updating"_i18n);
                 stagedFrame->addStage(new ConfirmPage(stagedFrame, text));
-                stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, []() { util::downloadArchive(fmt::format(APP_URL, BASE_WWW_NAME, BASE_FOLDER_NAME, BASE_FOLDER_NAME), contentType::app); }));
+                stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, []() { util::downloadArchive(fmt::format(APP_URL, GITHUB_USER, BASE_FOLDER_NAME, BASE_FOLDER_NAME), contentType::app); }));
                 stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, []() { util::extractArchive(contentType::app); }));
                 stagedFrame->addStage(new ConfirmPage(stagedFrame, "menus/common/all_done"_i18n, true));
                 brls::Application::pushView(stagedFrame);
