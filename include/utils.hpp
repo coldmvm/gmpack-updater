@@ -62,9 +62,6 @@ MY METHODS
     void cleanFiles();
     void createStarFile();
     bool getLatestCFWPack(std::string& url, std::string& packName, std::string& packURL, int& packSize, std::string& packBody);
-/*
-Base64
-*/
-    std::string b64encode(const std::string& str);
-    std::string b64decode(const std::string& str64);
+    std::string getNANDType(const std::string& NAND);
+
 }  // namespace util

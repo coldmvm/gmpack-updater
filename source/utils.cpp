@@ -560,4 +560,32 @@ MY METHODS
 
         return true;
     }
+
+    std::string getNANDType(const std::string& NAND)
+    {
+        std::string type = "";
+        if (NAND.find("emu", 0) != std::string::npos)
+        {
+            if (std::filesystem::exists(AMS_EMUNAND_FILE))
+            {
+                std::ifstream fEmuFile(AMS_EMUNAND_FILE);
+                std::string line;
+
+                if (fEmuFile.is_open())
+                {
+                    while (std::getline(fEmuFile, line)) {
+                        if(line.find("nintendo_path=emuMMC/SD", 0) != std::string::npos)
+                        {
+                            type = " em arquivos)";
+                            break;
+                        }
+                        else
+                            type = " em partição)";
+                    }
+                    fEmuFile.close();
+                }
+            }
+        }
+        return NAND + type;
+    }
 }  // namespace util

@@ -7,7 +7,6 @@ constexpr const char APP_FULL_NAME[] = "Atualizador Pacote GameMod";
 constexpr const char APP_SHORT_NAME[] = "APG";
 constexpr const char BASE_FOLDER_NAME[] = "gmpack";
 constexpr const char GITHUB_USER[] = "coldmvm";
-constexpr const char ENABLE_GNX_LOAD[] = true;
 
 /*
 DO NOT CHANGE ONLY THESE CONSTANTS UNLESS YOU KNOW WHAT YOU'RE DOING
@@ -72,6 +71,8 @@ constexpr const char APG_STAR_FILE[] = "/switch/{}-updater/.{}-updater.nro.star"
 constexpr const char LOG_FILE[] = "/config/{}-updater/log.txt";
 
 constexpr const char PACK_FILE[] = "/bootloader/hekate_ipl.ini";
+
+constexpr const char AMS_EMUNAND_FILE[] = "/emuMMC/emummc.ini";
 
 constexpr const char MOTD_KEY[] = "{}-MOTD";
 

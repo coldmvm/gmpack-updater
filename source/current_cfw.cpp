@@ -66,7 +66,7 @@ namespace CurrentCfw {
                    std::to_string((version >> 48) & ((1 << 8) - 1)) + "." +
                    std::to_string((version >> 40) & ((1 << 8) - 1));
             if (R_SUCCEEDED(splGetConfig((SplConfigItem)65007, &version)))
-                res += version ? " (emuNAND)" : " (sysNAND)";
+                res += version ? " (emuNAND" : " (sysNAND)";
             return res;
         }
         else
