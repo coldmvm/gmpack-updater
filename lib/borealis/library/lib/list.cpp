@@ -470,6 +470,21 @@ std::string ListItem::getSubLabel()
     return this->subLabelView ? this->subLabelView->getText() : "";
 }
 
+void ListItem::setDescription(std::string description)
+{
+    if (!this->descriptionView) {
+        this->descriptionView = new Label(LabelStyle::DESCRIPTION, description, true);
+        this->descriptionView->setParent(this);
+    } else {
+        this->descriptionView->setText(description);
+    }
+}
+
+std::string ListItem::getDescription()
+{
+    return this->descriptionView ? this->descriptionView->getText() : "";
+}
+
 ListItem::~ListItem()
 {
     delete this->labelView;

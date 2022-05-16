@@ -24,6 +24,7 @@ namespace {
 
 ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
 {
+/*
     if (!tag.empty()) {
         //fetching the version as a number
         std::string temp = "";
@@ -43,7 +44,7 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
         iAppVersion = std::stoi(temp); // casting from string to integer
 
         if (iTag > iAppVersion) {
-            updateApp = new brls::ListItem(fmt::format("menus/tools/update_app"_i18n, tag));
+            brls::ListItem* updateApp = new brls::ListItem(fmt::format("menus/tools/update_app"_i18n, tag));
             std::string text(fmt::format("menus/tools/dl_app"_i18n, APP_FULL_NAME, tag));
             updateApp->getClickEvent()->subscribe([text, tag](brls::View* view) {
                 brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
@@ -55,16 +56,17 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
                 brls::Application::pushView(stagedFrame);
             });
             updateApp->setHeight(LISTITEM_HEIGHT);
-            //this->addView(updateApp);
+            this->addView(updateApp);
         }
     }
-    netSettings = new brls::ListItem("menus/tools/internet_settings"_i18n);
+*/
+    brls::ListItem* netSettings = new brls::ListItem("menus/tools/internet_settings"_i18n);
     netSettings->getClickEvent()->subscribe([](brls::View* view) {
         brls::PopupFrame::open("menus/tools/internet_settings"_i18n, new NetPage(), "", "");
     });
     netSettings->setHeight(LISTITEM_HEIGHT);
 
-    browser = new brls::ListItem("menus/tools/browser"_i18n);
+    brls::ListItem* browser = new brls::ListItem("menus/tools/browser"_i18n);
     browser->getClickEvent()->subscribe([](brls::View* view) {
         std::string url;
         if (brls::Swkbd::openForText([&url](std::string text) { url = text; }, "cheatslips.com e-mail", "", 64, "https://duckduckgo.com", 0, "Submit", "https://website.tld")) {
@@ -94,21 +96,21 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
     });
     browser->setHeight(LISTITEM_HEIGHT);
 
-    cleanUp = new brls::ListItem("menus/tools/clean_up"_i18n);
+    brls::ListItem* cleanUp = new brls::ListItem("menus/tools/clean_up"_i18n);
     cleanUp->getClickEvent()->subscribe([](brls::View* view) {
         util::cleanFiles();
         util::showDialogBoxInfo("menus/common/all_done"_i18n);
     });
     cleanUp->setHeight(LISTITEM_HEIGHT);
 
-    motd = new brls::ListItem("menus/tools/motd_label"_i18n);
+    brls::ListItem* motd = new brls::ListItem("menus/tools/motd_label"_i18n);
 	std::string sMOTD = util::getMOTD();
     motd->getClickEvent()->subscribe([sMOTD](brls::View* view) {
         util::showDialogBoxInfo(sMOTD);
     });
     motd->setHeight(LISTITEM_HEIGHT);
 
-    changelog = new brls::ListItem(fmt::format("{} no homebrew", "menus/changelog/changelog"_i18n));
+    brls::ListItem* changelog = new brls::ListItem(fmt::format("{} no homebrew", "menus/changelog/changelog"_i18n));
     changelog->getClickEvent()->subscribe([](brls::View* view) {
         brls::PopupFrame::open(fmt::format("{} no homebrew", "menus/changelog/changelog"_i18n), new ChangelogPage(), "", "");
     });

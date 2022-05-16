@@ -6,13 +6,7 @@
 class ToolsTab : public brls::List
 {
 private:
-    brls::ListItem* updateApp;
-    brls::ListItem* changelog;
-    brls::ListItem* cleanUp;
-    brls::ListItem* netSettings;
-    brls::ListItem* browser;
-    brls::ListItem* motd;
-
+    
     brls::StagedAppletFrame* stagedFrame;
 
 public:

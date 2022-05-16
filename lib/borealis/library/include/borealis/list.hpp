@@ -69,7 +69,9 @@ class ListItem : public View
     void setThumbnail(std::string imagePath);
     void setThumbnail(unsigned char* buffer, size_t bufferSize);
 
+    void setDescription(std::string description);
     bool hasDescription();
+    std::string getDescription();
     void setDrawTopSeparator(bool draw);
 
     bool getReduceDescriptionSpacing();

@@ -185,7 +185,7 @@ unsigned Dialog::getButtonsHeight()
 void Dialog::layout(NVGcontext* vg, Style* style, FontStash* stash)
 {
     this->frameWidth  = style->Dialog.width;
-    this->frameHeight = this->contentView->getHeight() + (style->Dialog.paddingTopBottom);//style->Dialog.height;
+    this->frameHeight = this->contentView->getHeight() + (style->Dialog.paddingTopBottom);
 
     unsigned buttonsHeight = this->getButtonsHeight();
     this->frameHeight += buttonsHeight;
@@ -195,8 +195,8 @@ void Dialog::layout(NVGcontext* vg, Style* style, FontStash* stash)
 
     unsigned contentX      = this->frameX + (style->Dialog.paddingLeftRight / 2);
     unsigned contentY      = this->frameY + (style->Dialog.paddingTopBottom / 2);
-    unsigned contentWidth  = this->frameWidth - style->Dialog.paddingLeftRight;// * 2;
-    unsigned contentHeight = this->frameHeight - (style->Dialog.paddingTopBottom /* * 2 */) - buttonsHeight;
+    unsigned contentWidth  = this->frameWidth - style->Dialog.paddingLeftRight;
+    unsigned contentHeight = this->frameHeight - (style->Dialog.paddingTopBottom) - buttonsHeight;
 
     if (this->contentView)
     {

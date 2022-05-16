@@ -8,6 +8,7 @@
 
 #include "confirm_page.hpp"
 #include "current_cfw.hpp"
+#include "download.hpp"
 #include "extract.hpp"
 #include "fs.hpp"
 #include "utils.hpp"
@@ -42,10 +43,12 @@ void AppPage::PopulatePage()
 
                 tid = records[i].application_id;
 
-                if R_FAILED (GetControlData(tid, controlData, controlSize, name)) continue;
+                if (R_FAILED(GetControlData(tid, controlData, controlSize, name)))
+                    continue;
 
                 listItem = new brls::ListItem(name, "", util::formatApplicationId(tid));
-                this->DeclareGameListItem(name, tid, &controlData);
+                listItem->setThumbnail(controlData->icon, sizeof(controlData->icon));
+                this->AddListItem(name, tid);
             }
             free(controlData);
         }
@@ -53,13 +56,18 @@ void AppPage::PopulatePage()
     else {
         tid = GetCurrentApplicationId();
         if (R_SUCCEEDED(InitControlData(&controlData)) && R_SUCCEEDED(GetControlData(tid & 0xFFFFFFFFFFFFF000, controlData, controlSize, name))) {
-            listItem = new brls::ListItem(name, "", util::formatApplicationId(tid));
-            this->DeclareGameListItem(name, tid, &controlData);
+            this->AddListItem(name, tid);
         }
         label = new brls::Label(brls::LabelStyle::SMALL, fmt::format("menus/common/applet_mode_not_supported"_i18n, APP_FULL_NAME), true);
         list->addView(label);
     }
     delete[] records;
+
+    brls::Logger::debug("count {}", list->getViewsCount());
+
+    if(!list->getViewsCount()) {
+        list->addView(new brls::Label(brls::LabelStyle::DESCRIPTION, "menus/common/nothing_to_see"_i18n, true));
+    }
 
     this->setContentView(list);
 }
@@ -96,9 +104,8 @@ u32 AppPage::GetControlData(u64 tid, NsApplicationControlData* controlData, u64&
     return 0;
 }
 
-void AppPage::DeclareGameListItem(const std::string& name, u64 tid, NsApplicationControlData** controlData)
+void AppPage::AddListItem(const std::string& name, u64 tid)
 {
-    listItem->setThumbnail((*controlData)->icon, sizeof((*controlData)->icon));
     list->addView(listItem);
 }
 

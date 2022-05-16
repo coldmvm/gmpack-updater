@@ -19,7 +19,8 @@ Este homebrew suporta Atmosphère, ReiNX e SXOS, e funciona em consoles não cor
 ## **[FAÇA O DOWNLOAD POR AQUI!](https://github.com/coldmvm/gmpack-updater/releases)**
 
 ## Como instalar
-Copie o diretório `gmpack-updater/` para a pasta `/switch/` ou, simplesmente, `extraia` o arquivo `gmpack-udpdater.zip` na `raiz` do microSD.
+Baixe o arquivo `gmpack-updater.zip` do link acima e o extraia na `raiz` do microSD.
+No final você deve ter uma pasta `gmpack-updater` dentro da pasta `/switch`.
 
 ## Descrição das funções
 ### ⬦ Baixar Atmosphère
