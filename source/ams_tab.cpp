@@ -26,7 +26,7 @@ AmsTab::AmsTab(const nlohmann::json& nxlinks, const bool erista) : brls::List()
     std::string sNANDType = util::getNANDType(CurrentCfw::getAmsInfo());
     
     this->description = new brls::Label(brls::LabelStyle::DESCRIPTION,
-        fmt::format("menus/ams_update/pack_label"_i18n, util::upperCase(BASE_FOLDER_NAME), BRAND_FULL_NAME) + "\n" +
+        fmt::format("menus/ams_update/pack_label"_i18n, util::upperCase(BASE_FOLDER_NAME), BRAND_ARTICLE, BRAND_FULL_NAME) + "\n" +
         fmt::format("menus/ams_update/current_ams"_i18n, (packVersion != "" ? packVersion + " | " : "")) + 
         (CurrentCfw::running_cfw == CFW::ams ? "AMS " + sNANDType : "Outros") +
         (erista ? "\n" + "menus/ams_update/erista_rev"_i18n : "\n" + "menus/ams_update/mariko_rev"_i18n), true);

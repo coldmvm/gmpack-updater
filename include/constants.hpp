@@ -2,7 +2,9 @@
 /*
 CHANGE ONLY THESE CONSTANTS
 */
+constexpr const char BRAND_ARTICLE[] = "A";
 constexpr const char BRAND_FULL_NAME[] = "GameMod design";
+constexpr const char BRAND_FACEBOOK_GROUP[] = "GameMod design - ideias e projetos";
 constexpr const char APP_FULL_NAME[] = "Atualizador Pacote GameMod";
 constexpr const char APP_SHORT_NAME[] = "APG";
 constexpr const char BASE_FOLDER_NAME[] = "gmpack";
