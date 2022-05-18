@@ -11,14 +11,14 @@
 
 namespace i18n = brls::i18n;
 using namespace i18n::literals;
-ListDownloadConfirmationPage::ListDownloadConfirmationPage(brls::StagedAppletFrame* frame, const std::string& text, const std::string& pack, const std::string& body, bool showChangelog, bool done) : done(done)
+ListDownloadConfirmationPage::ListDownloadConfirmationPage(brls::StagedAppletFrame* frame, const DialogType dialogType, const std::string& text, const std::string& pack, const std::string& body, bool showChangelog, bool done) : done(done)
 {
     this->showChangelog = showChangelog;
     this->packName = pack;
+    this->dialogType = dialogType;
 
     this->icon = (new brls::Image("romfs:/gui_icon.png"));
-    this->image = (new brls::Image("romfs:/warning.png"));
-
+    this->image = (new brls::Image(ROMFSIconFile[(int)dialogType].data()));
     this->label = new brls::Label(brls::LabelStyle::REGULAR, text, true);
     this->label->setHorizontalAlign(NVG_ALIGN_LEFT);
     this->label->setParent(this);
@@ -34,31 +34,39 @@ ListDownloadConfirmationPage::ListDownloadConfirmationPage(brls::StagedAppletFra
         }
     });
 
-    if (this->showChangelog)
+    if ((this->showChangelog) || (this->dialogType == DialogType::error))
     {
-        this->button2 = (new brls::Button(brls::ButtonStyle::REGULAR))->setLabel(done ? "menus/common/back"_i18n : "menus/common/continue"_i18n);
+        this->button2 = (new brls::Button(brls::ButtonStyle::REGULAR));
         this->button2->setParent(this);
-        this->button2->getClickEvent()->subscribe([frame, pack, body](View* view) {
 
-            int index = util::upperCase(body).find("[PROBLEMAS CONHECIDOS]", 0);
-            std::string sChangelog = body.substr(body.find("]", 0) + 1, (index - 11));
-            std::string sKnownIssues = body.substr(index + 22, (body.length() - index));
+        if (this->showChangelog)
+        {
+            this->button2->getClickEvent()->subscribe([frame, pack, body](View* view) {
+                int index = util::upperCase(body).find("[PROBLEMAS CONHECIDOS]", 0);
+                std::string sChangelog = body.substr(body.find("]", 0) + 1, (index - 11));
+                std::string sKnownIssues = body.substr(index + 22, (body.length() - index));
 
-            brls::TabFrame* popupChangelog = new brls::TabFrame();
-            popupChangelog->addTab("menus/changelog/changelog"_i18n, new brls::Label(brls::LabelStyle::REGULAR, sChangelog, true)   );
-            popupChangelog->addTab("menus/changelog/known_issues"_i18n, new brls::Label(brls::LabelStyle::REGULAR, sKnownIssues, true)   );
-            brls::PopupFrame::open(fmt::format("{} no {}", "menus/changelog/changelog"_i18n, pack), popupChangelog, "menus/changelog/changelog"_i18n, "menus/changelog/known_issues"_i18n);
-        });
+                brls::TabFrame* popupChangelog = new brls::TabFrame();
+                popupChangelog->addTab("menus/changelog/changelog"_i18n, new brls::Label(brls::LabelStyle::REGULAR, sChangelog, true)   );
+                popupChangelog->addTab("menus/changelog/known_issues"_i18n, new brls::Label(brls::LabelStyle::REGULAR, sKnownIssues, true)   );
+                brls::PopupFrame::open(fmt::format("{} no {}", "menus/changelog/changelog"_i18n, pack), popupChangelog, "menus/changelog/changelog"_i18n, "menus/changelog/known_issues"_i18n);
+            });
+        }
+        else if (this->dialogType == DialogType::error)
+        {
+            this->button2->getClickEvent()->subscribe([](View* view) {
+                brls::Application::popView();
+            });
+        }
+        this->navigationMap.add(
+            this->button,
+            brls::FocusDirection::RIGHT,
+            this->button2);
 
-    this->navigationMap.add(
-        this->button,
-        brls::FocusDirection::RIGHT,
-        this->button2);
-
-    this->navigationMap.add(
-        this->button2,
-        brls::FocusDirection::LEFT,
-        this->button);
+        this->navigationMap.add(
+            this->button2,
+            brls::FocusDirection::LEFT,
+            this->button);
     }
 
     if (this->done)
@@ -81,9 +89,13 @@ void ListDownloadConfirmationPage::draw(NVGcontext* vg, int x, int y, unsigned w
         }
         this->button->invalidate();
 
-        if (this->showChangelog)
+        if ((this->showChangelog) || (this->dialogType == DialogType::error))
         {        
-            this->button2->setLabel(fmt::format("{} no {}", "menus/changelog/changelog"_i18n, this->packName));
+            if (this->showChangelog)
+                this->button2->setLabel(fmt::format("{} no {}", "menus/changelog/changelog"_i18n, this->packName));
+            else if (this->dialogType == DialogType::error)
+                this->button2->setLabel("menus/common/cancel"_i18n);
+
             this->button2->setState(brls::ButtonState::ENABLED);
             this->button2->invalidate();
         }
@@ -97,7 +109,7 @@ void ListDownloadConfirmationPage::draw(NVGcontext* vg, int x, int y, unsigned w
     this->label->frame(ctx);
     this->button->frame(ctx);
 
-    if (this->showChangelog)
+    if ((this->showChangelog) || (this->dialogType == DialogType::error))
         this->button2->frame(ctx);
 }
 
@@ -120,8 +132,8 @@ void ListDownloadConfirmationPage::layout(NVGcontext* vg, brls::Style* style, br
     this->icon->invalidate(true);
 
     //watrning image
-    this->image->setWidth(112);
-    this->image->setHeight(102);
+    this->image->setWidth(124);
+    this->image->setHeight(112);
     this->image->setBoundaries(
         this->x + this->width / 2 - this->image->getWidth() / 2,
         96,
@@ -139,7 +151,7 @@ void ListDownloadConfirmationPage::layout(NVGcontext* vg, brls::Style* style, br
         this->label->getWidth(),
         this->label->getHeight());
 
-    if (this->showChangelog)
+    if ((this->showChangelog) || (this->dialogType == DialogType::error))
     {
         this->button->setBoundaries(
             this->x + (this->width / 2) - (style->CrashFrame.buttonWidth / 2) - (this->width / 5),
@@ -173,6 +185,6 @@ ListDownloadConfirmationPage::~ListDownloadConfirmationPage()
     delete this->label;
     delete this->button;
     delete this->image;
-    if (this->showChangelog)
+    if ((this->showChangelog) || (this->dialogType == DialogType::error))
         delete this->button2;
 }

@@ -94,6 +94,15 @@ enum class contentType
 constexpr std::string_view contentTypeNames[5]{"firmwares", "app", "cfws", "translations", "modifications"};
 constexpr std::string_view contentTypeFullNames[5]{"o firmware", "o homebrew", "o CFW", "a tradução", "a modificação"};
 
+enum class DialogType
+{
+    updating,
+    warning,
+    error
+};
+
+constexpr std::string_view ROMFSIconFile[3]{"romfs:/updating.png", "romfs:/warning.png", "romfs:/error.png"};
+
 enum class CFW
 {
     rnx,

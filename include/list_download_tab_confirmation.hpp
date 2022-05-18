@@ -3,6 +3,8 @@
 #include <borealis.hpp>
 #include <chrono>
 
+#include "constants.hpp"
+
 class ListDownloadConfirmationPage : public brls::View
 {
 private:
@@ -16,9 +18,10 @@ private:
     brls::NavigationMap navigationMap;
     bool showChangelog = false;
     std::string packName;
+    DialogType dialogType;
 
 public:
-    ListDownloadConfirmationPage(brls::StagedAppletFrame* frame, const std::string& text, const std::string& pack = "", const std::string& body = "", bool showChangelog = false, bool done = false);
+    ListDownloadConfirmationPage(brls::StagedAppletFrame* frame, const DialogType dialogType, const std::string& text, const std::string& pack = "", const std::string& body = "", bool showChangelog = false, bool done = false);
     ~ListDownloadConfirmationPage();
 
     void draw(NVGcontext* vg, int x, int y, unsigned width, unsigned height, brls::Style* style, brls::FrameContext* ctx) override;

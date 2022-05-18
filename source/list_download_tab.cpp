@@ -70,16 +70,30 @@ void ListDownloadTab::createList(contentType type, std::string& sVer)
                 brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
                 stagedFrame->setTitle(fmt::format("menus/main/getting"_i18n, contentTypeFullNames[(int)type].data()));
 
-                stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/download_time_warning"_i18n, "", "", false));
+                switch (type) {
+                    case contentType::fw: {
+                        std::string contentsPath = util::getContentsPath();
+                        for (const auto& tid : {"0100000000001000", "0100000000001007", "0100000000001013"}) {
+                            if (std::filesystem::exists(contentsPath + tid) && !std::filesystem::is_empty(contentsPath + tid)) {
+                                stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, DialogType::error, "menus/main/theme_warning"_i18n, "", "", false));
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    default:
+                        break;
+                }
 
+                stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, DialogType::warning, "menus/main/download_time_warning"_i18n, "", "", false));
                 stagedFrame->addStage(new ConfirmPage(stagedFrame, text));
-                
                 stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [this, type, url]() { util::downloadArchive(url, type); }));
                 stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, [this, type]() { util::extractArchive(type); }));
                 
                 std::string doneMsg = "menus/common/all_done"_i18n;
                 switch (type) {
                     case contentType::fw: {
+/*
                         std::string contentsPath = util::getContentsPath();
                         for (const auto& tid : {"0100000000001000", "0100000000001007", "0100000000001013"}) {
                             if (std::filesystem::exists(contentsPath + tid) && !std::filesystem::is_empty(contentsPath + tid)) {
@@ -87,6 +101,7 @@ void ListDownloadTab::createList(contentType type, std::string& sVer)
                                 break;
                             }
                         }
+*/
                         if (std::filesystem::exists(DAYBREAK_PATH)) {
                             stagedFrame->addStage(new DialoguePage_fw(stagedFrame, doneMsg));
                         }

@@ -100,11 +100,11 @@ void ListExtraTab::createList(contentType type)
                     {
                         switch (type) {
                             case contentType::translations: {
-                               stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/translation_exists_warning"_i18n, "", "", false));
+                               stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, DialogType::warning, "menus/main/translation_exists_warning"_i18n, "", "", false));
                                break;
                             }
                             case contentType::modifications: {
-                                stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/modification_exists_warning"_i18n, "", "", false));
+                                stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, DialogType::warning, "menus/main/modification_exists_warning"_i18n, "", "", false));
                                 break;
                             }
                                 default:

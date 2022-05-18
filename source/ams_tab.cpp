@@ -91,9 +91,9 @@ void AmsTab::CreateStagedFrames(const std::string& text, const std::string& url,
     stagedFrame->setTitle(operation);
 
     if ((body != "") && (util::upperCase(body).find("[PROBLEMAS CONHECIDOS]", 0) != std::string::npos))
-        stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/download_time_warning"_i18n, pack, body, true));
+        stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, DialogType::warning, "menus/main/download_time_warning"_i18n, pack, body, true));
     else
-        stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, "menus/main/download_time_warning"_i18n, pack, body, false));
+        stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, DialogType::warning, "menus/main/download_time_warning"_i18n, pack, body, false));
 
     stagedFrame->addStage(new ConfirmPage(stagedFrame, fmt::format("{} ({}MB)", text, size)));
     stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [url]() { util::downloadArchive(url, contentType::ams_cfw); }));
