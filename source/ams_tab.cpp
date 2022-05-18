@@ -56,10 +56,19 @@ void AmsTab::CreateDownloadItems(const nlohmann::ordered_json& cfw_links, const 
             {
                 int iSize = (size / 1048576);
 
-                if ((sVer != "") && (name.find(sVer) != std::string::npos))
-                    listItem = new brls::ListItem(fmt::format("{}{} ({}MB)", "\u2605", name, iSize));
+                if (sVer.find(pack) != std::string::npos)
+				{
+					util::writeLog(fmt::format("ENTROU NO IF: sVer: {} - name: {} - pack: {}", sVer, name, pack));
+                    if (name.find(sVer) != std::string::npos)
+                        listItem = new brls::ListItem(fmt::format("{}{} ({}MB)", "\u2605 ", name, iSize));
+                    else
+                        listItem = new brls::ListItem(fmt::format("{}{} ({}MB)", "\uE150 ", name, iSize));
+				}
                 else
+				{
+					util::writeLog(fmt::format("NAO ENTROU NO IF: sVer: {} - name: {} - pack: {}", sVer, name, pack));
                     listItem = new brls::ListItem(fmt::format("{} ({}MB)", name, iSize));
+				}
 
                 listItem->setHeight(LISTITEM_HEIGHT);
                 listItem->getClickEvent()->subscribe([this, name, url, iSize, pack, body, operation](brls::View* view) {

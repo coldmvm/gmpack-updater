@@ -90,7 +90,7 @@ void ListExtraTab::createList(contentType type)
                 }
                 
                 const std::string text("menus/common/download"_i18n + title);
-                listItem = new brls::ListItem(fmt::format("{}{} ({})", (bInstalled ? "\u2605" : ""), title, size));
+                listItem = new brls::ListItem(fmt::format("{}{} ({})", (bInstalled ? "\u2605 " : ""), title, size));
                 listItem->setHeight(LISTITEM_HEIGHT);
                 listItem->getClickEvent()->subscribe([this, type, text, url, itemFolders, bInstalled](brls::View* view) {
                     brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();

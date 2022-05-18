@@ -61,7 +61,7 @@ void ListDownloadTab::createList(contentType type, std::string& sVer)
             const std::string text("menus/common/download"_i18n + title);
 
             if (title.find(sVer) != std::string::npos)
-                listItem = new brls::ListItem(fmt::format("{}{}", "\u2605", title));
+                listItem = new brls::ListItem(fmt::format("{}{}", "\u2605 ", title));
             else
                 listItem = new brls::ListItem(title);
 
