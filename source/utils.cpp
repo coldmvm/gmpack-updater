@@ -386,6 +386,7 @@ MY METHODS
             while (std::getline(file, line)) {
                 if(line.find("{GMPACK", 0) != std::string::npos)
                 {
+                    line = util::trim(line);
                     line = line.substr(1, line.size() - 2);
                     break;
                 }
@@ -470,8 +471,8 @@ MY METHODS
             if (json.find(fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME)) + "2") != json.end())
             {
                 bool enabled = json[fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME)) + "2"]["enabled"];
-				if (enabled)
-					text = json[fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME)) + "2"]["message"];
+                if (enabled)
+                    text = json[fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME)) + "2"]["message"];
             }
         }
 
@@ -588,4 +589,27 @@ MY METHODS
         }
         return NAND + type;
     }
+
+    // trim from end of string (right)
+    inline std::string& rtrim(std::string& s)
+    {
+        const char* t = "\t\n\r\f\v";
+        s.erase(s.find_last_not_of(t) + 1);
+        return s;
+    }
+
+    // trim from beginning of string (left)
+    inline std::string& ltrim(std::string& s)
+    {
+        const char* t = "\t\n\r\f\v";
+        s.erase(0, s.find_first_not_of(t));
+        return s;
+    }
+
+    // trim from both ends of string (right then left)
+    inline std::string& trim(std::string& s)
+    {
+        return ltrim(rtrim(s));
+    }
+
 }  // namespace util

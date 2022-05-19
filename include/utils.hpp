@@ -63,5 +63,7 @@ MY METHODS
     void createStarFile();
     bool getLatestCFWPack(std::string& url, std::string& packName, std::string& packURL, int& packSize, std::string& packBody);
     std::string getNANDType(const std::string& NAND);
-
+    std::string& rtrim(std::string& s);
+    std::string& ltrim(std::string& s);
+    std::string& trim(std::string& s);
 }  // namespace util
