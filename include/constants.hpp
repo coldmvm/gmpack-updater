@@ -26,7 +26,7 @@ constexpr const char APP_URL[] = "https://github.com/{}/{}-updater/releases/late
 constexpr const char TAGS_INFO[] = "https://api.github.com/repos/{}/{}-updater/releases/latest";
 constexpr const char APP_FILENAME[] = "/config/{}-updater/app.zip";
 
-constexpr const char NXLINKS_URL[] = "https://raw.githubusercontent.com/coldmvm/nx-links/main/nx-links-v200-TEST.json";
+constexpr const char NXLINKS_URL[] = "https://raw.githubusercontent.com/coldmvm/nx-links/master/nx-links-v201-TEST.json";
 
 constexpr const char FIRMWARE_FILENAME[] = "/config/{}-updater/firmware.zip";
 constexpr const char FIRMWARE_PATH[] = "/firmware/";
