@@ -23,7 +23,7 @@ constexpr const char MARIKO_PAYLOAD_PATH[] = "/payload.bin";
 constexpr const char MARIKO_PAYLOAD_PATH_TEMP[] = "/payload.bin.apg";
 
 constexpr const char APP_URL[] = "https://github.com/{}/{}-updater/releases/latest/download/{}-updater.zip";
-constexpr const char TAGS_INFO[] = "https://api.github.com/repos/{}/{}-updater/releases/latest";
+constexpr const char APP_INFO[] = "https://api.github.com/repos/{}/{}-updater/releases/latest";
 constexpr const char APP_FILENAME[] = "/config/{}-updater/app.zip";
 
 constexpr const char NXLINKS_URL[] = "https://raw.githubusercontent.com/coldmvm/nx-links/master/nx-links-v201.json";

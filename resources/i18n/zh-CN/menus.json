@@ -25,7 +25,8 @@
     "confirm": "Confirmar",
     "cancel": "Cancelar",
     "updating": "Atualizando o homebrew",
-    "update_label": "Chegou a hora de fazer mais uma atualização do {}!\n\nClique no botão abaixo e siga os passos na tela para atualizá-lo. Após o processo ser concluído, o homebrew será reiniciado para que você possa aproveitar as novas funções.\n\nVersão a ser instalada: v{}",
+    "update_label": "Versão a ser instalada: v{}\n\n{}",
+    "update_button": "Clique aqui para atualizar o homebrew",
     "ok": "Ok"
   },
   "changelog": {

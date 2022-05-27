@@ -15,10 +15,11 @@
 namespace i18n = brls::i18n;
 using namespace i18n::literals;
 
-UpdateTab::UpdateTab(std::string& version) : brls::List()
+UpdateTab::UpdateTab(std::string& version, std::string& changelog) : brls::List()
 {
-    this->description = new brls::Label(brls::LabelStyle::DESCRIPTION, fmt::format("menus/common/update_label"_i18n, APP_SHORT_NAME, version), true);
-    this->description->setHorizontalAlign(NVG_ALIGN_CENTER);
+//    this->description = new brls::Label(brls::LabelStyle::DESCRIPTION, fmt::format("menus/common/update_label"_i18n, APP_SHORT_NAME, version, changelog), true);
+    this->description = new brls::Label(brls::LabelStyle::DESCRIPTION, fmt::format("menus/common/update_label"_i18n, version, changelog), true);
+    this->description->setHorizontalAlign(NVG_ALIGN_LEFT);
     this->addView(description);
 
     CreateDownloadItems();
@@ -30,22 +31,20 @@ void UpdateTab::CreateDownloadItems()
 
     std::string operation("menus/common/updating"_i18n);
 
-    std::string text("menus/common/updating"_i18n);
-    listItem = new brls::ListItem("Clique aqui para atualizar o homebrew");
+    listItem = new brls::ListItem("menus/common/update_button"_i18n);
     listItem->setHeight(LISTITEM_HEIGHT);
-    listItem->getClickEvent()->subscribe([this, text, operation](brls::View* view) {
-        CreateStagedFrames(text, operation);
+    listItem->getClickEvent()->subscribe([this, operation](brls::View* view) {
+        CreateStagedFrames(operation);
     });
     this->addView(image);
     this->addView(listItem);
 }
 
-void UpdateTab::CreateStagedFrames(const std::string& text, const std::string& operation)
+void UpdateTab::CreateStagedFrames(const std::string& operation)
 {
     brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
     stagedFrame->setTitle(operation);
 
-    stagedFrame->addStage(new ConfirmPage(stagedFrame, text, false, false, false, true));
     stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, []() { util::downloadArchive(fmt::format(APP_URL, GITHUB_USER, BASE_FOLDER_NAME, BASE_FOLDER_NAME), contentType::app); }, true));
     stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, []() { util::extractArchive(contentType::app); }, true));
     stagedFrame->addStage(new ConfirmPage(stagedFrame, "menus/common/app_update_done"_i18n, false, false, false, true));
@@ -67,7 +66,7 @@ void UpdateTab::layout(NVGcontext* vg, brls::Style* style, brls::FontStash* stas
     this->description->setHeight(80);
     this->description->setBoundaries(
         this->x + this->width / 2 - this->description->getWidth() / 2,
-        230,
+        210,
         this->description->getWidth(),
         this->description->getHeight());
     this->description->invalidate(true);
@@ -76,7 +75,7 @@ void UpdateTab::layout(NVGcontext* vg, brls::Style* style, brls::FontStash* stas
     this->listItem->setHeight(LISTITEM_HEIGHT);
     this->listItem->setBoundaries(
         this->x + (this->width / 2) - (this->listItem->getWidth() / 2),
-        568,
+        582,
         this->listItem->getWidth(),
         this->listItem->getHeight());
     this->listItem->invalidate(true);

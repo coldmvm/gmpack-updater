@@ -235,7 +235,7 @@ namespace util {
     std::string getLatestTag()
     {
         nlohmann::ordered_json tag;
-        download::getRequest(fmt::format(TAGS_INFO, GITHUB_USER, BASE_FOLDER_NAME), tag, {"accept: application/vnd.github.v3+json"});
+        download::getRequest(fmt::format(APP_INFO, GITHUB_USER, BASE_FOLDER_NAME), tag, {"accept: application/vnd.github.v3+json"});
         if (tag.find("tag_name") != tag.end())
             return tag["tag_name"];
         else
@@ -621,5 +621,18 @@ MY METHODS
             if (e.path().string().find(fileWildCard) != std::string::npos) {
                 std::filesystem::remove(e.path());
             }
+    }
+
+    bool getGithubJSONBody(std::string url, std::string& packBody)
+    {
+        nlohmann::ordered_json json;
+        download::getRequest(url, json, {"accept: application/vnd.github.v3+json"});
+
+        if (json.find("body") != json.end())
+            packBody = json["body"];
+        else
+            return false;
+
+        return true;
     }
 }  // namespace util

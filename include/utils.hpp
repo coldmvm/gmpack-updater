@@ -67,4 +67,5 @@ MY METHODS
     std::string& ltrim(std::string& s);
     std::string& trim(std::string& s);
     void removeFileWildCardFromDirectory(const std::string& directory, const std::string& fileWildCard);
+    bool getGithubJSONBody(std::string url, std::string& packBody);
 }  // namespace util

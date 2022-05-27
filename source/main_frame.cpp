@@ -65,6 +65,14 @@ MainFrame::MainFrame() : TabFrame()
 
     bool erista = util::isErista();
 
+    this->registerAction("menus/main/help"_i18n, brls::Key::X, [] {
+        brls::TabFrame* popupHelp = new brls::TabFrame();
+        popupHelp->addTab("menus/main/help_how_to_use"_i18n, new brls::Label(brls::LabelStyle::REGULAR, "menus/main/help_how_to_use_text"_i18n, true));
+        popupHelp->addTab("menus/main/help_order"_i18n, new brls::Label(brls::LabelStyle::REGULAR, fmt::format("menus/main/help_order_text"_i18n, "menus/main/update_ams"_i18n, util::upperCase(BASE_FOLDER_NAME), "menus/main/download_firmware"_i18n), true));
+        brls::PopupFrame::open("menus/main/help"_i18n, popupHelp, "menus/main/help_how_to_use_full"_i18n, "");
+		return true;
+    });
+
     if (!newversion) {
         this->addTab("menus/main/about"_i18n, new AboutTab());
         this->addTab("menus/main/update_ams"_i18n, new AmsTab(nxlinks, erista));
@@ -79,15 +87,12 @@ MainFrame::MainFrame() : TabFrame()
     }
     else
     {
-        this->addTab("menus/main/new_update"_i18n, new UpdateTab(tag));
+        std::string changelog;
+        util::getGithubJSONBody(fmt::format(APP_INFO, GITHUB_USER, BASE_FOLDER_NAME), changelog);
+        changelog.erase( std::remove(changelog.begin(), changelog.end(), '\r'), changelog.end() );
+            
+        this->addTab("menus/main/new_update"_i18n, new UpdateTab(tag, changelog));
         this->registerAction("", brls::Key::B, [] { return true; });
+        this->registerAction("", brls::Key::X, [] { return true; });
     }
-
-    this->registerAction("menus/main/help"_i18n, brls::Key::X, [] {
-        brls::TabFrame* popupHelp = new brls::TabFrame();
-        popupHelp->addTab("menus/main/help_how_to_use"_i18n, new brls::Label(brls::LabelStyle::REGULAR, "menus/main/help_how_to_use_text"_i18n, true));
-        popupHelp->addTab("menus/main/help_order"_i18n, new brls::Label(brls::LabelStyle::REGULAR, fmt::format("menus/main/help_order_text"_i18n, "menus/main/update_ams"_i18n, util::upperCase(BASE_FOLDER_NAME), "menus/main/download_firmware"_i18n), true));
-        brls::PopupFrame::open("menus/main/help"_i18n, popupHelp, "menus/main/help_how_to_use_full"_i18n, "");
-		return true;
-    });
 }
