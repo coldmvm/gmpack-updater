@@ -25,14 +25,13 @@ namespace {
 
 MainFrame::MainFrame() : TabFrame()
 {
-    bool newversion = false;
-
     this->setIcon("romfs:/gui_icon.png");
     this->setTitle(AppTitle);
 
     s64 freeStorage;
     std::string tag = util::getLatestTag();
 
+    bool newversion = false;
     if (!tag.empty()) {
         //fetching the version as a number
         std::string temp = "";
@@ -54,7 +53,7 @@ MainFrame::MainFrame() : TabFrame()
         newversion = (iTag > iAppVersion);
 
         this->setFooterText(fmt::format("menus/main/footer_text"_i18n, BRAND_FULL_NAME,
-            (!tag.empty() && newversion) ? "v" + std::string(AppVersion) + "menus/main/new_update_footer"_i18n : AppVersion,
+            (!tag.empty() && newversion) ? "v" + std::string(AppVersion) : AppVersion,
             R_SUCCEEDED(fs::getFreeStorageSD(freeStorage)) ? floor(((float)freeStorage / 0x40000000) * 100.0) / 100.0 : -1));
     }
     else {

@@ -40,7 +40,6 @@
     "firmware": "firmware",
     "not_found": "não encontrado",
     "links_not_found": "Não foi possível encontrar o link de download! Seu Switch está conectado à Internet?\nSe o problema persistir, abra um 'issue' no GitHub.",
-    "new_update_footer": " (Nova atualização disponível)",
     "new_update": "Nova atualização",
     "about": "Informações",
     "credits": "Créditos",
