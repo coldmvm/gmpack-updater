@@ -51,6 +51,9 @@ ChangelogPage::ChangelogPage() : AppletFrame(true, true)
     verTitles.push_back("v2.0.0");
     changes.push_back("\uE016 O homebrew agora baixa conteúdo do Mega.nz.\n\uE016 O homebrew agora mostra o changelog dos pacotes baixados (quando disponível).\n\uE016 A posição dos botões nas telas de avisos e confirmação foi movida para mais em baixo agora.\n\uE016 O homebrew agora mostra o tamanho dos downloads em todos os lugares.\n\uE016 Correções internas na função de identificar conteúdos já instalados.\n\uE016 Foi incluída uma função de ajuda ao pressionar o botão \uE0E2.\n\uE016 Incluído um ítem em 'Ferramentas' para ver o último MOTD.\n\uE016 Limpeza no código em geral.\n\uE016 Melhorias nos textos do homebrew.");
 
+    verTitles.push_back("v2.0.1");
+    changes.push_back("\uE016 O homebrew agora detecta o tipo da emuNAND (SD ou partição) e mostra na aba 'Baixar Atmosphère'.\n\uE016 O homebrew agora alerta se você tem um tema instalado ANTES de baixar a atualização e te dá a opção de cancelar o processo.\n\uE016 O homebrew agora limpa 'payloads' antigos do HEKATE CTCAER na raiz do microSD.\n\uE016 Foi corrigido um problema que impedia o homebrew de mostrar o ícone quando um conteúdo estava instalado corretamente.\n\uE016 Limpeza no código em geral.\n\uE016 Melhorias nos textos do homebrew.");
+
     for (int i = verTitles.size() - 1; i >= 0; i--) {
         listItem = new brls::ListItem(verTitles[i]);
         change = changes[i];
