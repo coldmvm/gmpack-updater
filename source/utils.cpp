@@ -471,11 +471,11 @@ MY METHODS
         download::getRequest(NXLINKS_URL, json);
         if (json.size())
         {
-            if (json.find(fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME)) + "2") != json.end())
+            if (json.find(fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME))) != json.end())
             {
-                bool enabled = json[fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME)) + "2"]["enabled"];
+                bool enabled = json[fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME))]["enabled"];
                 if (enabled)
-                    text = json[fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME)) + "2"]["message"];
+                    text = json[fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME))]["message"];
             }
         }
 
