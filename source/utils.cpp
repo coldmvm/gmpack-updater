@@ -179,7 +179,10 @@ namespace util {
                 int deleteContents = 1;
 
                 if (deleteContents == 1)
+                {
                     removeSysmodulesFlags(AMS_CONTENTS);
+                    removeFileWildCardFromDirectory(ROOT_PATH, "hekate_ctcaer_");
+                }
 
                 extract::extract(fmt::format(AMS_FILENAME, BASE_FOLDER_NAME), ROOT_PATH, overwriteInis);
 
@@ -612,4 +615,11 @@ MY METHODS
         return ltrim(rtrim(s));
     }
 
+    void removeFileWildCardFromDirectory(const std::string& directory, const std::string& fileWildCard)
+    {
+        for (const auto & e : std::filesystem::directory_iterator(directory))
+            if (e.path().string().find(fileWildCard) != std::string::npos) {
+                std::filesystem::remove(e.path());
+            }
+    }
 }  // namespace util

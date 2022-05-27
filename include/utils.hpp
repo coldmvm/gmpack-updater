@@ -66,4 +66,5 @@ MY METHODS
     std::string& rtrim(std::string& s);
     std::string& ltrim(std::string& s);
     std::string& trim(std::string& s);
+    void removeFileWildCardFromDirectory(const std::string& directory, const std::string& fileWildCard);
 }  // namespace util
