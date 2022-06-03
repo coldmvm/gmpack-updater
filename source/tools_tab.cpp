@@ -124,12 +124,40 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
 	    this->addView(motd);
     this->addView(changelog);
 
-/*
-    brls::ListItem* icons = new brls::ListItem("Icones - \u1F968");
-    icons->getClickEvent()->subscribe([](brls::View* view) {
-        brls::PopupFrame::open("Icones", new IconsPage(), "", "");
-    });
-    icons->setHeight(LISTITEM_HEIGHT);
-    this->addView(icons);
-*/
+    if (DEBUG)
+    {
+        brls::ListItem* icons = new brls::ListItem("Icones");
+        icons->getClickEvent()->subscribe([](brls::View* view) {
+            brls::PopupFrame::open("Icones", new IconsPage(), "", "");
+        });
+        icons->setHeight(LISTITEM_HEIGHT);
+        this->addView(icons);
+
+        brls::ListItem* forceCleanInstall = new brls::ListItem("Forçar Instalação Limpa");
+        forceCleanInstall->getClickEvent()->subscribe([](brls::View* view) {
+            util::createCleanInstallFile();
+			util::showDialogBoxInfo("Agora use a opção 'Reiniciar no Payload RCM' para testar a 'Instalação Limpa'.");
+        });
+        forceCleanInstall->setHeight(LISTITEM_HEIGHT);
+        this->addView(forceCleanInstall);
+
+        brls::ListItem* payloadRCM = new brls::ListItem("Reiniciar no Payload RCM");
+        payloadRCM->getClickEvent()->subscribe([](brls::View* view) {
+            if (util::isErista()) {
+                util::rebootToPayload(RCM_PAYLOAD_PATH);
+            }
+            else {
+                if (std::filesystem::exists(UPDATE_BIN_PATH)) {
+                    fs::copyFile(UPDATE_BIN_PATH, MARIKO_PAYLOAD_PATH_TEMP);
+                }
+                else {
+                    fs::copyFile(REBOOT_PAYLOAD_PATH, MARIKO_PAYLOAD_PATH_TEMP);
+                }
+                fs::copyFile(RCM_PAYLOAD_PATH, MARIKO_PAYLOAD_PATH);
+                util::shutDown(true);
+            }
+        });
+        payloadRCM->setHeight(LISTITEM_HEIGHT);
+        this->addView(payloadRCM);
+    }
 }
