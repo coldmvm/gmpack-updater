@@ -76,7 +76,9 @@
   "utils": {
     "not_an_archive": "O arquivo baixado não é um arquivo zip. Isto provavelmente aconteceu devido a um link quebrado. Se o problema persistir depois de 30 minutos, por favor, abra um 'issue' no Github.",
     "overwrite_inis": "Você deseja sobrescrever os arquivos de configuração .ini existentes?",
-    "delete_sysmodules_flags": "Você gostaria de apagar todos os sinalizadores de início dos módulos de sistema (boo2.flag)? Isto desligará todos os módulos de sistema para prevenir erros se você tem algum módulo de sistema instalado que não suporte o último Atmosphère."
+    "delete_sysmodules_flags": "Você gostaria de apagar todos os sinalizadores de início dos módulos de sistema (boo2.flag)? Isto desligará todos os módulos de sistema para prevenir erros se você tem algum módulo de sistema instalado que não suporte o último Atmosphère.",
+    "delete_all_but_emunand": "Você gostaria de executar uma instalação limpa?\n\n\uE150 Uma instalação limpa irá apagar TUDO do microSD MENOS a sua emuNAND.\nVocê PERDERÁ traduções e/ou modificações de jogos mas NÃO os jogos.\nEsta opção só é recomendada quando você quiser começar com uma instalação 100% limpa.",
+    "delete_all_but_emunand_confirm": "Você escolheu executar uma INSTALAÇÃO LIMPA!\n\n\uE150 Uma instalação limpa irá apagar TUDO do microSD MENOS a sua emuNAND.\nVocê PERDERÁ traduções e/ou modificações de jogos mas NÃO os jogos.\n\nVocê tem certeza que quer executar uma instalação limpa?"
   },
   "ams_update": {
     "pack_label": "{} é um pacote all-in-one (tudo em um) baseado no custom firmware Atmosphère e inclui tudo de mais atual para seu Switch. {} {} usa este pacote como seu oficial.",

@@ -14,6 +14,7 @@ constexpr const char GITHUB_USER[] = "coldmvm";
 DO NOT CHANGE ONLY THESE CONSTANTS UNLESS YOU KNOW WHAT YOU'RE DOING
 */
 
+constexpr const char CFW_ROOT_PATH[] = "/apgtmppackfolder";
 constexpr const char ROOT_PATH[] = "/";
 constexpr const char DOWNLOAD_PATH[] = "/config/{}-updater/";
 constexpr const char CONFIG_PATH[] = "/config/{}-updater/";
@@ -81,6 +82,8 @@ constexpr const char MOTD_KEY[] = "{}-MOTD";
 constexpr const int LISTITEM_HEIGHT = 50;
 
 constexpr const int MAX_FETCH_LINKS = 15;
+
+constexpr const char CLEAN_INSTALL_FLAG[] = "/cleaninstall.flag";
 
 enum class contentType
 {

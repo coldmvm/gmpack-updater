@@ -172,19 +172,31 @@ namespace util {
                 brls::Application::quit();
                 break;
             case contentType::ams_cfw: {
-                //int overwriteInis = showDialogBoxBlocking("menus/utils/overwrite_inis"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
-                //int deleteContents = showDialogBoxBlocking("menus/utils/delete_sysmodules_flags"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
-                
-                int overwriteInis = 1;
-                int deleteContents = 1;
+                std::filesystem::remove(CLEAN_INSTALL_FLAG);
 
-                if (deleteContents == 1)
+                int overwriteInis = 1;
+                //int overwriteInis = showDialogBoxBlocking("menus/utils/overwrite_inis"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
+
+                int deleteContents = 1;
+                //int deleteContents = showDialogBoxBlocking("menus/utils/delete_sysmodules_flags"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
+
+                int fullClean = showDialogBoxBlocking("menus/utils/delete_all_but_emunand"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
+
+                if (fullClean == 1)
+                {
+                    if (showDialogBoxBlocking("menus/utils/delete_all_but_emunand_confirm"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n) == 1)
+                        createCleanInstallFile();
+                    else
+                        fullClean = 0;
+                }
+
+                if ((deleteContents == 1) && (fullClean == 0))
                 {
                     removeSysmodulesFlags(AMS_CONTENTS);
                     removeFileWildCardFromDirectory(ROOT_PATH, "hekate_ctcaer_");
                 }
 
-                extract::extract(fmt::format(AMS_FILENAME, BASE_FOLDER_NAME), ROOT_PATH, overwriteInis);
+                extract::extract(fmt::format(AMS_FILENAME, BASE_FOLDER_NAME), CFW_ROOT_PATH, overwriteInis);
 
                 //removing custom firmware temporary zip file.
                 std::filesystem::remove(fmt::format(AMS_ZIP_PATH, BASE_FOLDER_NAME));
@@ -634,5 +646,14 @@ MY METHODS
             return false;
 
         return true;
+    }
+
+    void createCleanInstallFile()
+    {
+        std::ofstream file;
+        file.open(CLEAN_INSTALL_FLAG, std::ofstream::out | std::ofstream::trunc);
+        if (file.is_open())
+            file << "1" << std::endl;
+        file.close();
     }
 }  // namespace util

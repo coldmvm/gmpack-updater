@@ -29,6 +29,9 @@ namespace extract {
     namespace {
         void preWork(zipper::Unzipper& unzipper, const std::string& workingPath, std::vector<zipper::ZipEntry>& entries)
         {
+            if (!std::filesystem::exists(workingPath))
+                std::filesystem::create_directory(workingPath);
+
             chdir(workingPath.c_str());
             entries = unzipper.entries();
             s64 uncompressedSize = 0;
