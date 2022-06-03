@@ -35,9 +35,12 @@ AmsTab::AmsTab(const nlohmann::json& nxlinks, const bool erista) : brls::List()
 
     CreateDownloadItems(util::getValueFromKey(cfws, util::upperCase(BASE_FOLDER_NAME)), util::upperCase(BASE_FOLDER_NAME), packVersion);
 
-    description = new brls::Label(brls::LabelStyle::DESCRIPTION, "menus/ams_update/goma_label"_i18n, true);
-    this->addView(description);
-    CreateDownloadItems(util::getValueFromKey(cfws, "GNX"), "GNX");
+    if (SHOW_GNX)
+    {
+        description = new brls::Label(brls::LabelStyle::DESCRIPTION, "menus/ams_update/goma_label"_i18n, true);
+        this->addView(description);
+        CreateDownloadItems(util::getValueFromKey(cfws, "GNX"), "GNX");
+    }
 }
 
 void AmsTab::CreateDownloadItems(const nlohmann::ordered_json& cfw_links, const std::string& pack, const std::string& sVer)
