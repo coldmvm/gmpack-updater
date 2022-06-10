@@ -75,7 +75,7 @@ void ListDownloadTab::createList(contentType type, std::string& sVer)
                         std::string contentsPath = util::getContentsPath();
                         for (const auto& tid : {"0100000000001000", "0100000000001007", "0100000000001013"}) {
                             if (std::filesystem::exists(contentsPath + tid) && !std::filesystem::is_empty(contentsPath + tid)) {
-                                stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, DialogType::error, "menus/main/theme_warning"_i18n, "", "", false));
+                                stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, DialogType::error, fmt::format("menus/main/theme_warning"_i18n, AMS_CONTENTS, AMS_CONTENTS, AMS_CONTENTS), "", "", false));
                                 break;
                             }
                         }

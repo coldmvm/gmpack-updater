@@ -10,6 +10,7 @@ class ListDownloadConfirmationPage : public brls::View
 private:
     brls::Button* button = nullptr;
     brls::Button* button2 = nullptr;
+    brls::Button* button3 = nullptr;
     brls::Label* label = nullptr;
 	brls::Image* icon = nullptr;
 	brls::Image* image = nullptr;

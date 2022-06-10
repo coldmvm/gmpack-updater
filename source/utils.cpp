@@ -656,4 +656,19 @@ MY METHODS
             file << "1" << std::endl;
         file.close();
     }
+
+    bool deleteThemeFolders()
+    {
+        std::string tmp;
+        tmp = fmt::format("{}{}", AMS_CONTENTS, "0100000000001000");
+        std::filesystem::remove_all(tmp.c_str());
+
+        tmp = fmt::format("{}{}", AMS_CONTENTS, "0100000000001007");
+        std::filesystem::remove_all(tmp.c_str());
+
+        tmp = fmt::format("{}{}", AMS_CONTENTS, "0100000000001013");
+        std::filesystem::remove_all(tmp.c_str());
+
+        return true;
+    }
 }  // namespace util

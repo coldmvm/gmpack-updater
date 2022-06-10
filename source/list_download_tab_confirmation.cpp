@@ -51,22 +51,28 @@ ListDownloadConfirmationPage::ListDownloadConfirmationPage(brls::StagedAppletFra
                 popupChangelog->addTab("menus/changelog/known_issues"_i18n, new brls::Label(brls::LabelStyle::REGULAR, sKnownIssues, true)   );
                 brls::PopupFrame::open(fmt::format("{} no {}", "menus/changelog/changelog"_i18n, pack), popupChangelog, "menus/changelog/changelog"_i18n, "menus/changelog/known_issues"_i18n);
             });
+
+            this->navigationMap.add(this->button, brls::FocusDirection::RIGHT, this->button2);
+            this->navigationMap.add(this->button2, brls::FocusDirection::LEFT, this->button);
         }
         else if (this->dialogType == DialogType::error)
         {
-            this->button2->getClickEvent()->subscribe([](View* view) {
+            this->button2->getClickEvent()->subscribe([frame](View* view) {
+                if (util::deleteThemeFolders())
+                    frame->nextStage();
+            });
+
+            this->button3 = (new brls::Button(brls::ButtonStyle::REGULAR));
+            this->button3->setParent(this);
+            this->button3->getClickEvent()->subscribe([](View* view) {
                 brls::Application::popView();
             });
-        }
-        this->navigationMap.add(
-            this->button,
-            brls::FocusDirection::RIGHT,
-            this->button2);
 
-        this->navigationMap.add(
-            this->button2,
-            brls::FocusDirection::LEFT,
-            this->button);
+            this->navigationMap.add(this->button, brls::FocusDirection::RIGHT, this->button2);
+            this->navigationMap.add(this->button2, brls::FocusDirection::LEFT, this->button);
+            this->navigationMap.add(this->button2, brls::FocusDirection::RIGHT, this->button3);
+            this->navigationMap.add(this->button3, brls::FocusDirection::LEFT, this->button2);
+        }
     }
 
     if (this->done)
@@ -78,26 +84,47 @@ void ListDownloadConfirmationPage::draw(NVGcontext* vg, int x, int y, unsigned w
     if (!this->done) {
         auto end = std::chrono::high_resolution_clock::now();
         auto missing = std::max(1l - std::chrono::duration_cast<std::chrono::seconds>(end - start).count(), 0l);
-        auto text = std::string("menus/common/continue"_i18n);
+        auto b1Text = std::string("menus/common/continue"_i18n);
+        auto b2Text = std::string("menus/common/remove_continue"_i18n);
         if (missing > 0) {
-            this->button->setLabel(text + " (" + std::to_string(missing) + ")");
+            this->button->setLabel(b1Text + " (" + std::to_string(missing) + ")");
             this->button->setState(brls::ButtonState::DISABLED);
+
+            if (this->dialogType == DialogType::error)
+            {
+                this->button2->setLabel(b2Text + " (" + std::to_string(missing) + ")");
+                this->button2->setState(brls::ButtonState::DISABLED);
+            }
         }
         else {
-            this->button->setLabel(text);
+            this->button->setLabel(b1Text);
             this->button->setState(brls::ButtonState::ENABLED);
+
+            if (this->dialogType == DialogType::error)
+            {
+                this->button2->setLabel(b2Text);
+                this->button2->setState(brls::ButtonState::ENABLED);
+            }
         }
         this->button->invalidate();
+		if (this->dialogType == DialogType::error)
+			this->button2->invalidate();
 
-        if ((this->showChangelog) || (this->dialogType == DialogType::error))
+        if (this->showChangelog)
         {        
-            if (this->showChangelog)
-                this->button2->setLabel(fmt::format("{} no {}", "menus/changelog/changelog"_i18n, this->packName));
-            else if (this->dialogType == DialogType::error)
-                this->button2->setLabel("menus/common/cancel"_i18n);
-
+            this->button2->setLabel(fmt::format("{} no {}", "menus/changelog/changelog"_i18n, this->packName));
             this->button2->setState(brls::ButtonState::ENABLED);
             this->button2->invalidate();
+        }
+        else if (this->dialogType == DialogType::error)
+        {        
+//            this->button2->setLabel("menus/common/remove_continue"_i18n);
+//            this->button2->setState(brls::ButtonState::ENABLED);
+//            this->button2->invalidate();
+
+            this->button3->setLabel("menus/common/cancel"_i18n);
+            this->button3->setState(brls::ButtonState::ENABLED);
+            this->button3->invalidate();
         }
     }
     else {
@@ -109,8 +136,13 @@ void ListDownloadConfirmationPage::draw(NVGcontext* vg, int x, int y, unsigned w
     this->label->frame(ctx);
     this->button->frame(ctx);
 
-    if ((this->showChangelog) || (this->dialogType == DialogType::error))
+    if (this->showChangelog)
         this->button2->frame(ctx);
+    else if (this->dialogType == DialogType::error)
+    {
+        this->button2->frame(ctx);
+        this->button3->frame(ctx);
+    }
 }
 
 brls::View* ListDownloadConfirmationPage::getDefaultFocus()
@@ -151,7 +183,7 @@ void ListDownloadConfirmationPage::layout(NVGcontext* vg, brls::Style* style, br
         this->label->getWidth(),
         this->label->getHeight());
 
-    if ((this->showChangelog) || (this->dialogType == DialogType::error))
+    if (this->showChangelog)
     {
         this->button->setBoundaries(
             this->x + (this->width / 2) - (style->CrashFrame.buttonWidth / 2) - (this->width / 5),
@@ -166,6 +198,29 @@ void ListDownloadConfirmationPage::layout(NVGcontext* vg, brls::Style* style, br
             style->CrashFrame.buttonWidth,
             style->CrashFrame.buttonHeight);
         this->button2->invalidate();
+    }
+    else if (this->dialogType == DialogType::error)
+    {
+        this->button->setBoundaries(
+            this->x + 32,
+            this->y + this->height - (style->CrashFrame.buttonHeight * 1.25),
+            style->CrashFrame.buttonWidth,
+            style->CrashFrame.buttonHeight);
+        this->button->invalidate();
+    
+        this->button2->setBoundaries(
+            this->x + (this->width / 2) - (style->CrashFrame.buttonWidth / 2),
+            this->y + this->height - (style->CrashFrame.buttonHeight * 1.25),
+            style->CrashFrame.buttonWidth,
+            style->CrashFrame.buttonHeight);
+        this->button2->invalidate();
+
+        this->button3->setBoundaries(
+            this->x + this->width - style->CrashFrame.buttonWidth - 32,
+            this->y + this->height - (style->CrashFrame.buttonHeight * 1.25),
+            style->CrashFrame.buttonWidth,
+            style->CrashFrame.buttonHeight);
+        this->button3->invalidate();
     }
     else
     {
@@ -185,6 +240,11 @@ ListDownloadConfirmationPage::~ListDownloadConfirmationPage()
     delete this->label;
     delete this->button;
     delete this->image;
-    if ((this->showChangelog) || (this->dialogType == DialogType::error))
+    if (this->showChangelog)
         delete this->button2;
+    if  (this->dialogType == DialogType::error)
+    {
+        delete this->button2;
+        delete this->button3;
+    }
 }
