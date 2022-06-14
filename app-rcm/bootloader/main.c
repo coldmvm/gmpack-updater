@@ -68,6 +68,9 @@ volatile nyx_storage_t *nyx_str = (nyx_storage_t *)NYX_STORAGE_ADDR;
 #define CBFS_DRAM_EN_ADDR   0x4003e000
 #define  CBFS_DRAM_MAGIC    0x4452414D // "DRAM"
 
+char appName[100];
+char exclusion_list[4096] = "#apgtmppackfolder#nintendo#emummc#emutendo#jksv#checkpoint#/switch/tinfoil/credentials.json#/switch/tinfoil/gdrive.token#/switch/tinfoil/locations.conf#";
+
 static void *coreboot_addr;
 
 void reloc_patcher(u32 payload_dst, u32 payload_src, u32 payload_size)
@@ -475,9 +478,9 @@ FRESULT finishUpdate()
         f_closedir(&dir);
 
         delete_node(path, sizeof path / sizeof path[0], &fno);
-    }
 
-    WPRINTF("\nTudo pronto... continuando!");
+        WPRINTF("\nTudo pronto... continuando!");
+    }
 
     return res;
 }
@@ -490,7 +493,7 @@ FRESULT performCleanup()
     DIR dir;
     static FILINFO fno;
 
-    char exclusion_list[256] = "#apgtmppackfolder#emutendo#jksv#checkpoint#emummc#";
+    char exclusion_list[256] = "#apgtmppackfolder#nintendo#emummc#emutendo#jksv#checkpoint#";
     char * findStr;
 
     unsigned int color;
@@ -619,43 +622,100 @@ void ipl_main()
     display_backlight_brightness(150, 1000);
     WPRINTF("Executando payload atualizador RCM...\n");
 
-    if (sd_mount()) {
+    FRESULT res = FR_OK;
 
+    if (sd_mount()) {
         // clean install? delete everything but emuMMC and Emutendo folders
         const char* filename = "/cleaninstall.flag";
         if (f_stat(filename, NULL) == FR_OK)
         {
+            //reading cleaninstall file to get the app name
+            FIL fil;
+            FRESULT fr;
+            fr = f_open(&fil, filename, FA_READ);
+            if (!fr)
+                while (f_gets(appName, sizeof appName, &fil))
+                    break;
+            f_close(&fil);
+
+            //reading cleaninstall file to get the app name
+            char file[256] = "/config/";
+            strcat(file, appName);
+            strcat(file, "/lista_exclusao.txt");
+            const char* filename = file;
+
+            if (f_stat(filename, NULL) == FR_OK)
+            {
+                char line[100];
+                fr = f_open(&fil, filename, FA_READ);
+                if (!fr)
+                    while (f_gets(line, sizeof line, &fil))
+                    {
+                        line[strcspn(line, "\n")] = 0;
+                        strcat(exclusion_list, line);
+                        strcat(exclusion_list, "#");
+                    }
+                f_close(&fil);
+            }
+
             //removing flag file
             f_unlink(filename);
-            performCleanup();
+
+            //cleaning up the SD
+            res = performCleanup();
+
+
+msleep(1000);
+btn_wait();
+power_set_state(POWER_OFF);
         }
 
-        finishUpdate();
-        msleep(500);
+        //checking wheter the cleanup was successfull
+        if (res == FR_OK)
+        {
+            if (finishUpdate() == FR_OK)
+            {
+                msleep(500);
 
-        if (f_stat("atmosphere/fusee-secondary.bin.apg", NULL) == FR_OK)
-            easy_rename("atmosphere/fusee-secondary.bin.apg", "atmosphere/fusee-secondary.bin");
-        if (f_stat("sept/payload.bin.apg", NULL) == FR_OK)
-            easy_rename("sept/payload.bin.apg", "sept/payload.bin");
-        if (f_stat("atmosphere/stratosphere.romfs.apg", NULL) == FR_OK)
-            easy_rename("atmosphere/stratosphere.romfs.apg", "atmosphere/stratosphere.romfs");
-        if (f_stat("atmosphere/package3.apg", NULL) == FR_OK)
-            easy_rename("atmosphere/package3.apg", "atmosphere/package3");
+                if (f_stat("atmosphere/fusee-secondary.bin.apg", NULL) == FR_OK)
+                    easy_rename("atmosphere/fusee-secondary.bin.apg", "atmosphere/fusee-secondary.bin");
+                if (f_stat("sept/payload.bin.apg", NULL) == FR_OK)
+                    easy_rename("sept/payload.bin.apg", "sept/payload.bin");
+                if (f_stat("atmosphere/stratosphere.romfs.apg", NULL) == FR_OK)
+                    easy_rename("atmosphere/stratosphere.romfs.apg", "atmosphere/stratosphere.romfs");
+                if (f_stat("atmosphere/package3.apg", NULL) == FR_OK)
+                    easy_rename("atmosphere/package3.apg", "atmosphere/package3");
 
-        // If the console is a patched or Mariko unit
-        if (h_cfg.t210b01 || h_cfg.rcm_patched) {
-            easy_rename("payload.bin.apg", "payload.bin");
-            power_set_state(POWER_OFF_REBOOT);
+                // If the console is a patched or Mariko unit
+                if (h_cfg.t210b01 || h_cfg.rcm_patched) {
+                    easy_rename("payload.bin.apg", "payload.bin");
+                    power_set_state(POWER_OFF_REBOOT);
+                }
+                else {
+                    if (f_stat("bootloader/update.bin", NULL) == FR_OK)
+                        launch_payload("bootloader/update.bin", false);
+
+                    if (f_stat("atmosphere/reboot_payload.bin", NULL) == FR_OK)    
+                        launch_payload("atmosphere/reboot_payload.bin", false);
+
+                    EPRINTF("Falha ao executar o payload!");
+                }
+            }
+            else
+            {
+                EPRINTF("Falha ao mover arquivos do novo pacote!\n\n");
+                WPRINTF("Procure assistencia tecnica ou reconfigure");
+                WPRINTF("seu microSD manualmente.");
+                WPRINTF("Processo interrompido!");
+            }
         }
-
-        else {
-            if (f_stat("bootloader/update.bin", NULL) == FR_OK)
-                launch_payload("bootloader/update.bin", false);
-
-            if (f_stat("atmosphere/reboot_payload.bin", NULL) == FR_OK)    
-                launch_payload("atmosphere/reboot_payload.bin", false);
-
-            EPRINTF("Falha ao executar o payload!");
+        else
+        {
+            EPRINTF("Falha ao executar limpeza!\n\n");
+            WPRINTF("Verifique se o console inicia corretamente.");
+            WPRINTF("Se ele não iniciar procure assistencia ou");
+            WPRINTF("configure seu microSD manualmente.");
+            WPRINTF("Processo interrompido!");
         }
     }
 

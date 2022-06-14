@@ -541,6 +541,7 @@ MY METHODS
         std::filesystem::remove(fmt::format(MODIFICATIONS_ZIP_PATH, BASE_FOLDER_NAME));
         std::filesystem::remove(fmt::format(LOG_FILE, BASE_FOLDER_NAME));
         std::filesystem::remove(fmt::format(FORWARDER_CONF, BASE_FOLDER_NAME));
+        std::filesystem::remove(CLEAN_INSTALL_FLAG);
         fs::removeDir(fmt::format(AMS_DIRECTORY_PATH, BASE_FOLDER_NAME));
         fs::removeDir(fmt::format(SEPT_DIRECTORY_PATH, BASE_FOLDER_NAME));
         fs::removeDir(FW_DIRECTORY_PATH);
@@ -653,7 +654,7 @@ MY METHODS
         std::ofstream file;
         file.open(CLEAN_INSTALL_FLAG, std::ofstream::out | std::ofstream::trunc);
         if (file.is_open())
-            file << "1" << std::endl;
+            file << BASE_FOLDER_NAME << "-updater";
         file.close();
     }
 
