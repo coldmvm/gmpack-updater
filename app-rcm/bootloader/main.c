@@ -69,7 +69,7 @@ volatile nyx_storage_t *nyx_str = (nyx_storage_t *)NYX_STORAGE_ADDR;
 #define  CBFS_DRAM_MAGIC    0x4452414D // "DRAM"
 
 char appName[100];
-char exclusion_list[4096] = "#apgtmppackfolder#nintendo#emummc#emutendo#jksv#checkpoint#/switch/tinfoil/credentials.json#/switch/tinfoil/gdrive.token#/switch/tinfoil/locations.conf#";
+bool printCRLF = false;
 
 static void *coreboot_addr;
 
@@ -394,6 +394,34 @@ char* toLower(char* s)
     return s;
 }
 
+bool canDelete(TCHAR* cPath)
+{
+    char * x [] = {
+        "/apgtmppackfolder",
+        "/nintendo",
+        "/emummc",
+        "/emutendo",
+        "/jksv",
+        "/checkpoint",
+        "/switch/tinfoil/credentials.json",
+        "/switch/tinfoil/gdrive.token",
+        "/switch/tinfoil/locations.conf"
+    };
+
+    int len = sizeof(x)/sizeof(x[0]);
+    int i;
+
+    bool res = true;
+
+    for (i = 0; i < len; ++i)
+        if (!strcmp(x[i], cPath))
+        {
+            res = false;
+            break;
+        }
+    return res;
+}
+
 FRESULT delete_node (
     TCHAR* path,    /* Path name buffer with the sub-directory to delete */
     UINT sz_buff,   /* Size of path name buffer (items) */
@@ -401,85 +429,52 @@ FRESULT delete_node (
 )
 {
     UINT i, j;
-    FRESULT fr;
+    FRESULT res;
     DIR dir;
 
-    fr = f_opendir(&dir, path); /* Open the sub-directory to make it empty */
-    if (fr != FR_OK) return fr;
+    res = f_opendir(&dir, path); /* Open the sub-directory to make it empty */
+    if (res != FR_OK) return res;
 
     for (i = 0; path[i]; i++) ; /* Get current path length */
     path[i++] = _T('/');
 
     for (;;) {
-        fr = f_readdir(&dir, fno);  /* Get a directory item */
-        if (fr != FR_OK || !fno->fname[0]) break;   /* End of directory? */
+        res = f_readdir(&dir, fno);  /* Get a directory item */
+        if (res != FR_OK || !fno->fname[0]) break;   /* End of directory? */
         j = 0;
         do {    /* Make a path name */
             if (i + j >= sz_buff) { /* Buffer over flow? */
-                fr = 100; break;    /* Fails with 100 when buffer overflow */
+                res = 100; break;    /* Fails with 100 when buffer overflow */
             }
             path[i + j] = fno->fname[j];
         } while (fno->fname[j++]);
         if (fno->fattrib & AM_DIR) {    /* Item is a sub-directory */
-            fr = delete_node(path, sz_buff, fno);
+            res = delete_node(path, sz_buff, fno);
         } else {                        /* Item is a file */
-            fr = f_unlink(path);
+            if (canDelete(toLower(path)))
+                res = f_unlink(path);
+            else
+            {
+                if (printCRLF)
+                {
+                    printCRLF = false;
+                    gfx_printf("%k\n%k", 0xFF00E100, 0xFFCCCCCC);
+                }
+                gfx_printf("%kPulando %s!\n%k", 0xFF00E100, path, 0xFFCCCCCC);
+            }
         }
-        if (fr != FR_OK) break;
+        if (res != FR_OK) break;
     }
 
     path[--i] = 0;  /* Restore the path name */
     f_closedir(&dir);
 
-    if (fr == FR_OK) fr = f_unlink(path);  /* Delete the empty sub-directory */
-    return fr;
-}
-
-FRESULT finishUpdate()
-{
-    WPRINTF("\nMovendo arquivos do novo pacote...\n");
-
-    FRESULT res;
-    DIR dir;
-    static FILINFO fno;
-
-    char path[18];
-    strcpy(path, "/apgtmppackfolder");
-
-    res = f_opendir(&dir, path);                           /* Open the directory */
-    if (res == FR_OK) {
-        for (;;) {
-            res = f_readdir(&dir, &fno);                   /* Read a directory item */
-            if (res != FR_OK || fno.fname[0] == 0) break;  /* Break on error or end of dir */
-
-
-            char *tmp1, *tmp2, *tmp3, *fileOrig, *fileDest;
-
-            tmp1 = malloc(19);
-            strcpy(tmp1, "/apgtmppackfolder/");
-
-            tmp2 = malloc(2);
-            strcpy(tmp2, "/");
-
-            tmp3 = malloc(sizeof(fno.fname));
-            strcpy(tmp3, fno.fname);
-
-            fileOrig = malloc(sizeof(tmp1) + sizeof(tmp3));
-            strcpy(fileOrig, tmp1);
-            strcat(fileOrig, tmp3);
-
-            fileDest = malloc(sizeof(tmp2) + sizeof(tmp3));
-            strcpy(fileDest, tmp2);
-            strcat(fileDest, tmp3);
-
-            f_rename(fileOrig, fileDest);
-            
-        }
-        f_closedir(&dir);
-
-        delete_node(path, sizeof path / sizeof path[0], &fno);
-
-        WPRINTF("\nTudo pronto... continuando!");
+    if (res == FR_OK)
+    {
+        if (canDelete(toLower(path)))
+            res = f_unlink(path);  /* Delete the empty sub-directory */
+        else
+            gfx_printf("%kPulando %s!\n%k", 0xFF00E100, path, 0xFFCCCCCC);
     }
 
     return res;
@@ -493,23 +488,14 @@ FRESULT performCleanup()
     DIR dir;
     static FILINFO fno;
 
-    char exclusion_list[256] = "#apgtmppackfolder#nintendo#emummc#emutendo#jksv#checkpoint#";
-    char * findStr;
-
-    unsigned int color;
-
     char path[2];
     strcpy(path, "/");
 
-    bool printDone;
-
-    res = f_opendir(&dir, path);                           /* Open the directory */
+    res = f_opendir(&dir, path);
     if (res == FR_OK) {
         for (;;) {
-            printDone = false;
-
-            res = f_readdir(&dir, &fno);                   /* Read a directory item */
-            if (res != FR_OK || fno.fname[0] == 0) break;  /* Break on error or end of dir */
+            res = f_readdir(&dir, &fno);
+            if (res != FR_OK || fno.fname[0] == 0) break;
 
             char *tmp1, *tmp2, *file;
             tmp1 = malloc(2);
@@ -520,39 +506,168 @@ FRESULT performCleanup()
             strcpy(file, tmp1);
             strcat(file, tmp2);
 
+            printCRLF = false;
+
             if (fno.fattrib & AM_DIR)
             {
-                findStr = strstr(toLower(exclusion_list), toLower(fno.fname));
-                if (findStr == NULL)
+                if (canDelete(toLower(file)))
                 {
-                    color = 0xFFFF0000;
-                    gfx_printf("%kApagando %s...%k", color, fno.fname, 0xFFCCCCCC);
-                    printDone = true;
+                    printCRLF = true;
+                    gfx_printf("%kApagando %s... %k", 0xFFFF0000, fno.fname, 0xFFCCCCCC);
                     TCHAR buff[256];
                     strcpy(buff, file);
                     delete_node(buff, sizeof buff / sizeof buff[0], &fno);
+                    gfx_printf("%kOK!\n%k", 0xFFFF0000, 0xFFCCCCCC);
                 }
                 else
-                {
-                    color = 0xFF00E100;
-                    gfx_printf("%kPulando %s!%k", color, fno.fname, 0xFFCCCCCC);
-                    printDone = false;
-                }
+                    gfx_printf("%kPulando %s!\n%k", 0xFF00E100, fno.fname, 0xFFCCCCCC);
             }
             else
             {
-                color = 0xFFFF0000;
-                gfx_printf("%kApagando %s... %k", color, fno.fname, 0xFFCCCCCC);
-                f_unlink(file);
-                printDone = true;
+                if (canDelete(toLower(file)))
+                {
+                    gfx_printf("%kApagando %s... %k", 0xFFFF0000, fno.fname, 0xFFCCCCCC);
+                    f_unlink(file);
+                    gfx_printf("%kOK!\n%k", 0xFFFF0000, 0xFFCCCCCC);
+                }
+                else
+                    gfx_printf("%kPulando %s!\n%k", 0xFF00E100, fno.fname, 0xFFCCCCCC);
             }
-
-            if (printDone)
-                gfx_printf("%k OK!%k", color, 0xFFCCCCCC);
-            gfx_printf("\n");
         }
         f_closedir(&dir);
     }
+    return res;
+}
+
+FRESULT move_node (
+    TCHAR* path,    /* Path name buffer with the sub-directory to delete */
+    UINT sz_buff,   /* Size of path name buffer (items) */
+    FILINFO* fno    /* Name read buffer */
+)
+{
+    UINT i, j;
+    FRESULT res;
+    DIR dir;
+
+    res = f_opendir(&dir, path); /* Open the sub-directory to make it empty */
+    if (res != FR_OK) return res;
+
+    for (i = 0; path[i]; i++) ; /* Get current path length */
+    path[i++] = _T('/');
+
+    for (;;) {
+        res = f_readdir(&dir, fno);  /* Get a directory item */
+        if (res != FR_OK || !fno->fname[0]) break;   /* End of directory? */
+        j = 0;
+        do {    /* Make a path name */
+            if (i + j >= sz_buff) { /* Buffer over flow? */
+                res = 100; break;    /* Fails with 100 when buffer overflow */
+            }
+            path[i + j] = fno->fname[j];
+        } while (fno->fname[j++]);
+
+        if (fno->fattrib & AM_DIR)
+		{    /* Item is a sub-directory */
+            gfx_printf("%kPasta %s!\n%k", 0xFF03adfc, path, 0xFFCCCCCC);
+            res = move_node(path, sz_buff, fno);
+        }
+		else {                        /* Item is a file */
+            TCHAR dest[256] = {0};
+            memcpy(dest, path + 17, sizeof(TCHAR) * 256);
+
+            if (f_stat(dest, NULL) == FR_OK) //file already exists... Delete origin!
+            {
+                gfx_printf("%kPulando %s!\n%k", 0xFF00E100, dest, 0xFFCCCCCC);
+//                res = f_unlink(path);
+            }
+            else //file does not exist... Move it to destination!
+			{
+                    gfx_printf("%kMovendo %s!\n%k", 0xFFf7d53b, dest, 0xFFCCCCCC);
+//                res = f_rename(path, dest);
+			}
+        }
+        if (res != FR_OK) break;
+    }
+
+    path[--i] = 0;  /* Restore the path name */
+    f_closedir(&dir);
+
+    return res;
+}
+
+FRESULT finishUpdate()
+{
+    WPRINTF("\nMovendo arquivos do novo pacote...\n");
+
+    FRESULT res;
+    DIR dir;
+    static FILINFO fno;
+
+    char path[18];
+    strcpy(path, "/apgtmppackfolder");
+
+    char *tmp1;
+    tmp1 = malloc(19);
+    strcpy(tmp1, "/apgtmppackfolder/");
+
+    res = f_opendir(&dir, path);
+    if (res == FR_OK) {
+        for (;;) {
+            res = f_readdir(&dir, &fno);
+            if (res != FR_OK || fno.fname[0] == 0) break;
+
+            char *tmp2, *tmpPath;
+            tmp2 = malloc(sizeof(fno.fname));
+            tmpPath = malloc(sizeof(tmp1) + sizeof(tmp2));
+            strcpy(tmp2, fno.fname);
+            strcpy(tmpPath, tmp1);
+            strcat(tmpPath, tmp2);
+
+            if (fno.fattrib & AM_DIR)
+            {
+                TCHAR updPath[256];
+                strcpy(updPath, tmpPath);
+
+                gfx_printf("%kPasta %s!\n%k", 0xFF03adfc, updPath, 0xFFCCCCCC);
+                res = move_node(updPath, sizeof updPath / sizeof updPath[0], &fno);
+            }
+            else
+            {
+                char *tmp2, *tmp3, *orig, *dest;
+
+                tmp2 = malloc(2);
+                strcpy(tmp2, "/");
+
+                tmp3 = malloc(sizeof(fno.fname));
+                strcpy(tmp3, fno.fname);
+
+                orig = malloc(sizeof(tmp1) + sizeof(tmp3));
+                strcpy(orig, tmp1);
+                strcat(orig, tmp3);
+
+                dest = malloc(sizeof(tmp2) + sizeof(tmp3));
+                strcpy(dest, tmp2);
+                strcat(dest, tmp3);
+
+                if (f_stat(dest, NULL) == FR_OK)
+                {
+                    gfx_printf("%kPulando %s!\n%k", 0xFF00E100, dest, 0xFFCCCCCC);
+//                    res = f_unlink(orig);
+                }
+                else
+				{
+                    gfx_printf("%kMovendo %s!\n%k", 0xFFf803fc, dest, 0xFFCCCCCC);
+//                    res = f_rename(orig, dest);
+				}
+            }
+        }
+        f_closedir(&dir);
+    }
+	else
+		gfx_printf("%k\nERRO AO ABRIR DIR%s!\n%k", 0xFFf803fc, 0xFFCCCCCC);
+
+//    res = delete_node(tmp1, sizeof tmp1 / sizeof tmp1[0], &fno);
+
     return res;
 }
 
@@ -625,6 +740,13 @@ void ipl_main()
     FRESULT res = FR_OK;
 
     if (sd_mount()) {
+/*
+msleep(1000);
+btn_wait();
+easy_rename("payload.bin.apg", "payload.bin");
+power_set_state(POWER_OFF);
+*/
+
         // clean install? delete everything but emuMMC and Emutendo folders
         const char* filename = "/cleaninstall.flag";
         if (f_stat(filename, NULL) == FR_OK)
@@ -638,6 +760,7 @@ void ipl_main()
                     break;
             f_close(&fil);
 
+/*
             //reading cleaninstall file to get the app name
             char file[256] = "/config/";
             strcat(file, appName);
@@ -657,25 +780,69 @@ void ipl_main()
                     }
                 f_close(&fil);
             }
+*/
+
+
+FRESULT res = finishUpdate();
+if (res == FR_OK)
+    WPRINTF("\nTudo pronto... continuando!\n");
+else
+{
+    gfx_printf("%k\nDeu erro! RES = %d\n%k", 0xFF00E100, res, 0xFFCCCCCC);
+
+    gfx_printf("%kRES FR_DISK_ERR = %d\n%k", 0xFF00E100, FR_DISK_ERR, 0xFFCCCCCC);
+    gfx_printf("%kRES FR_INT_ERR = %d\n%k", 0xFF00E100, FR_INT_ERR, 0xFFCCCCCC);
+    gfx_printf("%kRES FR_NOT_READY = %d\n%k", 0xFF00E100, FR_NOT_READY, 0xFFCCCCCC);
+    gfx_printf("%kRES FR_NO_FILE = %d\n%k", 0xFF00E100, FR_NO_FILE, 0xFFCCCCCC);
+    gfx_printf("%kRES FR_NO_PATH = %d\n%k", 0xFF00E100, FR_NO_PATH, 0xFFCCCCCC);
+    gfx_printf("%kRES FR_INVALID_NAME = %d\n%k", 0xFF00E100, FR_INVALID_NAME, 0xFFCCCCCC);  // <---------------------
+    gfx_printf("%kRES FR_DENIED = %d\n%k", 0xFF00E100, FR_DENIED, 0xFFCCCCCC);
+    gfx_printf("%kRES FR_EXIST = %d\n%k", 0xFF00E100, FR_EXIST, 0xFFCCCCCC);
+    gfx_printf("%kRES FR_INVALID_OBJECT = %d\n%k", 0xFF00E100, FR_INVALID_OBJECT, 0xFFCCCCCC);
+    gfx_printf("%kRES FR_WRITE_PROTECTED = %d\n%k", 0xFF00E100, FR_WRITE_PROTECTED, 0xFFCCCCCC);
+    gfx_printf("%kRES FR_INVALID_DRIVE = %d\n%k", 0xFF00E100, FR_INVALID_DRIVE, 0xFFCCCCCC);
+    gfx_printf("%kRES FR_NOT_ENABLED = %d\n%k", 0xFF00E100, FR_NOT_ENABLED, 0xFFCCCCCC);
+    gfx_printf("%kRES FR_NO_FILESYSTEM = %d\n%k", 0xFF00E100, FR_NO_FILESYSTEM, 0xFFCCCCCC);
+    gfx_printf("%kRES FR_MKFS_ABORTED = %d\n%k", 0xFF00E100, FR_MKFS_ABORTED, 0xFFCCCCCC);
+    gfx_printf("%kRES FR_TIMEOUT = %d\n%k", 0xFF00E100, FR_TIMEOUT, 0xFFCCCCCC);
+    gfx_printf("%kRES FR_LOCKED = %d\n%k", 0xFF00E100, FR_LOCKED, 0xFFCCCCCC);
+    gfx_printf("%kRES FR_NOT_ENOUGH_CORE = %d\n%k", 0xFF00E100, FR_NOT_ENOUGH_CORE, 0xFFCCCCCC);
+    gfx_printf("%kRES FR_TOO_MANY_OPEN_FILES = %d\n%k", 0xFF00E100, FR_TOO_MANY_OPEN_FILES, 0xFFCCCCCC);
+    gfx_printf("%kRES FR_INVALID_PARAMETER = %d\n%k", 0xFF00E100, FR_INVALID_PARAMETER, 0xFFCCCCCC);
+}
+msleep(1000);
+btn_wait();
+//easy_rename("payload.bin.apg", "payload.bin");
+power_set_state(POWER_OFF);
+
+
+
+
+
+
 
             //removing flag file
             f_unlink(filename);
 
             //cleaning up the SD
             res = performCleanup();
-
-
-msleep(1000);
-btn_wait();
-power_set_state(POWER_OFF);
         }
 
         //checking wheter the cleanup was successfull
         if (res == FR_OK)
         {
-            if (finishUpdate() == FR_OK)
+            static FILINFO fno;
+            TCHAR buff[18];
+            strcpy(buff, "/apgtmppackfolder");
+            if (finishUpdate(buff, sizeof buff / sizeof buff[0], &fno) == FR_OK)
             {
+                WPRINTF("\nTudo pronto... continuando!\n");
                 msleep(500);
+
+
+msleep(1000);
+btn_wait();
+
 
                 if (f_stat("atmosphere/fusee-secondary.bin.apg", NULL) == FR_OK)
                     easy_rename("atmosphere/fusee-secondary.bin.apg", "atmosphere/fusee-secondary.bin");
@@ -703,7 +870,7 @@ power_set_state(POWER_OFF);
             }
             else
             {
-                EPRINTF("Falha ao mover arquivos do novo pacote!\n\n");
+                EPRINTF("\nFalha ao mover arquivos do novo pacote!\n\n");
                 WPRINTF("Procure assistencia tecnica ou reconfigure");
                 WPRINTF("seu microSD manualmente.");
                 WPRINTF("Processo interrompido!");
@@ -711,7 +878,7 @@ power_set_state(POWER_OFF);
         }
         else
         {
-            EPRINTF("Falha ao executar limpeza!\n\n");
+            EPRINTF("\nFalha ao executar limpeza!\n\n");
             WPRINTF("Verifique se o console inicia corretamente.");
             WPRINTF("Se ele não iniciar procure assistencia ou");
             WPRINTF("configure seu microSD manualmente.");
