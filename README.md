@@ -18,9 +18,13 @@ Este homebrew suporta Atmosphère, ReiNX e SXOS, e funciona em consoles não cor
 
 ## **[FAÇA O DOWNLOAD POR AQUI!](https://github.com/coldmvm/gmpack-updater/releases)**
 
-## Como instalar
+## Como instalar?
 Baixe o arquivo `gmpack-updater.zip` do link acima e o extraia na `raiz` do microSD.
 No final você deve ter uma pasta `gmpack-updater` dentro da pasta `/switch`.
+
+## Onde achar o homebrew e como iniciá-lo?
+Abra a lista de homebrews do seu desbloqueio (no `Atmosphère` é o botão do `Album`) e execute o homebrew `Atualizador Pacote GameMod` (também conhecido por `APG`).
+Se você estiver com dúvidas de como usar o homebrew, aperte o botão `X` e uma janela de ajuda irá aparecer.
 
 ## Descrição das funções
 ### ⬦ Baixar Atmosphère
@@ -42,7 +46,7 @@ No final você deve ter uma pasta `gmpack-updater` dentro da pasta `/switch`.
 - As modificações de jogos, também conhecidos por MODS, são feitas por membros da cena e tem a diversas finalidades. Vão desde melhorias gráficas até trapaças (cheats) ou trainers (uma espécie de trapaça adicionada quando o jogo não vem com trapaça "de fábrica".
 - Algumas modificaçõs precisam de passos específicos para que funcionem. Para maiores detalhes pesquise online sobre tais modificações e procure se inteirar sobre a mesma.
 
-## Extras (na página `Ferramentas`)
+### ⬦ Extras (na página `Ferramentas`)
 - Editar as configurações da internet (DNS, endereço IP, MTU, etc). Adicione suas próprias configurações em `config/aio-switch-updater/internet.json`. Você vai achar um modelo desta configuração neste repositório.
 - Abrir o navegador de internet do Switch (precisa abrir usando um jogo e pressionar R).
 - Limpar os arquivos temporários baixados.
