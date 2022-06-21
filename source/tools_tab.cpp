@@ -105,7 +105,9 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
     cleanUp->setHeight(LISTITEM_HEIGHT);
 
     brls::ListItem* motd = new brls::ListItem("menus/tools/motd_label"_i18n);
-	std::string sMOTD = util::getMOTD();
+
+    bool bAlwaysShow;
+	std::string sMOTD = util::getMOTD(bAlwaysShow);
     motd->getClickEvent()->subscribe([sMOTD](brls::View* view) {
         util::showDialogBoxInfo(sMOTD);
     });

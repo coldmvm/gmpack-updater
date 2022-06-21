@@ -29,7 +29,8 @@ void showScreen(const bool& existHiddenFile)
     }
     else
     {
-        if (util::getMOTD() != "")
+        bool bAlwaysShow;
+        if (util::getMOTD(bAlwaysShow) != "")
             brls::Application::pushView(new WarningPage("menus/main/launch_warning"_i18n, true));
         else
             brls::Application::pushView(new WarningPage("menus/main/launch_warning"_i18n, false));

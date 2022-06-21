@@ -452,9 +452,14 @@ MY METHODS
     {
         std::string hiddenFileLine;
 
-        std::string MOTDLine = getMOTD();
+        bool bAlwaysShow = false;
+
+        std::string MOTDLine = getMOTD(bAlwaysShow);
         if (MOTDLine != "")
         {
+            if (bAlwaysShow)
+                return false;
+
             //getting only the first line of the MOTD
             std::string firstLine;
             size_t pos_end;
@@ -476,7 +481,7 @@ MY METHODS
             return true;
     }
 
-    std::string getMOTD()
+    std::string getMOTD(bool& bAlwaysShow)
     {
         std::string text = "";
         nlohmann::ordered_json json;
@@ -487,7 +492,10 @@ MY METHODS
             {
                 bool enabled = json[fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME))]["enabled"];
                 if (enabled)
+                {
                     text = json[fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME))]["message"];
+                    bAlwaysShow = json[fmt::format(MOTD_KEY, util::upperCase(BASE_FOLDER_NAME))]["always_show"];
+                }
             }
         }
 

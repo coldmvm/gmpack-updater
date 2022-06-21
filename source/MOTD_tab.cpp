@@ -13,7 +13,8 @@ namespace i18n = brls::i18n;
 using namespace i18n::literals;
 MOTDPage::MOTDPage()
 {
-    const std::string& text = util::getMOTD();
+    bool bAlwaysShow;
+    const std::string& text = util::getMOTD(bAlwaysShow);
 
     this->button = (new brls::Button(brls::ButtonStyle::PRIMARY))->setLabel("menus/common/continue"_i18n);
     this->button->setParent(this);
@@ -21,7 +22,7 @@ MOTDPage::MOTDPage()
         brls::Application::pushView(new MainFrame());
     });
 
-    this->label = new brls::Label(brls::LabelStyle::REGULAR, text + "\n\nEste texto não aparecerá novamente.", true);
+    this->label = new brls::Label(brls::LabelStyle::REGULAR, text + (bAlwaysShow ? "" : "\n\nEste texto não aparecerá novamente."), true);
     this->label->setHorizontalAlign(NVG_ALIGN_LEFT);
     //this->setBackground(brls::ViewBackground::DEBUG);
     this->label->setParent(this);

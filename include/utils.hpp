@@ -56,7 +56,7 @@ MY METHODS
     std::string getGMPackVersion();
     void doDelete(std::vector<std::string> folders);
     bool wasMOTDAlreadyDisplayed();
-    std::string getMOTD();
+    std::string getMOTD(bool& bAlwaysShow);
     void createForwarderConfig();
     std::string readConfFile(const std::string& fileName, const std::string& section);
     void cleanFiles();
