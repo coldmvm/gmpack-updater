@@ -11,11 +11,11 @@ constexpr const char BASE_FOLDER_NAME[] = "gmpack";
 constexpr const char GITHUB_USER[] = "coldmvm";
 constexpr const bool SHOW_GNX = true;
 
-constexpr const bool DEBUG = true;
-
 /*
 DO NOT CHANGE ONLY THESE CONSTANTS UNLESS YOU KNOW WHAT YOU'RE DOING
 */
+
+constexpr const bool DEBUG = true;
 
 constexpr const char CFW_ROOT_PATH[] = "/apgtmppackfolder";
 constexpr const char ROOT_PATH[] = "/";
