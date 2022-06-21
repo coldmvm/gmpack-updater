@@ -71,6 +71,8 @@ volatile nyx_storage_t *nyx_str = (nyx_storage_t *)NYX_STORAGE_ADDR;
 char appName[100];
 bool printCRLF = false;
 
+bool tmpPrintAgain = false;
+char *tmpFolderName;
 static void *coreboot_addr;
 
 void reloc_patcher(u32 payload_dst, u32 payload_src, u32 payload_size)
@@ -394,15 +396,39 @@ char* toLower(char* s)
     return s;
 }
 
-bool canDelete(TCHAR* cPath)
+bool canDeleteFolder(TCHAR* cPath)
 {
     char * x [] = {
         "/apgtmppackfolder",
-        "/nintendo",
+        "/backup",
+        "/checkpoint",
         "/emummc",
         "/emutendo",
         "/jksv",
-        "/checkpoint",
+        "/nintendo",
+        "/retroarch",
+        "/rom",
+        "/roms"
+    };
+
+    int len = sizeof(x)/sizeof(x[0]);
+    int i;
+
+    bool res = true;
+
+    for (i = 0; i < len; ++i)
+        if (!strcmp(x[i], cPath))
+        {
+            res = false;
+            break;
+        }
+    return res;
+}
+
+bool canDeleteFile(TCHAR* cPath)
+{
+    char * x [] = {
+        "/switch/retroarch.nro",
         "/switch/tinfoil/credentials.json",
         "/switch/tinfoil/gdrive.token",
         "/switch/tinfoil/locations.conf"
@@ -433,6 +459,7 @@ FRESULT delete_node (
     DIR dir;
 
     res = f_opendir(&dir, path); /* Open the sub-directory to make it empty */
+
     if (res != FR_OK) return res;
 
     for (i = 0; path[i]; i++) ; /* Get current path length */
@@ -442,17 +469,19 @@ FRESULT delete_node (
         res = f_readdir(&dir, fno);  /* Get a directory item */
         if (res != FR_OK || !fno->fname[0]) break;   /* End of directory? */
         j = 0;
+
         do {    /* Make a path name */
             if (i + j >= sz_buff) { /* Buffer over flow? */
                 res = 100; break;    /* Fails with 100 when buffer overflow */
             }
             path[i + j] = fno->fname[j];
         } while (fno->fname[j++]);
+
         if (fno->fattrib & AM_DIR) {    /* Item is a sub-directory */
             res = delete_node(path, sz_buff, fno);
         } else {                        /* Item is a file */
-            if (canDelete(toLower(path)))
-                res = f_unlink(path);
+            if (canDeleteFile(toLower(path)))
+                f_unlink(path);
             else
             {
                 if (printCRLF)
@@ -460,7 +489,16 @@ FRESULT delete_node (
                     printCRLF = false;
                     gfx_printf("%k\n%k", 0xFF00E100, 0xFFCCCCCC);
                 }
-                gfx_printf("%kPulando %s!\n%k", 0xFF00E100, path, 0xFFCCCCCC);
+                gfx_printf("%kPulando %s\n%k", 0xFF00E100, path, 0xFFCCCCCC);
+
+                tmpPrintAgain = true;
+
+                //MOVER ARQUIVO PRA PASTA DE UPDATE <--------------------------------------------------------------------
+                char *tmp1;
+                tmp1 = malloc(256);
+                strcpy(tmp1, "/apgtmppackfolder");
+                strcat(tmp1, path);
+                easy_rename(path, tmp1);
             }
         }
         if (res != FR_OK) break;
@@ -470,19 +508,14 @@ FRESULT delete_node (
     f_closedir(&dir);
 
     if (res == FR_OK)
-    {
-        if (canDelete(toLower(path)))
-            res = f_unlink(path);  /* Delete the empty sub-directory */
-        else
-            gfx_printf("%kPulando %s!\n%k", 0xFF00E100, path, 0xFFCCCCCC);
-    }
+        f_unlink(path);  /* Delete the empty sub-directory */
 
     return res;
 }
 
 FRESULT performCleanup()
 {
-    WPRINTF("\nRemovendo tudo do antigo pacote...");
+    WPRINTF("Removendo tudo do antigo pacote...");
 
     FRESULT res;
     DIR dir;
@@ -507,166 +540,97 @@ FRESULT performCleanup()
             strcat(file, tmp2);
 
             printCRLF = false;
+            tmpPrintAgain = false;
 
             if (fno.fattrib & AM_DIR)
             {
-                if (canDelete(toLower(file)))
+                if (canDeleteFolder(toLower(file)))
                 {
                     printCRLF = true;
-                    gfx_printf("%kApagando %s... %k", 0xFFFF0000, fno.fname, 0xFFCCCCCC);
+                    tmpFolderName = malloc(256);
+                    strcpy(tmpFolderName, fno.fname);
+                    gfx_printf("%kApagando %s... %k", 0xFFFF0000, tmpFolderName, 0xFFCCCCCC);
                     TCHAR buff[256];
                     strcpy(buff, file);
                     delete_node(buff, sizeof buff / sizeof buff[0], &fno);
-                    gfx_printf("%kOK!\n%k", 0xFFFF0000, 0xFFCCCCCC);
+                    if (tmpPrintAgain)
+                        gfx_printf("%kApagando %s... OK!\n%k", 0xFFFF0000, tmpFolderName, 0xFFCCCCCC);
+                    else
+                        gfx_printf("%kOK!\n%k", 0xFFFF0000, 0xFFCCCCCC);
                 }
                 else
-                    gfx_printf("%kPulando %s!\n%k", 0xFF00E100, fno.fname, 0xFFCCCCCC);
+                    if (strcmp("/apgtmppackfolder", file))
+                        gfx_printf("%kPulando %s\n%k", 0xFF00E100, fno.fname, 0xFFCCCCCC);
             }
             else
             {
-                if (canDelete(toLower(file)))
+                if (canDeleteFile(toLower(file)))
                 {
                     gfx_printf("%kApagando %s... %k", 0xFFFF0000, fno.fname, 0xFFCCCCCC);
                     f_unlink(file);
                     gfx_printf("%kOK!\n%k", 0xFFFF0000, 0xFFCCCCCC);
                 }
                 else
-                    gfx_printf("%kPulando %s!\n%k", 0xFF00E100, fno.fname, 0xFFCCCCCC);
+                {
+                    gfx_printf("%kPulando %s\n%k", 0xFF00E100, fno.fname, 0xFFCCCCCC);
+
+                    //MOVER ARQUIVO PRA PASTA DE UPDATE <--------------------------------------------------------------------
+                    tmp1 = malloc(256);
+                    strcpy(tmp1, "/apgtmppackfolder");
+                    strcat(tmp1, file);
+                    easy_rename(file, tmp1);
+                }
             }
         }
         f_closedir(&dir);
     }
-    return res;
-}
-
-FRESULT move_node (
-    TCHAR* path,    /* Path name buffer with the sub-directory to delete */
-    UINT sz_buff,   /* Size of path name buffer (items) */
-    FILINFO* fno    /* Name read buffer */
-)
-{
-    UINT i, j;
-    FRESULT res;
-    DIR dir;
-
-    res = f_opendir(&dir, path); /* Open the sub-directory to make it empty */
-    if (res != FR_OK) return res;
-
-    for (i = 0; path[i]; i++) ; /* Get current path length */
-    path[i++] = _T('/');
-
-    for (;;) {
-        res = f_readdir(&dir, fno);  /* Get a directory item */
-        if (res != FR_OK || !fno->fname[0]) break;   /* End of directory? */
-        j = 0;
-        do {    /* Make a path name */
-            if (i + j >= sz_buff) { /* Buffer over flow? */
-                res = 100; break;    /* Fails with 100 when buffer overflow */
-            }
-            path[i + j] = fno->fname[j];
-        } while (fno->fname[j++]);
-
-        if (fno->fattrib & AM_DIR)
-		{    /* Item is a sub-directory */
-            gfx_printf("%kPasta %s!\n%k", 0xFF03adfc, path, 0xFFCCCCCC);
-            res = move_node(path, sz_buff, fno);
-        }
-		else {                        /* Item is a file */
-            TCHAR dest[256] = {0};
-            memcpy(dest, path + 17, sizeof(TCHAR) * 256);
-
-            if (f_stat(dest, NULL) == FR_OK) //file already exists... Delete origin!
-            {
-                gfx_printf("%kPulando %s!\n%k", 0xFF00E100, dest, 0xFFCCCCCC);
-//                res = f_unlink(path);
-            }
-            else //file does not exist... Move it to destination!
-			{
-                    gfx_printf("%kMovendo %s!\n%k", 0xFFf7d53b, dest, 0xFFCCCCCC);
-//                res = f_rename(path, dest);
-			}
-        }
-        if (res != FR_OK) break;
-    }
-
-    path[--i] = 0;  /* Restore the path name */
-    f_closedir(&dir);
-
     return res;
 }
 
 FRESULT finishUpdate()
 {
-    WPRINTF("\nMovendo arquivos do novo pacote...\n");
+    WPRINTF("\nMovendo arquivos novos...\n");
 
     FRESULT res;
     DIR dir;
     static FILINFO fno;
 
-    char path[18];
+    char path[256];
     strcpy(path, "/apgtmppackfolder");
 
-    char *tmp1;
-    tmp1 = malloc(19);
-    strcpy(tmp1, "/apgtmppackfolder/");
+    res = f_opendir(&dir, path);                           /* Open the directory */
 
-    res = f_opendir(&dir, path);
     if (res == FR_OK) {
         for (;;) {
-            res = f_readdir(&dir, &fno);
-            if (res != FR_OK || fno.fname[0] == 0) break;
+            res = f_readdir(&dir, &fno);                   /* Read a directory item */
+            if (res != FR_OK || fno.fname[0] == 0) break;  /* Break on error or end of dir */
 
-            char *tmp2, *tmpPath;
-            tmp2 = malloc(sizeof(fno.fname));
-            tmpPath = malloc(sizeof(tmp1) + sizeof(tmp2));
-            strcpy(tmp2, fno.fname);
-            strcpy(tmpPath, tmp1);
-            strcat(tmpPath, tmp2);
+            char *tmp1, *tmp2, *tmp3, *fileOrig, *fileDest;
 
-            if (fno.fattrib & AM_DIR)
-            {
-                TCHAR updPath[256];
-                strcpy(updPath, tmpPath);
+            tmp1 = malloc(19);
+            strcpy(tmp1, "/apgtmppackfolder/");
 
-                gfx_printf("%kPasta %s!\n%k", 0xFF03adfc, updPath, 0xFFCCCCCC);
-                res = move_node(updPath, sizeof updPath / sizeof updPath[0], &fno);
-            }
-            else
-            {
-                char *tmp2, *tmp3, *orig, *dest;
+            tmp2 = malloc(2);
+            strcpy(tmp2, "/");
 
-                tmp2 = malloc(2);
-                strcpy(tmp2, "/");
+            tmp3 = malloc(sizeof(fno.fname));
+            strcpy(tmp3, fno.fname);
 
-                tmp3 = malloc(sizeof(fno.fname));
-                strcpy(tmp3, fno.fname);
+            fileOrig = malloc(sizeof(tmp1) + sizeof(tmp3));
+            strcpy(fileOrig, tmp1);
+            strcat(fileOrig, tmp3);
 
-                orig = malloc(sizeof(tmp1) + sizeof(tmp3));
-                strcpy(orig, tmp1);
-                strcat(orig, tmp3);
+            fileDest = malloc(sizeof(tmp2) + sizeof(tmp3));
+            strcpy(fileDest, tmp2);
+            strcat(fileDest, tmp3);
 
-                dest = malloc(sizeof(tmp2) + sizeof(tmp3));
-                strcpy(dest, tmp2);
-                strcat(dest, tmp3);
-
-                if (f_stat(dest, NULL) == FR_OK)
-                {
-                    gfx_printf("%kPulando %s!\n%k", 0xFF00E100, dest, 0xFFCCCCCC);
-//                    res = f_unlink(orig);
-                }
-                else
-				{
-                    gfx_printf("%kMovendo %s!\n%k", 0xFFf803fc, dest, 0xFFCCCCCC);
-//                    res = f_rename(orig, dest);
-				}
-            }
+            res = f_rename(fileOrig, fileDest);
         }
+
+        res = delete_node(path, sizeof path / sizeof path[0], &fno);
+
         f_closedir(&dir);
     }
-	else
-		gfx_printf("%k\nERRO AO ABRIR DIR%s!\n%k", 0xFFf803fc, 0xFFCCCCCC);
-
-//    res = delete_node(tmp1, sizeof tmp1 / sizeof tmp1[0], &fno);
 
     return res;
 }
@@ -740,22 +704,15 @@ void ipl_main()
     FRESULT res = FR_OK;
 
     if (sd_mount()) {
-/*
-msleep(1000);
-btn_wait();
-easy_rename("payload.bin.apg", "payload.bin");
-power_set_state(POWER_OFF);
-*/
-
         // clean install? delete everything but emuMMC and Emutendo folders
         const char* filename = "/cleaninstall.flag";
         if (f_stat(filename, NULL) == FR_OK)
         {
             //reading cleaninstall file to get the app name
             FIL fil;
-            FRESULT fr;
-            fr = f_open(&fil, filename, FA_READ);
-            if (!fr)
+            FRESULT res;
+            res = f_open(&fil, filename, FA_READ);
+            if (!res)
                 while (f_gets(appName, sizeof appName, &fil))
                     break;
             f_close(&fil);
@@ -770,8 +727,8 @@ power_set_state(POWER_OFF);
             if (f_stat(filename, NULL) == FR_OK)
             {
                 char line[100];
-                fr = f_open(&fil, filename, FA_READ);
-                if (!fr)
+                res = f_open(&fil, filename, FA_READ);
+                if (!res)
                     while (f_gets(line, sizeof line, &fil))
                     {
                         line[strcspn(line, "\n")] = 0;
@@ -781,21 +738,20 @@ power_set_state(POWER_OFF);
                 f_close(&fil);
             }
 */
-
-
+/*
 FRESULT res = finishUpdate();
 if (res == FR_OK)
-    WPRINTF("\nTudo pronto... continuando!\n");
+    WPRINTF("\nTudo certo!\n");
 else
 {
-    gfx_printf("%k\nDeu erro! RES = %d\n%k", 0xFF00E100, res, 0xFFCCCCCC);
+    gfx_printf("%k\nDeu erro! RES = %d\n\n%k", 0xFF00E100, res, 0xFFCCCCCC);
 
     gfx_printf("%kRES FR_DISK_ERR = %d\n%k", 0xFF00E100, FR_DISK_ERR, 0xFFCCCCCC);
     gfx_printf("%kRES FR_INT_ERR = %d\n%k", 0xFF00E100, FR_INT_ERR, 0xFFCCCCCC);
     gfx_printf("%kRES FR_NOT_READY = %d\n%k", 0xFF00E100, FR_NOT_READY, 0xFFCCCCCC);
     gfx_printf("%kRES FR_NO_FILE = %d\n%k", 0xFF00E100, FR_NO_FILE, 0xFFCCCCCC);
     gfx_printf("%kRES FR_NO_PATH = %d\n%k", 0xFF00E100, FR_NO_PATH, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_INVALID_NAME = %d\n%k", 0xFF00E100, FR_INVALID_NAME, 0xFFCCCCCC);  // <---------------------
+    gfx_printf("%kRES FR_INVALID_NAME = %d\n%k", 0xFF00E100, FR_INVALID_NAME, 0xFFCCCCCC);
     gfx_printf("%kRES FR_DENIED = %d\n%k", 0xFF00E100, FR_DENIED, 0xFFCCCCCC);
     gfx_printf("%kRES FR_EXIST = %d\n%k", 0xFF00E100, FR_EXIST, 0xFFCCCCCC);
     gfx_printf("%kRES FR_INVALID_OBJECT = %d\n%k", 0xFF00E100, FR_INVALID_OBJECT, 0xFFCCCCCC);
@@ -814,12 +770,7 @@ msleep(1000);
 btn_wait();
 //easy_rename("payload.bin.apg", "payload.bin");
 power_set_state(POWER_OFF);
-
-
-
-
-
-
+*/
 
             //removing flag file
             f_unlink(filename);
@@ -831,18 +782,10 @@ power_set_state(POWER_OFF);
         //checking wheter the cleanup was successfull
         if (res == FR_OK)
         {
-            static FILINFO fno;
-            TCHAR buff[18];
-            strcpy(buff, "/apgtmppackfolder");
-            if (finishUpdate(buff, sizeof buff / sizeof buff[0], &fno) == FR_OK)
+            if (finishUpdate() == FR_OK)
             {
-                WPRINTF("\nTudo pronto... continuando!\n");
+                WPRINTF("Tudo pronto! continuando...\n");
                 msleep(500);
-
-
-msleep(1000);
-btn_wait();
-
 
                 if (f_stat("atmosphere/fusee-secondary.bin.apg", NULL) == FR_OK)
                     easy_rename("atmosphere/fusee-secondary.bin.apg", "atmosphere/fusee-secondary.bin");
