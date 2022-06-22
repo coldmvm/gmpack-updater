@@ -15,8 +15,6 @@
 namespace i18n = brls::i18n;
 using namespace i18n::literals;
 
-//TimeServiceType __nx_time_service_type = TimeServiceType_System;
-
 CFW CurrentCfw::running_cfw;
 
 void showScreen(const bool& existHiddenFile)

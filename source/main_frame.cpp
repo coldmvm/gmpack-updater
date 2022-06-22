@@ -39,21 +39,21 @@ MainFrame::MainFrame() : TabFrame()
         int iAppVersion = 0;
 
         temp.reserve(tag.size()); // optional, avoids buffer reallocations in the loop
-        for(size_t i = 0; i < tag.size(); ++i)
-            if(tag[i] != '.') temp += tag[i]; // removing the . from the version
+        for (char c : tag)
+            if (std::isdigit(c)) temp += c;
         iTag = std::stoi(temp); // casting from string to integer
 
         temp = "";
 
         temp.reserve(strlen(AppVersion)); // optional, avoids buffer reallocations in the loop
-        for(size_t i = 0; i < strlen(AppVersion); ++i)
-            if(AppVersion[i] != '.') temp += AppVersion[i]; // removing the . from the version
+        for (char c : AppVersion)
+            if (std::isdigit(c)) temp += c;
         iAppVersion = std::stoi(temp); // casting from string to integer
 
         newversion = (iTag > iAppVersion);
 
         this->setFooterText(fmt::format("menus/main/footer_text"_i18n, BRAND_FULL_NAME,
-            (!tag.empty() && newversion) ? "v" + std::string(AppVersion) : AppVersion,
+            "v" + std::string(AppVersion),
             R_SUCCEEDED(fs::getFreeStorageSD(freeStorage)) ? floor(((float)freeStorage / 0x40000000) * 100.0) / 100.0 : -1));
     }
     else {
