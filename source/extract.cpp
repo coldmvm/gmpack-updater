@@ -75,6 +75,10 @@ namespace extract {
                 std::ofstream readonlyFile(entry.name + ".apg");
                 unzipper.extractEntryToStream(entry.name, readonlyFile);
             }
+
+            else if ((workingPath == "/") && (entry.name == "switch/tinfoil/credentials.json" || entry.name == "switch/tinfoil/gdrive.token" || entry.name == "switch/tinfoil/locations.conf")) {
+                continue;
+            }
             else {
                 unzipper.extractEntry(entry.name);
                 if (entry.name.substr(0, 13) == "hekate_ctcaer") {

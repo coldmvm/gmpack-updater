@@ -194,9 +194,11 @@ namespace util {
                 {
                     removeSysmodulesFlags(AMS_CONTENTS);
                     removeFileWildCardFromDirectory(ROOT_PATH, "hekate_ctcaer_");
+					
+					extract::extract(fmt::format(AMS_FILENAME, BASE_FOLDER_NAME), ROOT_PATH, overwriteInis);
                 }
-
-                extract::extract(fmt::format(AMS_FILENAME, BASE_FOLDER_NAME), CFW_ROOT_PATH, overwriteInis);
+				else
+					extract::extract(fmt::format(AMS_FILENAME, BASE_FOLDER_NAME), CFW_ROOT_PATH, overwriteInis);
 
                 //removing custom firmware temporary zip file.
                 std::filesystem::remove(fmt::format(AMS_ZIP_PATH, BASE_FOLDER_NAME));

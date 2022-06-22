@@ -635,6 +635,12 @@ FRESULT finishUpdate()
     return res;
 }
 
+void halt()
+{
+    while (true)
+        bpmp_halt();
+}
+
 extern void pivot_stack(u32 stack_top);
 
 void ipl_main()
@@ -717,119 +723,69 @@ void ipl_main()
                     break;
             f_close(&fil);
 
-/*
-            //reading cleaninstall file to get the app name
-            char file[256] = "/config/";
-            strcat(file, appName);
-            strcat(file, "/lista_exclusao.txt");
-            const char* filename = file;
-
-            if (f_stat(filename, NULL) == FR_OK)
-            {
-                char line[100];
-                res = f_open(&fil, filename, FA_READ);
-                if (!res)
-                    while (f_gets(line, sizeof line, &fil))
-                    {
-                        line[strcspn(line, "\n")] = 0;
-                        strcat(exclusion_list, line);
-                        strcat(exclusion_list, "#");
-                    }
-                f_close(&fil);
-            }
-*/
-/*
-FRESULT res = finishUpdate();
-if (res == FR_OK)
-    WPRINTF("\nTudo certo!\n");
-else
-{
-    gfx_printf("%k\nDeu erro! RES = %d\n\n%k", 0xFF00E100, res, 0xFFCCCCCC);
-
-    gfx_printf("%kRES FR_DISK_ERR = %d\n%k", 0xFF00E100, FR_DISK_ERR, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_INT_ERR = %d\n%k", 0xFF00E100, FR_INT_ERR, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_NOT_READY = %d\n%k", 0xFF00E100, FR_NOT_READY, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_NO_FILE = %d\n%k", 0xFF00E100, FR_NO_FILE, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_NO_PATH = %d\n%k", 0xFF00E100, FR_NO_PATH, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_INVALID_NAME = %d\n%k", 0xFF00E100, FR_INVALID_NAME, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_DENIED = %d\n%k", 0xFF00E100, FR_DENIED, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_EXIST = %d\n%k", 0xFF00E100, FR_EXIST, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_INVALID_OBJECT = %d\n%k", 0xFF00E100, FR_INVALID_OBJECT, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_WRITE_PROTECTED = %d\n%k", 0xFF00E100, FR_WRITE_PROTECTED, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_INVALID_DRIVE = %d\n%k", 0xFF00E100, FR_INVALID_DRIVE, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_NOT_ENABLED = %d\n%k", 0xFF00E100, FR_NOT_ENABLED, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_NO_FILESYSTEM = %d\n%k", 0xFF00E100, FR_NO_FILESYSTEM, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_MKFS_ABORTED = %d\n%k", 0xFF00E100, FR_MKFS_ABORTED, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_TIMEOUT = %d\n%k", 0xFF00E100, FR_TIMEOUT, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_LOCKED = %d\n%k", 0xFF00E100, FR_LOCKED, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_NOT_ENOUGH_CORE = %d\n%k", 0xFF00E100, FR_NOT_ENOUGH_CORE, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_TOO_MANY_OPEN_FILES = %d\n%k", 0xFF00E100, FR_TOO_MANY_OPEN_FILES, 0xFFCCCCCC);
-    gfx_printf("%kRES FR_INVALID_PARAMETER = %d\n%k", 0xFF00E100, FR_INVALID_PARAMETER, 0xFFCCCCCC);
-}
-msleep(1000);
-btn_wait();
-//easy_rename("payload.bin.apg", "payload.bin");
-power_set_state(POWER_OFF);
-*/
-
             //removing flag file
             f_unlink(filename);
 
             //cleaning up the SD
             res = performCleanup();
-        }
 
-        //checking wheter the cleanup was successfull
-        if (res == FR_OK)
-        {
-            if (finishUpdate() == FR_OK)
+            //checking wheter the cleanup was successfull
+            if (res == FR_OK)
             {
-                WPRINTF("Tudo pronto! continuando...\n");
-                msleep(500);
-
-                if (f_stat("atmosphere/fusee-secondary.bin.apg", NULL) == FR_OK)
-                    easy_rename("atmosphere/fusee-secondary.bin.apg", "atmosphere/fusee-secondary.bin");
-                if (f_stat("sept/payload.bin.apg", NULL) == FR_OK)
-                    easy_rename("sept/payload.bin.apg", "sept/payload.bin");
-                if (f_stat("atmosphere/stratosphere.romfs.apg", NULL) == FR_OK)
-                    easy_rename("atmosphere/stratosphere.romfs.apg", "atmosphere/stratosphere.romfs");
-                if (f_stat("atmosphere/package3.apg", NULL) == FR_OK)
-                    easy_rename("atmosphere/package3.apg", "atmosphere/package3");
-
-                // If the console is a patched or Mariko unit
-                if (h_cfg.t210b01 || h_cfg.rcm_patched) {
-                    easy_rename("payload.bin.apg", "payload.bin");
-                    power_set_state(POWER_OFF_REBOOT);
+                if (finishUpdate() == FR_OK)
+                {
+                    WPRINTF("Tudo pronto! continuando...\n");
+                    msleep(500);
                 }
-                else {
-                    if (f_stat("bootloader/update.bin", NULL) == FR_OK)
-                        launch_payload("bootloader/update.bin", false);
+                else
+                {
+                    EPRINTF("\nFalha ao mover arquivos do novo pacote!\n\n");
+                    WPRINTF("Procure assistencia tecnica ou reconfigure");
+                    WPRINTF("seu microSD manualmente.");
+                    WPRINTF("Processo interrompido!");
 
-                    if (f_stat("atmosphere/reboot_payload.bin", NULL) == FR_OK)    
-                        launch_payload("atmosphere/reboot_payload.bin", false);
-
-                    EPRINTF("Falha ao executar o payload!");
+                    // Halt BPMP in case of errors.
+                    halt();
                 }
             }
             else
             {
-                EPRINTF("\nFalha ao mover arquivos do novo pacote!\n\n");
-                WPRINTF("Procure assistencia tecnica ou reconfigure");
-                WPRINTF("seu microSD manualmente.");
+                EPRINTF("\nFalha ao executar limpeza!\n\n");
+                WPRINTF("Verifique se o console inicia corretamente.");
+                WPRINTF("Se ele não iniciar procure assistencia ou");
+                WPRINTF("configure seu microSD manualmente.");
                 WPRINTF("Processo interrompido!");
+
+                // Halt BPMP in case of errors.
+                halt();
             }
         }
-        else
-        {
-            EPRINTF("\nFalha ao executar limpeza!\n\n");
-            WPRINTF("Verifique se o console inicia corretamente.");
-            WPRINTF("Se ele não iniciar procure assistencia ou");
-            WPRINTF("configure seu microSD manualmente.");
-            WPRINTF("Processo interrompido!");
+
+        if (f_stat("atmosphere/fusee-secondary.bin.apg", NULL) == FR_OK)
+            easy_rename("atmosphere/fusee-secondary.bin.apg", "atmosphere/fusee-secondary.bin");
+        if (f_stat("sept/payload.bin.apg", NULL) == FR_OK)
+            easy_rename("sept/payload.bin.apg", "sept/payload.bin");
+        if (f_stat("atmosphere/stratosphere.romfs.apg", NULL) == FR_OK)
+            easy_rename("atmosphere/stratosphere.romfs.apg", "atmosphere/stratosphere.romfs");
+        if (f_stat("atmosphere/package3.apg", NULL) == FR_OK)
+            easy_rename("atmosphere/package3.apg", "atmosphere/package3");
+
+        // If the console is a patched or Mariko unit
+        if (h_cfg.t210b01 || h_cfg.rcm_patched) {
+            easy_rename("payload.bin.apg", "payload.bin");
+            power_set_state(POWER_OFF_REBOOT);
+        }
+        else {
+            if (f_stat("bootloader/update.bin", NULL) == FR_OK)
+                launch_payload("bootloader/update.bin", false);
+
+            if (f_stat("atmosphere/reboot_payload.bin", NULL) == FR_OK)    
+                launch_payload("atmosphere/reboot_payload.bin", false);
+
+            EPRINTF("Falha ao executar o payload!");
         }
     }
 
     // Halt BPMP if we managed to get out of execution.
-    while (true)
-        bpmp_halt();
+    halt();
 }
