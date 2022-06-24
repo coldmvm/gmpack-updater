@@ -99,7 +99,7 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
         icons->setHeight(LISTITEM_HEIGHT);
         this->addView(icons);
 
-        brls::ListItem* forceCleanInstall = new brls::ListItem("\uE150 Forçar Instalação Limpa");
+        brls::ListItem* forceCleanInstall = new brls::ListItem("\uE150 Forçar arquivo de instalação limpa - NAO USE!");
         forceCleanInstall->getClickEvent()->subscribe([](brls::View* view) {
             util::createCleanInstallFile();
 			util::showDialogBoxInfo("Agora use a opção 'Reiniciar no Payload RCM' para testar a 'Instalação Limpa'.");
@@ -107,7 +107,7 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
         forceCleanInstall->setHeight(LISTITEM_HEIGHT);
         this->addView(forceCleanInstall);
 
-        brls::ListItem* payloadRCM = new brls::ListItem("\uE150 Reiniciar no Payload RCM");
+        brls::ListItem* payloadRCM = new brls::ListItem("\uE150 Reiniciar no Payload RCM - NAO USE!");
         payloadRCM->getClickEvent()->subscribe([](brls::View* view) {
             if (util::isErista()) {
                 util::rebootToPayload(RCM_PAYLOAD_PATH);
@@ -126,17 +126,17 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
         payloadRCM->setHeight(LISTITEM_HEIGHT);
         this->addView(payloadRCM);
 
-        brls::ListItem* test = new brls::ListItem("\uE150 Teste");
+        brls::ListItem* test = new brls::ListItem("\uE150 Versão?");
         test->getClickEvent()->subscribe([](brls::View* view) {
 
-			std::string src = "2.0.2b";
+			std::string src = APP_VERSION;
             std::string trg = "";
 
 			for (char c : src) {
 				if (std::isdigit(c)) trg += c;
 			}
 			
-            util::showDialogBoxInfo(trg);
+            util::showDialogBoxInfo(fmt::format("Versão por extenso: {}\nVersão calculada: {}", src, trg));
         });
         test->setHeight(LISTITEM_HEIGHT);
         this->addView(test);
