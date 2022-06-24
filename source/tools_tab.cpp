@@ -92,14 +92,14 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
 
     if (DEBUG)
     {
-        brls::ListItem* icons = new brls::ListItem("Icones");
+        brls::ListItem* icons = new brls::ListItem("\uE150 Icones");
         icons->getClickEvent()->subscribe([](brls::View* view) {
             brls::PopupFrame::open("Icones", new IconsPage(), "", "");
         });
         icons->setHeight(LISTITEM_HEIGHT);
         this->addView(icons);
 
-        brls::ListItem* forceCleanInstall = new brls::ListItem("Forçar Instalação Limpa");
+        brls::ListItem* forceCleanInstall = new brls::ListItem("\uE150 Forçar Instalação Limpa");
         forceCleanInstall->getClickEvent()->subscribe([](brls::View* view) {
             util::createCleanInstallFile();
 			util::showDialogBoxInfo("Agora use a opção 'Reiniciar no Payload RCM' para testar a 'Instalação Limpa'.");
@@ -107,7 +107,7 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
         forceCleanInstall->setHeight(LISTITEM_HEIGHT);
         this->addView(forceCleanInstall);
 
-        brls::ListItem* payloadRCM = new brls::ListItem("Reiniciar no Payload RCM");
+        brls::ListItem* payloadRCM = new brls::ListItem("\uE150 Reiniciar no Payload RCM");
         payloadRCM->getClickEvent()->subscribe([](brls::View* view) {
             if (util::isErista()) {
                 util::rebootToPayload(RCM_PAYLOAD_PATH);
@@ -126,7 +126,7 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
         payloadRCM->setHeight(LISTITEM_HEIGHT);
         this->addView(payloadRCM);
 
-        brls::ListItem* test = new brls::ListItem("Test");
+        brls::ListItem* test = new brls::ListItem("\uE150 Teste");
         test->getClickEvent()->subscribe([](brls::View* view) {
 
 			std::string src = "2.0.2b";
