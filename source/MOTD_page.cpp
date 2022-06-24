@@ -1,4 +1,4 @@
-#include "MOTD_tab.hpp"
+#include "MOTD_page.hpp"
 
 #include <algorithm>
 #include <filesystem>

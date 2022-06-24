@@ -9,7 +9,8 @@
 #include "fs.hpp"
 #include "main_frame.hpp"
 #include "warning_page.hpp"
-#include "MOTD_tab.hpp"
+#include "beta_page.hpp"
+#include "MOTD_page.hpp"
 #include "utils.hpp"
 
 namespace i18n = brls::i18n;
@@ -19,19 +20,31 @@ CFW CurrentCfw::running_cfw;
 
 void showScreen(const bool& existHiddenFile)
 {
+    std::string sTmp = APP_VERSION;
+    bool beta = (sTmp.find("b") != std::string::npos);
+
+    bool bAlwaysShowMOTD, bWasMOTDDisplayed;
+    sTmp = util::getMOTD(bAlwaysShowMOTD);
+    bWasMOTDDisplayed = util::wasMOTDAlreadyDisplayed();
+
     if (existHiddenFile) {
-        if (!util::wasMOTDAlreadyDisplayed())
-            brls::Application::pushView(new MOTDPage());
+        if (beta)
+            brls::Application::pushView(new BetaPage(((bAlwaysShowMOTD) || (!bWasMOTDDisplayed)))); //TRUE = SHOW MOTD / FALSE = DOES NOT SHOW MOTD
         else
-            brls::Application::pushView(new MainFrame());
+        {
+            if ((bAlwaysShowMOTD) || (!bWasMOTDDisplayed))
+                brls::Application::pushView(new MOTDPage());
+            else
+                brls::Application::pushView(new MainFrame());
+        }
     }
     else
     {
-        bool bAlwaysShow;
-        if (util::getMOTD(bAlwaysShow) != "")
-            brls::Application::pushView(new WarningPage("menus/main/launch_warning"_i18n, true));
-        else
-            brls::Application::pushView(new WarningPage("menus/main/launch_warning"_i18n, false));
+//        if ((bAlwaysShowMOTD) || (!bWasMOTDDisplayed))
+//            brls::Application::pushView(new WarningPage("menus/main/launch_warning"_i18n, true)); //1 BOOL = MOTD - 2 BOOL BETA
+//        else
+//            brls::Application::pushView(new WarningPage("menus/main/launch_warning"_i18n, false)); //1 BOOL = MOTD - 2 BOOL BETA
+        brls::Application::pushView(new WarningPage("menus/main/launch_warning"_i18n, ((bAlwaysShowMOTD) || (!bWasMOTDDisplayed)), beta)); //1 BOOL = MOTD - 2 BOOL BETA
     }
 }
 int main(int argc, char* argv[])

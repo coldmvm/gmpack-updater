@@ -1,4 +1,4 @@
-#include "warning_page.hpp"
+#include "beta_page.hpp"
 
 #include <algorithm>
 #include <fstream>
@@ -7,26 +7,26 @@
 #include "fs.hpp"
 #include "main_frame.hpp"
 #include "MOTD_page.hpp"
-#include "beta_page.hpp"
 #include "utils.hpp"
 
 namespace i18n = brls::i18n;
 using namespace i18n::literals;
-WarningPage::WarningPage(const std::string& text, const bool& showMOTD, const bool& showBeta)
+BetaPage::BetaPage(const bool& showMOTD)
 {
-    fs::createTree(fmt::format(CONFIG_PATH, BASE_FOLDER_NAME));
-    std::ofstream hiddenFile(fmt::format(HIDDEN_APG_FILE, BASE_FOLDER_NAME, BASE_FOLDER_NAME));
+    DialogType dialogType = DialogType::beta;
+
+    this->image = (new brls::Image(ROMFSIconFile[(int)dialogType].data())); //beta icon
+
     this->button = (new brls::Button(brls::ButtonStyle::PRIMARY))->setLabel("menus/common/continue"_i18n);
     this->button->setParent(this);
-    this->button->getClickEvent()->subscribe([this, showMOTD, showBeta](View* view) {
-        if (showBeta)
-            brls::Application::pushView(new BetaPage(showMOTD)); //BOOL = SHOW MOTD
+    this->button->getClickEvent()->subscribe([this, showMOTD](View* view) {
+        if (!showMOTD)
+            brls::Application::pushView(new MainFrame());
         else
-            if (showMOTD)
-                brls::Application::pushView(new MOTDPage());
-            else
-                brls::Application::pushView(new MainFrame());
+            brls::Application::pushView(new MOTDPage());
     });
+
+    std::string text = fmt::format("menus/main/beta_warning"_i18n, util::lowerCase(BRAND_ARTICLE), BRAND_FULL_NAME, BRAND_ARTICLE, BRAND_FULL_NAME);
 
     this->label = new brls::Label(brls::LabelStyle::REGULAR, text, true);
     this->label->setHorizontalAlign(NVG_ALIGN_LEFT);
@@ -36,7 +36,7 @@ WarningPage::WarningPage(const std::string& text, const bool& showMOTD, const bo
     this->registerAction("", brls::Key::B, [this] { return true; });
 }
 
-void WarningPage::draw(NVGcontext* vg, int x, int y, unsigned width, unsigned height, brls::Style* style, brls::FrameContext* ctx)
+void BetaPage::draw(NVGcontext* vg, int x, int y, unsigned width, unsigned height, brls::Style* style, brls::FrameContext* ctx)
 {
     auto end = std::chrono::high_resolution_clock::now();
     auto missing = std::max(1l - std::chrono::duration_cast<std::chrono::seconds>(end - start).count(), 0l);
@@ -51,17 +51,27 @@ void WarningPage::draw(NVGcontext* vg, int x, int y, unsigned width, unsigned he
     }
     this->button->invalidate();
 
+    this->image->frame(ctx);
     this->label->frame(ctx);
     this->button->frame(ctx);
 }
 
-brls::View* WarningPage::getDefaultFocus()
+brls::View* BetaPage::getDefaultFocus()
 {
     return this->button;
 }
 
-void WarningPage::layout(NVGcontext* vg, brls::Style* style, brls::FontStash* stash)
+void BetaPage::layout(NVGcontext* vg, brls::Style* style, brls::FontStash* stash)
 {
+    this->image->setWidth(1280);
+    this->image->setHeight(720);
+    this->image->setBoundaries(
+		0,
+        0,
+        this->image->getWidth(),
+        this->image->getHeight());
+    this->image->invalidate(true);
+
     this->label->setWidth(0.8f * this->width);
     this->label->invalidate(true);
     this->label->setBoundaries(
@@ -72,7 +82,6 @@ void WarningPage::layout(NVGcontext* vg, brls::Style* style, brls::FontStash* st
 
     this->button->setBoundaries(
         this->x + this->width / 2 - style->CrashFrame.buttonWidth / 2,
-        //this->y + (this->height - style->CrashFrame.buttonHeight * 3),
         this->y + (this->height - (style->CrashFrame.buttonHeight * 1.25)),
         style->CrashFrame.buttonWidth,
         style->CrashFrame.buttonHeight);
@@ -81,8 +90,9 @@ void WarningPage::layout(NVGcontext* vg, brls::Style* style, brls::FontStash* st
     start = std::chrono::high_resolution_clock::now() + std::chrono::milliseconds(150);
 }
 
-WarningPage::~WarningPage()
+BetaPage::~BetaPage()
 {
+    delete this->image;
     delete this->label;
     delete this->button;
 }

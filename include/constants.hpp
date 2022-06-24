@@ -104,10 +104,11 @@ enum class DialogType
 {
     updating,
     warning,
-    error
+    error,
+    beta
 };
 
-constexpr std::string_view ROMFSIconFile[3]{"romfs:/updating.png", "romfs:/warning.png", "romfs:/error.png"};
+constexpr std::string_view ROMFSIconFile[4]{"romfs:/updating.png", "romfs:/warning.png", "romfs:/error.png", "romfs:/beta.png"};
 
 enum class CFW
 {
