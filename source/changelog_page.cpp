@@ -54,6 +54,9 @@ ChangelogPage::ChangelogPage() : AppletFrame(true, true)
     verTitles.push_back("v2.0.1");
     changes.push_back("\uE016 O homebrew agora detecta o tipo da emuNAND (SD ou partição) e mostra na aba 'Baixar Atmosphère'.\n\uE016 O homebrew agora alerta se você tem um tema instalado ANTES de baixar a atualização e te dá a opção de cancelar o processo.\n\uE016 O homebrew agora limpa 'payloads' antigos do HEKATE CTCAER na raiz do microSD.\n\uE016 Foi corrigido um problema que impedia o homebrew de mostrar o ícone quando um conteúdo estava instalado corretamente.\n\uE016 Limpeza no código em geral.\n\uE016 Melhorias nos textos do homebrew.");
 
+    verTitles.push_back("v2.0.2b1");
+    changes.push_back("\uE016 O homebrew agora alerta se você tem um tema instalado ANTES de baixar a atualização e te dá a opção de deleta-lo antes de prosseguir.\n\uE016 O homebrew agora mantém os principais arquivos de configuração do Tinfoil sempre que uma atualização é feita.\n\uE016 O homebrew agora te dá a opção de fazer uma instalação limpa mantendo arquivos importantes no seu microSD (emuNAND, backup, saves, Retroarch e suas ROMs e arquivos do Tinfoil).\n\uE016 Adicionada a opção de ver o changelog da nova atualização do homebrew antes de fazê-la.\n\uE016 Limpeza no código em geral.\n\uE016 Melhorias nos textos do homebrew.");
+
     for (int i = verTitles.size() - 1; i >= 0; i--) {
         listItem = new brls::ListItem(verTitles[i]);
         change = changes[i];
