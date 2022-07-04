@@ -15,7 +15,7 @@ constexpr const bool SHOW_GNX = true;
 DO NOT CHANGE ONLY THESE CONSTANTS UNLESS YOU KNOW WHAT YOU'RE DOING
 */
 
-constexpr const bool DEBUG = true;
+constexpr const bool DEBUG = false;
 
 constexpr const char CFW_ROOT_PATH[] = "/apgtmppackfolder";
 constexpr const char ROOT_PATH[] = "/";
