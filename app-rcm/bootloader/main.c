@@ -69,7 +69,6 @@ volatile nyx_storage_t *nyx_str = (nyx_storage_t *)NYX_STORAGE_ADDR;
 #define  CBFS_DRAM_MAGIC    0x4452414D // "DRAM"
 
 char appName[100];
-bool printCRLF = false;
 
 bool tmpPrintAgain = false;
 char *tmpFolderName;
@@ -390,6 +389,38 @@ struct Node
     struct Node *nextPtr;
 };
 
+FRESULT easy_move(const char* old, const char* new)
+{
+    FRESULT res = FR_OK;
+
+    //checking the folder structure and creating it, if necessary
+    char *p = strtok(new, "/");
+    char *tmp1;
+    char *tmp2;
+    tmp1 = malloc(256);
+    tmp2 = malloc(256);
+    strcpy(tmp1, "");
+    strcpy(tmp2, "");
+    while(p)
+    {
+        char *pch = strstr(p, ".");
+        if(!pch)
+        {
+            strcpy(tmp1, "/");
+            strcat(tmp1, p);
+            strcat(tmp2, tmp1);
+            if (f_stat(tmp2, NULL) != FR_OK)
+                res = f_mkdir(tmp2);
+        }
+        p = strtok(NULL, "/");
+    }
+
+    strcat(new, old);
+    res = easy_rename(old, new);
+    
+    return res;
+}
+
 char* toLower(char* s)
 {
     for(char *p = s; *p; p++) *p = tolower(*p);
@@ -401,14 +432,14 @@ bool canDeleteFolder(TCHAR* cPath)
     char * x [] = {
         "/apgtmppackfolder",
         "/backup",
-        "/checkpoint",
         "/emummc",
         "/emutendo",
         "/jksv",
         "/nintendo",
         "/retroarch",
-        "/rom",
-        "/roms"
+        "/roms",
+        "/switch/checkpoint/saves",
+        "/switch/tinfoil/themes"
     };
 
     int len = sizeof(x)/sizeof(x[0]);
@@ -427,24 +458,45 @@ bool canDeleteFolder(TCHAR* cPath)
 
 bool canDeleteFile(TCHAR* cPath)
 {
-    char * x [] = {
-        "/switch/retroarch.nro",
-        "/switch/tinfoil/credentials.json",
-        "/switch/tinfoil/gdrive.token",
-        "/switch/tinfoil/locations.conf"
+    char * folderList [] = {
+        "/switch/checkpoint/saves",
+        "/switch/edizon/saves",
+        "/switch/tinfoil/themes"
     };
 
-    int len = sizeof(x)/sizeof(x[0]);
+    char * fileList [] = {
+        "/switch/retroarch_switch.nro",
+        "/switch/tinfoil/credentials.json",
+        "/switch/tinfoil/gdrive.token",
+        "/switch/tinfoil/locations.conf",
+        "/switch/tinfoil/options.json"
+    };
+
+    int len = sizeof(fileList)/sizeof(fileList[0]);
     int i;
 
     bool res = true;
 
     for (i = 0; i < len; ++i)
-        if (!strcmp(x[i], cPath))
+        if (!strcmp(fileList[i], cPath))
         {
             res = false;
             break;
         }
+
+    if (res)
+    {
+        int len = sizeof(folderList)/sizeof(folderList[0]);
+        for (i = 0; i < len; ++i)
+        {
+            char *pch = strstr(cPath, folderList[i]);
+            if(pch)
+            {
+                res = false;
+                break;
+            }
+        }
+    }
     return res;
 }
 
@@ -484,21 +536,14 @@ FRESULT delete_node (
                 f_unlink(path);
             else
             {
-                if (printCRLF)
-                {
-                    printCRLF = false;
-                    gfx_printf("%k\n%k", 0xFF00E100, 0xFFCCCCCC);
-                }
-                gfx_printf("%kPulando %s\n%k", 0xFF00E100, path, 0xFFCCCCCC);
-
                 tmpPrintAgain = true;
 
-                //MOVER ARQUIVO PRA PASTA DE UPDATE <--------------------------------------------------------------------
+                //moving file to destination
                 char *tmp1;
                 tmp1 = malloc(256);
                 strcpy(tmp1, "/apgtmppackfolder");
                 strcat(tmp1, path);
-                easy_rename(path, tmp1);
+                easy_move(path, tmp1);
             }
         }
         if (res != FR_OK) break;
@@ -539,14 +584,12 @@ FRESULT performCleanup()
             strcpy(file, tmp1);
             strcat(file, tmp2);
 
-            printCRLF = false;
             tmpPrintAgain = false;
 
             if (fno.fattrib & AM_DIR)
             {
                 if (canDeleteFolder(toLower(file)))
                 {
-                    printCRLF = true;
                     tmpFolderName = malloc(256);
                     strcpy(tmpFolderName, fno.fname);
                     gfx_printf("%kApagando %s... %k", 0xFFFF0000, tmpFolderName, 0xFFCCCCCC);
@@ -554,7 +597,7 @@ FRESULT performCleanup()
                     strcpy(buff, file);
                     delete_node(buff, sizeof buff / sizeof buff[0], &fno);
                     if (tmpPrintAgain)
-                        gfx_printf("%kApagando %s... OK!\n%k", 0xFFFF0000, tmpFolderName, 0xFFCCCCCC);
+                        gfx_printf("%k\nApagando %s... OK!\n%k", 0xFF00E100, tmpFolderName, 0xFFCCCCCC); //0xFF00E100
                     else
                         gfx_printf("%kOK!\n%k", 0xFFFF0000, 0xFFCCCCCC);
                 }
@@ -574,7 +617,7 @@ FRESULT performCleanup()
                 {
                     gfx_printf("%kPulando %s\n%k", 0xFF00E100, fno.fname, 0xFFCCCCCC);
 
-                    //MOVER ARQUIVO PRA PASTA DE UPDATE <--------------------------------------------------------------------
+                    //moving file to destination
                     tmp1 = malloc(256);
                     strcpy(tmp1, "/apgtmppackfolder");
                     strcat(tmp1, file);
@@ -760,6 +803,13 @@ void ipl_main()
                 halt();
             }
         }
+
+/*
+        WPRINTF("Pressione uma tecla...");
+        msleep(1000);
+        btn_wait();
+        power_set_state(POWER_OFF);
+*/
 
         if (f_stat("atmosphere/fusee-secondary.bin.apg", NULL) == FR_OK)
             easy_rename("atmosphere/fusee-secondary.bin.apg", "atmosphere/fusee-secondary.bin");
