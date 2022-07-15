@@ -86,7 +86,7 @@ void ListDownloadTab::createList(contentType type, std::string& sVer)
                 }
 
                 stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, DialogType::warning, "menus/main/download_time_warning"_i18n, "", "", false));
-                stagedFrame->addStage(new ConfirmPage(stagedFrame, text));
+//                stagedFrame->addStage(new ConfirmPage(stagedFrame, text));
                 stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [this, type, url]() { util::downloadArchive(url, type); }));
                 stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, [this, type]() { util::extractArchive(type); }));
                 

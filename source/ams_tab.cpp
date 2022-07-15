@@ -101,7 +101,7 @@ void AmsTab::CreateStagedFrames(const std::string& text, const std::string& url,
     else
         stagedFrame->addStage(new ListDownloadConfirmationPage(stagedFrame, DialogType::warning, "menus/main/download_time_warning"_i18n, pack, body, false));
 
-    stagedFrame->addStage(new ConfirmPage(stagedFrame, fmt::format("{} ({}MB)", text, size)));
+//    stagedFrame->addStage(new ConfirmPage(stagedFrame, fmt::format("{} ({}MB)", text, size)));
     stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [url]() { util::downloadArchive(url, contentType::ams_cfw); }));
     stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/extracting"_i18n, []() { util::extractArchive(contentType::ams_cfw); }));
     stagedFrame->addStage(new ConfirmPage(stagedFrame, "menus/ams_update/reboot_rcm"_i18n, false, true, erista));
