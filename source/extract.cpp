@@ -76,7 +76,14 @@ namespace extract {
                 unzipper.extractEntryToStream(entry.name, readonlyFile);
             }
 
-            else if ((workingPath == "/") && (entry.name == "switch/tinfoil/credentials.json" || entry.name == "switch/tinfoil/gdrive.token" || entry.name == "switch/tinfoil/locations.conf")) {
+            else if (
+                        (workingPath == "/") &&
+                        (
+                            entry.name == "switch/tinfoil/credentials.json" || entry.name == "switch/tinfoil/gdrive.token" || entry.name == "switch/tinfoil/locations.conf" || entry.name == "switch/tinfoil/options.json" ||
+                            entry.name.find("switch/tinfoil/themes") != std::string::npos
+                        )
+                    )
+            {
                 continue;
             }
             else {

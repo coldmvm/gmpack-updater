@@ -68,7 +68,7 @@
     "help_order": "Ordem das atualizações",
     "help_order_text": "\nQual ordem devo seguir para atualizar o console?\n\n\uE150 Antes de mais nada, nunca atualize o console sem ter atualizado o Atmosphère (AMS) antes, a não ser que ele suporte a versão do console a ser instalada!\nPor exemplo o AMS 1.3.2 suporta da versão 14.1.1 até a versão 1.0.0, mas pode não funcionar com a próxima.\n\n\u25c6 Primeiro navegue até a aba '{}' e faça o download do '{}' ou 'GNX' (dependendo de qual você usa) e depois navegue até a aba '{}' para baixar Firmware do console.\n\nSeja paciente e dê ao homebrew o tempo necessário para que ele conclua a instalção.",
     "help_clean_inst": "Instalação limpa",
-    "help_clean_inst_text": "\nComo fazer uma instalação limpa?\n\n\uE150 Uma instalação limpa irá remover tudo do seu microSD menos o mais importante!\n\nPara iniciar uma instalação limpa escolha o pacote Atmosphère de sua preferência, escolha 'Sim' e confirme novamente com 'Sim' quando perguntado. Agora é só esperar o processo terminar!\n\nO que a instalação limpa não remove:\n\u2605 emuNAND \u2605 pasta backup \u2605 saves (JKSV, Checkpoint e EdiZon) \u2605 retroarch e suas ROMs \u2605 arquivos importantes do Tinfoil"
+    "help_clean_inst_text": "\nComo fazer uma instalação limpa?\n\n\uE150 Uma instalação limpa irá remover tudo do seu microSD menos os arquivos e pastas abaixo!\n\n* Para executar uma instalação limpa selecione o pacote Atmosphère de sua preferência, escolha 'Sim', confirme novamente com 'Sim' e espere o processo terminar!\n* Escolhendo 'Não' executará a instalação normal que poderá apagar os itens marcados com \uE150.\n\nO que a instalação limpa não remove:\n\u2605 emuNAND (jogos, saves e usuários) \uE150 pasta de backup \uE150 backup dos saves (JKSV, Checkpoint e EdiZon) \u2605 pasta do retroarch e ROMs \uE150 arquivos/temas do Tinfoil"
   },
   "tools": {
     "batch_copy_not_found": "Os segintes arquivos não foram encontrados e não puderam ser copiados:\n",
@@ -83,15 +83,15 @@
     "not_an_archive": "O arquivo baixado não é um arquivo zip. Isto provavelmente aconteceu devido a um link quebrado. Se o problema persistir depois de 30 minutos, por favor, abra um 'issue' no Github.",
     "overwrite_inis": "Você deseja sobrescrever os arquivos de configuração .ini existentes?",
     "delete_sysmodules_flags": "Você gostaria de apagar todos os sinalizadores de início dos módulos de sistema (boo2.flag)? Isto desligará todos os módulos de sistema para prevenir erros se você tem algum módulo de sistema instalado que não suporte o último Atmosphère.",
-    "delete_all_but_emunand": "Você gostaria de executar uma instalação limpa?\n\n\uE150 Uma instalação limpa irá apagar TUDO do microSD MENOS a sua emuNAND.\nVocê PERDERÁ traduções e/ou modificações de jogos mas NÃO os jogos.\nEsta opção só é recomendada quando você quiser começar com uma instalação 100% limpa.",
-    "delete_all_but_emunand_confirm": "Você escolheu executar uma INSTALAÇÃO LIMPA!\n\n\uE150 Uma instalação limpa irá apagar TUDO do microSD MENOS a sua emuNAND.\nVocê PERDERÁ traduções e/ou modificações de jogos mas NÃO os jogos.\n\nVocê tem certeza que quer executar uma instalação limpa?"
+    "clean_install": "Você gostaria de executar uma instalação limpa?\n\n\uE150 Uma instalação limpa irá apagar TUDO do microSD MENOS o seguinte: emuNAND (jogos, saves e usuários), pasta de backup, backup dos saves (JKSV, Checkpoint e EdiZon), pasta do retroarch e ROMs, e arquivos/temas do Tinfoil.\n\nVocê PERDERÁ traduções e/ou modificações de jogos mas NÃO os jogos.\nEsta opção só é recomendada quando você quiser começar com uma instalação 100% limpa.",
+    "clean_install_confirm": "Você escolheu executar uma INSTALAÇÃO LIMPA!\n\n\uE150 Uma instalação limpa irá apagar TUDO do microSD MENOS o seguinte: emuNAND (jogos, saves e usuários), pasta de backup, backup dos saves (JKSV, Checkpoint e EdiZon), pasta do retroarch e ROMs, e arquivos/temas do Tinfoil.\n\nVocê PERDERÁ traduções e/ou modificações de jogos mas NÃO os jogos.\n\nVocê tem certeza que quer executar uma instalação limpa?"
   },
   "ams_update": {
     "pack_label": "{} é um pacote all-in-one (tudo em um) baseado no custom firmware Atmosphère e inclui tudo de mais atual para seu Switch. {} {} usa este pacote como seu oficial.",
     "current_ams": "Atmosphère atual: {}",
     "erista_rev": "Revisão: Erista",
     "mariko_rev": "Revisão: Mariko",
-    "goma_label": "GNX, também conhecido como GomaNX, é um pacote all-in-one (tudo em um) baseado no custom firmware Atmosphère feito pelo Goma.",
+    "goma_label": "Pacote Atmosphère opcional alternativo:\nGNX, também conhecido como GomaNX, assim como o GMPACK, também é um pacote all-in-one (tudo em um) baseado no custom firmware Atmosphère feito pelo Goma.",
     "reboot_rcm": "O Switch agora irá reiniciar em um payload especial para concluir a instalação."
   },
   "firmware": {

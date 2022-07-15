@@ -140,5 +140,38 @@ ToolsTab::ToolsTab(const std::string& tag, bool erista) : brls::List()
         });
         test->setHeight(LISTITEM_HEIGHT);
         this->addView(test);
+
+        brls::ListItem* json = new brls::ListItem("\uE150 JSON");
+        json->getClickEvent()->subscribe([](brls::View* view) {
+
+			nlohmann::ordered_json json;
+			download::getRequest("https://raw.githubusercontent.com/coldmvm/gmpack/main/latest/pegascape/json_file2.json", json, {"accept: application/vnd.github.v3+json"});
+
+/*
+			std::vector<std::string> filesList{};
+			std::vector<std::string> foldersList{};
+			json.at("files").get_to(filesList);
+			json.at("dirs").get_to(foldersList);
+			std::string tmp = "";
+			for (const auto& item : filesList)
+			{
+				tmp = fmt::format("{}{}\n", tmp, item);
+			}
+            util::showDialogBoxInfo(fmt::format("Arquivos:\n{}", tmp));
+*/
+
+			brls::StagedAppletFrame* stagedFrame = new brls::StagedAppletFrame();
+			stagedFrame->setTitle("TESTE TITLE");
+			stagedFrame->addStage(new ConfirmPage(stagedFrame, "CONFIRMAR"));
+			stagedFrame->addStage(new WorkerPage(stagedFrame, "menus/common/downloading"_i18n, [json]() { util::downloadArchive(json, contentType::ams_cfw); }));
+			stagedFrame->addStage(new ConfirmPage(stagedFrame, "FINAL"));
+			brls::Application::pushView(stagedFrame);
+
+
+
+
+        });
+        json->setHeight(LISTITEM_HEIGHT);
+        this->addView(json);
     }
 }

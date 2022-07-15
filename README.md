@@ -29,7 +29,7 @@ Se você estiver com dúvidas de como usar o homebrew, aperte o botão `X` e uma
 ## Descrição das funções
 ### ⬦ Baixar Atmosphère
 - Baixa o pacote (`GMPACK`).
-  - Também é possível baixar pacote all-in-one (`GNX`) feito pelo Goma.
+  - Opcionalmente, também é possível baixar o pacote alternativo `GNX` feito pelo Goma.
 -  Após baixado, o programa irá instalar o pacote para você.
 
 ### ⬦ Baixar firmwares

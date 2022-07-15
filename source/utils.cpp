@@ -69,6 +69,28 @@ namespace util {
         ProgressEvent::instance().setStatusCode(status_code);
     }
 
+    void downloadArchiveFaster(const nlohmann::ordered_json& json, contentType type)
+    {
+        long status_code;
+        downloadArchiveFaster(json, type, status_code);
+    }
+
+    void downloadArchiveFaster(const nlohmann::ordered_json& json, contentType type, long& status_code)
+    {
+        fs::createTree(fmt::format(DOWNLOAD_PATH, BASE_FOLDER_NAME));
+        switch (type) {
+            case contentType::fw:
+                //status_code = download::downloadFileFaster(json, fmt::format(FIRMWARE_FILENAME, BASE_FOLDER_NAME), OFF);
+                break;
+            case contentType::ams_cfw:
+                status_code = download::downloadFileFaster(json, CFW_ROOT_PATH, OFF);
+                break;
+            default:
+                break;
+        }
+        ProgressEvent::instance().setStatusCode(status_code);
+    }
+
     void showDialogBoxInfo(const std::string& text)
     {
         brls::Dialog* dialog;
@@ -180,11 +202,11 @@ namespace util {
                 int deleteContents = 1;
                 //int deleteContents = showDialogBoxBlocking("menus/utils/delete_sysmodules_flags"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
 
-                int fullClean = showDialogBoxBlocking("menus/utils/delete_all_but_emunand"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
+                int fullClean = showDialogBoxBlocking("menus/utils/clean_install"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n);
 
                 if (fullClean == 1)
                 {
-                    if (showDialogBoxBlocking("menus/utils/delete_all_but_emunand_confirm"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n) == 1)
+                    if (showDialogBoxBlocking("menus/utils/clean_install_confirm"_i18n, "menus/common/no"_i18n, "menus/common/yes"_i18n) == 1)
                         createCleanInstallFile();
                     else
                         fullClean = 0;
@@ -552,6 +574,7 @@ MY METHODS
         std::filesystem::remove(fmt::format(LOG_FILE, BASE_FOLDER_NAME));
         std::filesystem::remove(fmt::format(FORWARDER_CONF, BASE_FOLDER_NAME));
         std::filesystem::remove(CLEAN_INSTALL_FLAG);
+        fs::removeDir(CFW_ROOT_PATH);
         fs::removeDir(fmt::format(AMS_DIRECTORY_PATH, BASE_FOLDER_NAME));
         fs::removeDir(fmt::format(SEPT_DIRECTORY_PATH, BASE_FOLDER_NAME));
         fs::removeDir(FW_DIRECTORY_PATH);

@@ -361,6 +361,89 @@ namespace download {
         return status_code;
     }
 
+    long downloadFileFaster(const nlohmann::ordered_json& json, const std::string& output, int api)
+    {
+        std::vector<std::uint8_t> dummy;
+        return downloadFile(json, dummy, output, api);
+    }
+
+    long downloadFileFaster(const nlohmann::ordered_json& json, std::vector<std::uint8_t>& res, const std::string& output, int api)
+    {
+/*        const char* out = output.c_str();
+        CURL* curl = curl_easy_init();
+        ntwrk_struct_t chunk = {0};
+        long status_code;
+        time_old = std::chrono::steady_clock::now();
+        dlold = 0.0f;
+        bool can_download = true;
+        bool is_mega = (url.find("mega.nz") != std::string::npos);
+        std::string real_url = is_mega ? mega_url(url) : url;
+
+        if (is_mega) {
+            std::string node_key = mega_node_key(url);
+            std::string key = mega_key(node_key);
+            std::string iv = mega_iv(node_key);
+
+            chunk.aes = static_cast<Aes128CtrContext*>(malloc(sizeof(Aes128CtrContext)));
+            aes128CtrContextCreate(chunk.aes, key.c_str(), iv.c_str());
+        }
+
+        if (curl) {
+            FILE* fp = fopen(out, "wb");
+            if (fp || *out == 0) {
+                chunk.data = static_cast<u_int8_t*>(malloc(_1MiB));
+                chunk.data_size = _1MiB;
+                chunk.out = fp;
+
+                if (*out != 0) {
+                    can_download = is_mega ? !real_url.empty() : checkSize(curl, url);
+                }
+
+                if (can_download) {
+                    curl_easy_setopt(curl, CURLOPT_URL, real_url.c_str());
+                    curl_easy_setopt(curl, CURLOPT_USERAGENT, API_AGENT);
+                    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+                    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+                    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+                    curl_easy_setopt(curl, CURLOPT_NOBODY, 0L);
+                    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
+                    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &chunk);
+
+                    if (api == OFF) {
+                        curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
+                        curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, download_progress);
+                    }
+                    curl_easy_perform(curl);
+                    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &status_code);
+
+                    if (fp && chunk.offset && can_download)
+                        fwrite(chunk.data, 1, chunk.offset, fp);
+
+                    curl_easy_cleanup(curl);
+                    ProgressEvent::instance().setStep(ProgressEvent::instance().getMax());
+                }
+            }
+        }
+
+        fclose(chunk.out);
+        if (!can_download) {
+            brls::Application::crash("menus/errors/insufficient_storage"_i18n);
+            std::this_thread::sleep_for(std::chrono::microseconds(2000000));
+            brls::Application::quit();
+            res = {};
+        }
+
+        if (*out == 0) {
+            res.assign(chunk.data, chunk.data + chunk.offset);
+        }
+
+        free(chunk.data);
+        free(chunk.aes);
+
+        return status_code;
+*/
+    }
+
     std::string fetchTitle(const std::string& url)
     {
         CURL* curl_handle;
