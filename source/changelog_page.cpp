@@ -57,7 +57,10 @@ ChangelogPage::ChangelogPage() : AppletFrame(true, true)
     verTitles.push_back("v2.0.2");
     changes.push_back("\uE016 O homebrew agora alerta se você tem um tema instalado ANTES de baixar a atualização e te dá a opção de deleta-lo antes de prosseguir.\n\uE016 O homebrew agora mantém os principais arquivos de configuração do Tinfoil sempre que uma atualização é feita.\n\uE016 O homebrew agora te dá a opção de fazer uma instalação limpa mantendo arquivos e pastas importantes como emuNAND, pasta backup, saves (JKSV, Checkpoint e EdiZon), retroarch e suas ROMs, e arquivos importantes do Tinfoil.\n\uE016 Adicionada a opção de ver o changelog da nova atualização do homebrew antes de fazê-la.\n\uE016 Limpeza no código em geral.\n\uE016 Melhorias nos textos do homebrew.");
 
-    for (int i = verTitles.size() - 1; i >= 0; i--) {
+    verTitles.push_back("v2.0.3");
+    changes.push_back("\uE016 Removido alguns estágios de 'Baixar Atmosphère' e 'Baixar firmware' para deixar tais opções mais diretas.\n\uE016 Adicionado temas do Tinfoil e o arquivo 'options.json' à lista de exclusão na atualização normal.\n\uE016 Resquícios de downloade de pacotes Atmosphère agora são apagados quando a opção 'Limpar arquivos' é usada em 'Ferramentas'.\n\uE016 Melhoria nos textos para esclarecer como a opção 'Instalação limpa' funciona.\n\uE016 Melhoria nos textos de 'Baixar Atmosphère' para esclarecer o que é opcional.");
+
+	for (int i = verTitles.size() - 1; i >= 0; i--) {
         listItem = new brls::ListItem(verTitles[i]);
         change = changes[i];
         listItem->getClickEvent()->subscribe([change](brls::View* view) {
